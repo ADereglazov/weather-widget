@@ -3,7 +3,7 @@
     <h2 class="settigs-section__title">Settings</h2>
 
     <Draggable
-      v-model="locationsList"
+      v-model="listModel"
       v-bind="dragOptions"
       item-key="id"
       handle=".handle"
@@ -30,7 +30,7 @@
 </template>
 
 <script>
-import { ref } from "vue";
+import { computed } from "vue";
 import Draggable from "vuedraggable";
 import BurgerIcon from "@/assets/icons/burger.svg";
 import DeleteButton from "@/components/DeleteButton.vue";
@@ -39,7 +39,12 @@ import LocationInput from "@/components/LocationInput.vue";
 export default {
   name: "SettingsSection",
   components: { Draggable, BurgerIcon, DeleteButton, LocationInput },
+  emits: ["add-location", "delete"],
   props: {
+    locationsList: {
+      type: Array,
+      default: () => [],
+    },
     apiUrl: {
       type: String,
     },
@@ -47,31 +52,28 @@ export default {
       type: String,
     },
   },
-  setup() {
+  setup(props, { emit }) {
     const dragOptions = {
       animation: 200,
       disabled: false,
       ghostClass: "ghost",
     };
-    const locationsList = ref([
-      { id: 1, location: "Moscow, RU" },
-      { id: 2, location: "London, UK" },
-    ]);
+
+    const listModel = computed({
+      get: () => [...props.locationsList],
+      set: (val) => emit("changeLocationsList", val),
+    });
 
     function onAddLocation(location) {
-      const locationListLength = locationsList.value.length;
-      locationsList.value.splice(locationListLength, 0, {
-        id: location.id,
-        location: location.name + ", " + location.sys.country,
-      });
+      emit("add-location", location);
     }
     function onDelete(index) {
-      locationsList.value.splice(index, 1);
+      emit("delete", index);
     }
 
     return {
       dragOptions,
-      locationsList,
+      listModel,
       onAddLocation,
       onDelete,
     };
