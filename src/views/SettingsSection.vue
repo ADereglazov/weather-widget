@@ -43,7 +43,6 @@ export default {
   props: {
     locationsList: {
       type: Array,
-      default: () => [],
     },
     apiUrl: {
       type: String,

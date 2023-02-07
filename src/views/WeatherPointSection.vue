@@ -8,13 +8,21 @@
       {{ location.name + ", " + location.sys.country }}
     </h2>
     <div class="weather-point-section__wrapper">
-      <img
-        :src="`http://openweathermap.org/img/wn/${location.weather[0].icon}@2x.png`"
-        alt="weather-img"
-        class="weather-point-section__img"
-      />
+      <div style="position: relative; width: 50%; padding-top: 50%">
+        <img
+          :src="`http://openweathermap.org/img/wn/${location.weather[0].icon}@2x.png`"
+          alt="weather-img"
+          class="weather-point-section__img"
+        />
+      </div>
       <div class="weather-point-section__temperature" style="width: 50%">
-        <span>{{ location.main.temp }}</span>
+        <span>
+          {{
+            location.main.temp > 0
+              ? "+" + location.main.temp
+              : location.main.temp
+          }}
+        </span>
         <sup> o</sup>
         <span>C</span>
       </div>
@@ -23,8 +31,8 @@
       Feels like {{ location.main.feels_like }}
       <sup> o</sup>
       <span>C, </span>
-      <span
-        >{{
+      <span>
+        {{
           location.weather[0].description.charAt(0).toUpperCase() +
           location.weather[0].description.slice(1)
         }}
@@ -41,7 +49,7 @@
         <span style="margin-left: 10px">{{ location.wind.speed }} m/s</span>
       </span>
       <span style="display: inline-flex; align-items: center; width: 50%">
-        <BarometrIcon style="margin-right: 10px" />
+        <BarometerIcon style="margin-right: 10px" />
         {{ location.main.pressure }}hPa
       </span>
     </p>
@@ -53,35 +61,30 @@
         Visibility: {{ location.visibility / 1000 }}km
       </span>
     </p>
+    <hr style="margin: 0" />
   </section>
 </template>
 
 <script>
 import DirectionIcon from "@/assets/icons/direction.svg";
-import BarometrIcon from "@/assets/icons/barometr.svg";
+import BarometerIcon from "@/assets/icons/barometer.svg";
 export default {
   name: "WeatherPointSection",
-  components: { DirectionIcon, BarometrIcon },
+  components: { DirectionIcon, BarometerIcon },
   props: {
     locationsList: {
       type: Array,
-      default: () => [],
     },
-  },
-  setup() {
-    function rotateDeg(value) {
-      return value + "deg";
-    }
-
-    return {
-      rotateDeg,
-    };
   },
 };
 </script>
 
 <style lang="less" scoped>
 .weather-point-section {
+  & + & {
+    margin-top: 10px;
+  }
+
   &__title {
     margin: 0;
     font-size: 15px;
@@ -95,8 +98,15 @@ export default {
   }
 
   &__img {
+    position: absolute;
+    top: 0;
+    left: 0;
+
     display: block;
-    width: 50%;
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
   }
 
   &__temperature {
