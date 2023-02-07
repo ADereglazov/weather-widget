@@ -2,11 +2,11 @@
   <button
     type="button"
     name="toggle"
-    :aria-label="settingsOpened ? 'Settigs' : 'Close settigs'"
+    :aria-label="isSettingsOpened ? 'Settigs' : 'Close settigs'"
     class="settings-button"
     @click="onClick"
   >
-    <CloseIcon v-if="settingsOpened" />
+    <CloseIcon v-if="isSettingsOpened" />
     <SettingsIcon v-else />
   </button>
 </template>
@@ -16,11 +16,11 @@ import SettingsIcon from "@/assets/icons/settings.svg";
 import CloseIcon from "@/assets/icons/close.svg";
 
 export default {
-  name: "SettingsButton",
+  name: "ManageButton",
   components: { SettingsIcon, CloseIcon },
   emits: ["button-click"],
   props: {
-    settingsOpened: {
+    isSettingsOpened: {
       type: Boolean,
       default: false,
     },

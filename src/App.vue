@@ -1,25 +1,25 @@
 <template>
-  <SettingsButton
+  <ManageButton
     class="app-settings-button"
-    :settings-opened="settingsOpened"
-    @button-click="onSettingsButtonClick"
+    :is-settings-opened="isSettingsOpened"
+    @button-click="onManageButtonClick"
   />
-  <SettingsSection v-if="settingsOpened" />
+  <SettingsSection v-if="isSettingsOpened" />
   <WeatherPointSection v-else />
   <LoadingSpinner v-show="isShowSpinner" class="app-settings-spinner" />
 </template>
 
 <script setup>
 import { ref } from "vue";
-import SettingsButton from "@/components/ManageButton.vue";
+import ManageButton from "@/components/ManageButton.vue";
 import LoadingSpinner from "@/components/LoadingSpinner.vue";
 import WeatherPointSection from "@/views/WeatherPointSection.vue";
 import SettingsSection from "@/views/SettingsSection.vue";
 
-const settingsOpened = ref(false);
+const isSettingsOpened = ref(false);
 const isShowSpinner = ref(false);
-function onSettingsButtonClick() {
-  settingsOpened.value = !settingsOpened.value;
+function onManageButtonClick() {
+  isSettingsOpened.value = !isSettingsOpened.value;
 }
 </script>
 
