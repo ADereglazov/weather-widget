@@ -14,7 +14,7 @@
         <li class="settigs-section__list-item">
           <BurgerIcon class="settigs-section__list-item-icon--move handle" />
           <span class="settigs-section__list-item-text">{{
-            element.location
+            element.name + ", " + element.sys.country
           }}</span>
           <DeleteButton @delete="onDelete(index)" />
         </li>
