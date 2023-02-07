@@ -21,7 +21,11 @@
       </template>
     </Draggable>
 
-    <LocationInput @add-location="onAddLocation" />
+    <LocationInput
+      :api-url="apiUrl"
+      :api-key="apiKey"
+      @add-location="onAddLocation"
+    />
   </section>
 </template>
 
@@ -35,6 +39,14 @@ import LocationInput from "@/components/LocationInput.vue";
 export default {
   name: "SettingsSection",
   components: { Draggable, BurgerIcon, DeleteButton, LocationInput },
+  props: {
+    apiUrl: {
+      type: String,
+    },
+    apiKey: {
+      type: String,
+    },
+  },
   setup() {
     const dragOptions = {
       animation: 200,
@@ -46,12 +58,11 @@ export default {
       { id: 2, location: "London, UK" },
     ]);
 
-    function onAddLocation(e) {
-      const id = Symbol("id");
+    function onAddLocation(location) {
       const locationListLength = locationsList.value.length;
       locationsList.value.splice(locationListLength, 0, {
-        id: id,
-        location: e,
+        id: location.id,
+        location: location.name + ", " + location.sys.country,
       });
     }
     function onDelete(index) {
