@@ -2,17 +2,24 @@
   <section class="settigs-section">
     <h2 class="settigs-section__title">Settings</h2>
 
-    <ul class="settigs-section__list">
-      <li
-        v-for="(location, index) in locationsList"
-        :key="location + index"
-        class="settigs-section__list-item"
-      >
-        <BurgerIcon class="settigs-section__list-item-icon--move" />
-        <span class="settigs-section__list-item-text">{{ location }}</span>
-        <DeleteButton @delete="onDelete(index)" />
-      </li>
-    </ul>
+    <Draggable
+      v-model="locationsList"
+      v-bind="dragOptions"
+      item-key="id"
+      handle=".handle"
+      tag="ul"
+      class="settigs-section__list"
+    >
+      <template #item="{ element, index }">
+        <li class="settigs-section__list-item">
+          <BurgerIcon class="settigs-section__list-item-icon--move handle" />
+          <span class="settigs-section__list-item-text">{{
+            element.location
+          }}</span>
+          <DeleteButton @delete="onDelete(index)" />
+        </li>
+      </template>
+    </Draggable>
 
     <LocationInput @add-location="onAddLocation" />
   </section>
@@ -20,24 +27,39 @@
 
 <script>
 import { ref } from "vue";
+import Draggable from "vuedraggable";
 import BurgerIcon from "@/assets/icons/burger.svg";
 import DeleteButton from "@/components/DeleteButton.vue";
 import LocationInput from "@/components/LocationInput.vue";
 
 export default {
   name: "SettingsSection",
-  components: { BurgerIcon, DeleteButton, LocationInput },
+  components: { Draggable, BurgerIcon, DeleteButton, LocationInput },
   setup() {
-    const locationsList = ref(["Moscow, RU", "London, UK"]);
+    const dragOptions = {
+      animation: 200,
+      disabled: false,
+      ghostClass: "ghost",
+    };
+    const locationsList = ref([
+      { id: 1, location: "Moscow, RU" },
+      { id: 2, location: "London, UK" },
+    ]);
 
     function onAddLocation(e) {
-      locationsList.value.push(e);
+      const id = Symbol("id");
+      const locationListLength = locationsList.value.length;
+      locationsList.value.splice(locationListLength, 0, {
+        id: id,
+        location: e,
+      });
     }
     function onDelete(index) {
       locationsList.value.splice(index, 1);
     }
 
     return {
+      dragOptions,
       locationsList,
       onAddLocation,
       onDelete,
