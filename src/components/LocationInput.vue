@@ -86,7 +86,7 @@ export default {
       try {
         isLoading.value = true;
         const response = await fetch(
-          `${props.apiUrl}?q=${value}&APPID=${props.apiKey}`
+          `${props.apiUrl}?q=${value}&units=metric&APPID=${props.apiKey}`
         );
 
         if (response.ok) {

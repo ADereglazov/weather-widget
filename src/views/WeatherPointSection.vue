@@ -1,22 +1,81 @@
 <template>
-  <section class="weather-point-section">
-    <h2 class="weather-point-section__title">London, UK</h2>
-    <img
-      src="http://openweathermap.org/img/wn/10d@2x.png"
-      alt="weather-img"
-      class="weather-point-section__img"
-    />
-    <p>Подробности погоды</p>
+  <section
+    v-for="location in locationsList"
+    :key="location.id"
+    class="weather-point-section"
+  >
+    <h2 class="weather-point-section__title">
+      {{ location.name + ", " + location.sys.country }}
+    </h2>
+    <div class="weather-point-section__wrapper">
+      <img
+        :src="`http://openweathermap.org/img/wn/${location.weather[0].icon}@2x.png`"
+        alt="weather-img"
+        class="weather-point-section__img"
+      />
+      <div class="weather-point-section__temperature" style="width: 50%">
+        <span>{{ location.main.temp }}</span>
+        <sup> o</sup>
+        <span>C</span>
+      </div>
+    </div>
+    <p>
+      Feels like {{ location.main.feels_like }}
+      <sup> o</sup>
+      <span>C, </span>
+      <span
+        >{{
+          location.weather[0].description.charAt(0).toUpperCase() +
+          location.weather[0].description.slice(1)
+        }}
+      </span>
+    </p>
+    <p>
+      <span style="display: inline-flex; align-items: center; width: 50%">
+        <DirectionIcon
+          :style="{
+            display: 'inline-block',
+            transform: `rotate(${45 + location.wind.deg}deg)`,
+          }"
+        />
+        <span style="margin-left: 10px">{{ location.wind.speed }} m/s</span>
+      </span>
+      <span style="display: inline-flex; align-items: center; width: 50%">
+        <BarometrIcon style="margin-right: 10px" />
+        {{ location.main.pressure }}hPa
+      </span>
+    </p>
+    <p>
+      <span style="display: inline-flex; align-items: center; width: 50%">
+        Humidity: {{ location.main.humidity }}%
+      </span>
+      <span style="display: inline-flex; align-items: center; width: 50%">
+        Visibility: {{ location.visibility / 1000 }}km
+      </span>
+    </p>
   </section>
 </template>
 
 <script>
+import DirectionIcon from "@/assets/icons/direction.svg";
+import BarometrIcon from "@/assets/icons/barometr.svg";
 export default {
   name: "WeatherPointSection",
+  components: { DirectionIcon, BarometrIcon },
   props: {
-    pointName: {
-      type: String,
+    locationsList: {
+      type: Array,
+      default: () => [],
     },
+  },
+  setup() {
+    function rotateDeg(value) {
+      return value + "deg";
+    }
+
+    return {
+      rotateDeg,
+    };
   },
 };
 </script>
@@ -26,6 +85,22 @@ export default {
   &__title {
     margin: 0;
     font-size: 15px;
+    font-weight: bold;
+  }
+
+  &__wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-around;
+  }
+
+  &__img {
+    display: block;
+    width: 50%;
+  }
+
+  &__temperature {
+    font-size: 25px;
     font-weight: bold;
   }
 }

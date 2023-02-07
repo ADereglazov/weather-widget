@@ -13,12 +13,12 @@
     @add-location="onAddLocation"
     @change-locations-list="onChange"
   />
-  <WeatherPointSection v-else />
+  <WeatherPointSection v-else :locations-list="locationsList" />
   <LoadingSpinner v-show="isShowSpinner" class="app-settings-spinner" />
 </template>
 
 <script setup>
-import { ref, computed } from "vue";
+import { ref, computed, onBeforeMount } from "vue";
 import ManageButton from "@/components/ManageButton.vue";
 import LoadingSpinner from "@/components/LoadingSpinner.vue";
 import WeatherPointSection from "@/views/WeatherPointSection.vue";
@@ -33,15 +33,45 @@ const isShowSpinner = ref(false);
 
 const apiUrl = computed(() => API_URL);
 const apiKey = computed(() => API_KEY);
+
+let isLocalStorageAvailable = false;
+
+onBeforeMount(() => {
+  isLocalStorageAvailable = testLocalStorage();
+  if (isLocalStorageAvailable) {
+    locationsList.value = JSON.parse(localStorage.getItem("weatherLocations"));
+  }
+});
+function testLocalStorage() {
+  const test = "test";
+  try {
+    localStorage.setItem(test, test);
+    localStorage.removeItem(test);
+    return true;
+  } catch (e) {
+    return false;
+  }
+}
 function onAddLocation(location) {
   const locationListLength = locationsList.value.length;
   locationsList.value.splice(locationListLength, 0, location);
+  changeLocalStorageData();
 }
 function onChange(e) {
   locationsList.value = e;
+  changeLocalStorageData();
 }
 function onDelete(index) {
   locationsList.value.splice(index, 1);
+  changeLocalStorageData();
+}
+function changeLocalStorageData() {
+  if (isLocalStorageAvailable) {
+    localStorage.setItem(
+      "weatherLocations",
+      JSON.stringify(locationsList.value)
+    );
+  }
 }
 function onManageButtonClick() {
   isSettingsOpened.value = !isSettingsOpened.value;
