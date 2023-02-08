@@ -75,7 +75,7 @@ export default {
       errStatus.value = "";
     }
     async function onSubmit() {
-      newLocationObj = await getData(newLocationString.value);
+      newLocationObj = await getWeatherData(newLocationString.value);
 
       if (newLocationObj) {
         emit("add-location", newLocationObj);
@@ -83,7 +83,7 @@ export default {
       }
       inputField.value.focus();
     }
-    async function getData(value) {
+    async function getWeatherData(value) {
       try {
         isLoading.value = true;
         const response = await fetch(
