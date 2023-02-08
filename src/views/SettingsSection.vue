@@ -22,6 +22,7 @@
     </Draggable>
 
     <LocationInput
+      class="settigs-section__location-input"
       :api-url="apiUrl"
       :api-key="apiKey"
       @add-location="onAddLocation"

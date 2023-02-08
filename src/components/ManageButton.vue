@@ -2,7 +2,7 @@
   <button
     type="button"
     name="toggle"
-    :aria-label="isSettingsOpened ? 'Settigs' : 'Close settigs'"
+    :aria-label="ariaLabel"
     class="settings-button"
     @click="onClick"
   >
@@ -12,6 +12,7 @@
 </template>
 
 <script>
+import { computed } from "vue";
 import SettingsIcon from "@/assets/icons/settings.svg";
 import CloseIcon from "@/assets/icons/close.svg";
 
@@ -26,11 +27,15 @@ export default {
     },
   },
   setup(props, { emit }) {
+    const ariaLabel = computed(() =>
+      props.isSettingsOpened ? "Settigs" : "Close settigs"
+    );
     function onClick() {
       emit("button-click");
     }
 
     return {
+      ariaLabel,
       onClick,
     };
   },

@@ -10,7 +10,7 @@
           'location-input__input--error': errStatus,
         }"
         class="location-input__input"
-        type="text"
+        type="search"
         name="new-location-input"
         placeholder="Input location"
         :disabled="isLoading"
@@ -28,6 +28,7 @@
       <button
         v-show="newLocationString.length > 0 && !isLoading"
         type="button"
+        name="clear"
         :disabled="newLocationString.length === 0"
         aria-label="Clear location input"
         class="location-input__button-clear"
@@ -130,10 +131,14 @@ export default {
     flex-direction: row;
     align-items: center;
     justify-content: space-between;
+
     margin-bottom: 5px;
   }
 
   &__label {
+    display: inline-block;
+    margin-bottom: 5px;
+
     font-size: 15px;
     font-weight: bold;
   }
@@ -159,6 +164,21 @@ export default {
     &:focus,
     &:focus-visible {
       outline-color: @blue;
+    }
+
+    &:-webkit-autofill,
+    &:-webkit-autofill:hover,
+    &:-webkit-autofill:focus,
+    &:-webkit-autofill:active {
+      -webkit-background-clip: text;
+      transition: background-color 5000s ease-in-out 0s;
+    }
+    // delete cross inside input with type "search"
+    &[type="search"]::-webkit-search-decoration,
+    &[type="search"]::-webkit-search-cancel-button,
+    &[type="search"]::-webkit-search-results-button,
+    &[type="search"]::-webkit-search-results-decoration {
+      display: none;
     }
   }
 

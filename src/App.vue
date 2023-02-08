@@ -9,24 +9,26 @@
     :api-url="apiUrl"
     :api-key="apiKey"
     :locations-list="locationsList"
+    class="app-settings-section"
     @delete="onDelete"
     @add-location="onAddLocation"
     @change-locations-list="onChange"
   />
-  <WeatherPointSection v-else :locations-list="locationsList" />
-  <LoadingSpinner v-show="isShowSpinner" class="app-settings-spinner" />
+  <WeatherPointSection
+    v-else
+    :locations-list="locationsList"
+    class="app-weather-point-section"
+  />
 </template>
 
 <script setup>
 import { ref, computed, onBeforeMount } from "vue";
 import ManageButton from "@/components/ManageButton.vue";
-import LoadingSpinner from "@/components/LoadingSpinner.vue";
 import WeatherPointSection from "@/views/WeatherPointSection.vue";
 import SettingsSection from "@/views/SettingsSection.vue";
 
 const locationsList = ref([]);
 const isSettingsOpened = ref(false);
-const isShowSpinner = ref(false);
 
 const apiUrl = computed(() => import.meta.env.VITE_API_URL);
 const apiKey = computed(() => import.meta.env.VITE_API_KEY);
@@ -80,12 +82,5 @@ function onManageButtonClick() {
   position: absolute;
   top: 10px;
   right: 10px;
-}
-
-.app-settings-spinner {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
 }
 </style>
