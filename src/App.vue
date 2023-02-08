@@ -27,6 +27,7 @@
 <script setup>
 import { ref, computed, onBeforeMount } from "vue";
 import { getGeoLocalization } from "@/utils/getGeoLocalization";
+import { testLocalStorage } from "@/utils/testLocalStorage"
 import ManageButton from "@/components/ManageButton.vue";
 import WeatherSection from "@/components/WeatherSection.vue";
 import SettingsSection from "@/components/SettingsSection.vue";
@@ -77,16 +78,6 @@ async function getWeatherData({ lat, lon }) {
     errStatus.value = "Ooops... " + e.message + ", try to update page";
   } finally {
     isLoading.value = false;
-  }
-}
-function testLocalStorage() {
-  const test = "test";
-  try {
-    localStorage.setItem(test, test);
-    localStorage.removeItem(test);
-    return true;
-  } catch (e) {
-    return false;
   }
 }
 function addLocation(location) {
