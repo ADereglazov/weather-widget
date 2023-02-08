@@ -2,21 +2,21 @@
   <section
     v-for="location in locationsList"
     :key="location.id"
-    class="weather-point-section"
+    class="weather-section"
   >
-    <h2 class="weather-point-section__title">
+    <h2 class="weather-section__title">
       {{ location.name + ", " + location.sys.country }}
     </h2>
 
-    <div class="weather-point-section__wrapper-main">
-      <div class="weather-point-section__wrapper-img">
+    <div class="weather-section__wrapper-main">
+      <div class="weather-section__wrapper-img">
         <img
           :src="`http://openweathermap.org/img/wn/${location.weather[0].icon}@2x.png`"
           alt="weather-img"
-          class="weather-point-section__img"
+          class="weather-section__img"
         />
       </div>
-      <div class="weather-point-section__temperature">
+      <div class="weather-section__temperature">
         <span>
           {{
             location.main.temp > 0
@@ -29,7 +29,7 @@
       </div>
     </div>
 
-    <p class="weather-point-section__wrapper-description">
+    <p class="weather-section__wrapper-description">
       Feels like {{ location.main.feels_like }}<sup>o</sup>C,
       {{
         location.weather[0].description.charAt(0).toUpperCase() +
@@ -37,7 +37,7 @@
       }}, Cloud cover {{ location.clouds.all }}%
     </p>
 
-    <p class="weather-point-section__wrapper-details">
+    <p class="weather-section__wrapper-details">
       <span>
         <DirectionIcon
           :style="{ transform: `rotate(${45 + location.wind.deg}deg)` }"
@@ -74,7 +74,7 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.weather-point-section {
+.weather-section {
   padding-bottom: 10px;
 
   &:last-child {
