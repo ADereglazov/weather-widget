@@ -188,7 +188,6 @@ export default {
     right: 32px;
     transform: translateY(-50%);
 
-    display: block;
     width: 25px;
     height: 25px;
   }

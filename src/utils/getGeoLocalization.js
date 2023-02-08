@@ -1,4 +1,4 @@
-function detectGeoLocalization() {
+function getGeoLocalization() {
   return new Promise((resolve) => {
     geoFind()
       .then((res) => {
@@ -58,4 +58,4 @@ function ipFind() {
   });
 }
 
-export { detectGeoLocalization };
+export { getGeoLocalization };

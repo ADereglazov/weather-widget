@@ -26,10 +26,10 @@
 
 <script setup>
 import { ref, computed, onBeforeMount } from "vue";
-import { detectGeoLocalization } from "@/composables/geoLocalization";
+import { getGeoLocalization } from "@/utils/getGeoLocalization";
 import ManageButton from "@/components/ManageButton.vue";
-import WeatherPointSection from "@/views/WeatherPointSection.vue";
-import SettingsSection from "@/views/SettingsSection.vue";
+import WeatherPointSection from "@/components/WeatherPointSection.vue";
+import SettingsSection from "@/components/SettingsSection.vue";
 import LoadingSpinner from "@/components/LoadingSpinner.vue";
 
 const API_URL = import.meta.env.VITE_API_URL;
@@ -54,7 +54,7 @@ onBeforeMount(() => {
   }
 
   if (locationsList.value.length === 0) {
-    detectGeoLocalization().then((res) => {
+    getGeoLocalization().then((res) => {
       if (res) getWeatherData(res);
     });
   }

@@ -43,7 +43,7 @@
           :style="{ transform: `rotate(${45 + location.wind.deg}deg)` }"
         />
         <span style="margin-left: 10px">{{ location.wind.speed }}m/s </span>
-        {{ windDirection(location.wind.deg) }}
+        {{ getWindDirection(location.wind.deg) }}
       </span>
       <span>
         <BarometerIcon />
@@ -56,7 +56,7 @@
 </template>
 
 <script>
-import windDirection from "@/composables/windDirection";
+import getWindDirection from "@/utils/getWindDirection";
 import DirectionIcon from "@/assets/icons/direction.svg";
 import BarometerIcon from "@/assets/icons/barometer.svg";
 export default {
@@ -68,7 +68,7 @@ export default {
     },
   },
   methods: {
-    windDirection,
+    getWindDirection,
   },
 };
 </script>
