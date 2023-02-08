@@ -3,7 +3,7 @@ function detectGeoLocalization() {
     geoFind()
       .then((res) => {
         if (res !== null) {
-          resolve({ lat: res.latitude, lon: res.longitude });
+          resolve({ lat: res.lat, lon: res.lon });
         }
       })
       .catch(() => {
