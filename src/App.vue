@@ -24,15 +24,12 @@ import LoadingSpinner from "@/components/LoadingSpinner.vue";
 import WeatherPointSection from "@/views/WeatherPointSection.vue";
 import SettingsSection from "@/views/SettingsSection.vue";
 
-const API_URL = import.meta.env.VITE_API_URL;
-const API_KEY = import.meta.env.VITE_API_KEY;
-
 const locationsList = ref([]);
 const isSettingsOpened = ref(false);
 const isShowSpinner = ref(false);
 
-const apiUrl = computed(() => API_URL);
-const apiKey = computed(() => API_KEY);
+const apiUrl = computed(() => import.meta.env.VITE_API_URL);
+const apiKey = computed(() => import.meta.env.VITE_API_KEY);
 
 let isLocalStorageAvailable = false;
 
