@@ -27,7 +27,7 @@
 <script setup>
 import { ref, computed, onBeforeMount } from "vue";
 import { getGeoLocalization } from "@/utils/getGeoLocalization";
-import { testLocalStorage } from "@/utils/testLocalStorage"
+import { testLocalStorage } from "@/utils/testLocalStorage";
 import ManageButton from "@/components/ManageButton.vue";
 import WeatherSection from "@/components/WeatherSection.vue";
 import SettingsSection from "@/components/SettingsSection.vue";
