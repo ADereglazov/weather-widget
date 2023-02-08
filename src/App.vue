@@ -24,8 +24,8 @@ import LoadingSpinner from "@/components/LoadingSpinner.vue";
 import WeatherPointSection from "@/views/WeatherPointSection.vue";
 import SettingsSection from "@/views/SettingsSection.vue";
 
-const API_URL = "http://api.openweathermap.org/data/2.5/weather";
-const API_KEY = "b1d744fa9473793f09565e8124d3ba9c";
+const API_URL = import.meta.env.VITE_API_URL;
+const API_KEY = import.meta.env.VITE_API_KEY;
 
 const locationsList = ref([]);
 const isSettingsOpened = ref(false);
