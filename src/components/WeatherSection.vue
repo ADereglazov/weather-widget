@@ -60,7 +60,7 @@ import getWindDirection from "@/utils/getWindDirection";
 import DirectionIcon from "@/assets/icons/direction.svg";
 import BarometerIcon from "@/assets/icons/barometer.svg";
 export default {
-  name: "WeatherPointSection",
+  name: "WeatherSection",
   components: { DirectionIcon, BarometerIcon },
   props: {
     locationsList: {

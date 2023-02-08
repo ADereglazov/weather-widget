@@ -14,7 +14,7 @@
     @add-location="addLocation"
     @change-locations-list="onChange"
   />
-  <WeatherPointSection v-else :locations-list="locationsList" />
+  <WeatherSection v-else :locations-list="locationsList" />
   <LoadingSpinner v-show="isLoading" class="app-settings-spinner" />
   <p
     :class="{ 'app-settings-error--hide': isSettingsOpened || !errStatus }"
@@ -28,7 +28,7 @@
 import { ref, computed, onBeforeMount } from "vue";
 import { getGeoLocalization } from "@/utils/getGeoLocalization";
 import ManageButton from "@/components/ManageButton.vue";
-import WeatherPointSection from "@/components/WeatherPointSection.vue";
+import WeatherSection from "@/components/WeatherSection.vue";
 import SettingsSection from "@/components/SettingsSection.vue";
 import LoadingSpinner from "@/components/LoadingSpinner.vue";
 
