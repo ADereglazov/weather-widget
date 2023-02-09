@@ -43,7 +43,7 @@
 </template>
 
 <script>
-import { ref, computed } from "vue";
+import { ref, computed, toRefs } from "vue";
 import CloseIcon from "@/assets/icons/close.svg";
 import EnterIcon from "@/assets/icons/enter.svg";
 import LoadingSpinner from "@/components/LoadingSpinner.vue";
@@ -67,6 +67,7 @@ export default {
     const isLoading = ref(false);
     const newLocationString = ref("");
     const errStatus = ref("");
+    const { apiUrl, apiKey } = toRefs(props);
 
     const isSubmitButtonDisabled = computed(
       () => newLocationString.value.length === 0 || isLoading.value
@@ -88,7 +89,7 @@ export default {
       try {
         isLoading.value = true;
         const response = await fetch(
-          `${props.apiUrl}?q=${value}&units=metric&APPID=${props.apiKey}`
+          `${apiUrl.value}?q=${value}&units=metric&APPID=${apiKey.value}`
         );
 
         if (response.ok) {
