@@ -56,8 +56,10 @@ onBeforeMount(() => {
 
   if (locationsList.value.length === 0) {
     getGeoLocalization().then((res) => {
-      if (res) getWeatherData(res);
+      getWeatherData(res).then((location) => addLocation(location));
     });
+  } else {
+    updateLocalData();
   }
 });
 async function getWeatherData({ lat, lon }) {
@@ -69,7 +71,8 @@ async function getWeatherData({ lat, lon }) {
 
     if (response.ok) {
       const location = await response.json();
-      addLocation(location);
+      location.lastUpdated = Date.now();
+      return location;
     } else {
       const err = await response.json();
       throw new Error(err.message);
@@ -78,6 +81,25 @@ async function getWeatherData({ lat, lon }) {
     errStatus.value = "Ooops... " + e.message + ", try to update page";
   } finally {
     isLoading.value = false;
+  }
+}
+function updateLocalData() {
+  for (let i = 0; i < locationsList.value.length - 1; i++) {
+    const hours = Math.trunc(
+      (Date.now() - +locationsList.value[i]?.lastUpdated) *
+        2.7778 *
+        Math.pow(10, -7)
+    );
+
+    if (hours >= 2) {
+      getWeatherData({
+        lat: locationsList.value[i].coord.lat,
+        lon: locationsList.value[i].coord.lon,
+      }).then((res) => {
+        locationsList.value[i] = { ...res };
+        changeLocalStorageData();
+      });
+    }
   }
 }
 function addLocation(location) {
@@ -104,6 +126,10 @@ function changeLocalStorageData() {
 }
 function onManageButtonClick() {
   isSettingsOpened.value = !isSettingsOpened.value;
+
+  if (!isSettingsOpened.value && !locationsList.value.length) {
+    errStatus.value = "No data! Update page or add your city in settings";
+  }
 }
 </script>
 
