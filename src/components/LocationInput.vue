@@ -78,6 +78,7 @@ export default {
       newLocationObj = await getWeatherData(newLocationString.value);
 
       if (newLocationObj) {
+        newLocationObj.lastUpdated = Date.now();
         emit("add-location", newLocationObj);
         newLocationString.value = "";
       }

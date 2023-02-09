@@ -86,9 +86,7 @@ async function getWeatherData({ lat, lon }) {
 function updateLocalData() {
   for (let i = 0; i < locationsList.value.length - 1; i++) {
     const hours = Math.trunc(
-      (Date.now() - +locationsList.value[i]?.lastUpdated) *
-        2.7778 *
-        Math.pow(10, -7)
+      (Date.now() - +locationsList.value[i]?.lastUpdated) * 2.7778 * 10 ** -7
     );
 
     if (hours >= 2) {
