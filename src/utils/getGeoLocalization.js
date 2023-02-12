@@ -11,7 +11,7 @@ function getGeoLocalization() {
           .then((res) => {
             resolve({ lat: res.lat, lon: res.lon });
           })
-          .catch(() => resolve());
+          .catch(() => resolve(null));
       });
   });
 }
@@ -29,7 +29,9 @@ function geoFind() {
     }
 
     function error() {
-      reject(new Error("fail"));
+      reject(
+        new Error("Error when trying to determine geolocation coordinates")
+      );
     }
 
     if (navigator.geolocation) {
@@ -40,22 +42,17 @@ function geoFind() {
   });
 }
 function ipFind() {
-  return new Promise((resolve, reject) => {
-    fetch("https://ipapi.co/json/")
-      .then((response) => response.json())
-      .then((data) => {
-        let latitude = data.latitude;
-        let longitude = data.longitude;
-        const location = {
-          lat: latitude,
-          lon: longitude,
-        };
-        resolve(location);
-      })
-      .catch(() => {
-        reject(new Error("fail"));
-      });
-  });
+  return fetch("https://ipapi.co/json/")
+    .then((response) => response.json())
+    .then((data) => {
+      return {
+        lat: data.latitude,
+        lon: data.longitude,
+      };
+    })
+    .catch((e) => {
+      console.log(e);
+    });
 }
 
 export { getGeoLocalization };
