@@ -44,6 +44,7 @@
 
 <script>
 import { ref, computed, toRefs } from "vue";
+import { getWeatherCity } from "@/services/fetchWeather";
 import CloseIcon from "@/assets/icons/close.svg";
 import EnterIcon from "@/assets/icons/enter.svg";
 import LoadingSpinner from "@/components/LoadingSpinner.vue";
@@ -88,16 +89,7 @@ export default {
     async function getWeatherData(value) {
       try {
         isLoading.value = true;
-        const response = await fetch(
-          `${apiUrl.value}?q=${value}&units=metric&APPID=${apiKey.value}`
-        );
-
-        if (response.ok) {
-          return await response.json();
-        } else {
-          const err = await response.json();
-          throw new Error(err.message);
-        }
+        return await getWeatherCity(value, apiUrl, apiKey);
       } catch (e) {
         errStatus.value = "Ooops, " + e.message + ", try again";
         inputField.value.focus();
