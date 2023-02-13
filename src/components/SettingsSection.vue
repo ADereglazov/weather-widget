@@ -2,6 +2,13 @@
   <section class="settigs-section">
     <h2 class="settigs-section__title">Settings</h2>
 
+    <LocationInput
+      class="settigs-section__location-input"
+      :api-url="apiUrl"
+      :api-key="apiKey"
+      @add-location="onAddLocation"
+    />
+
     <Draggable
       v-model="listModel"
       v-bind="dragOptions"
@@ -20,13 +27,6 @@
         </li>
       </template>
     </Draggable>
-
-    <LocationInput
-      class="settigs-section__location-input"
-      :api-url="apiUrl"
-      :api-key="apiKey"
-      @add-location="onAddLocation"
-    />
   </section>
 </template>
 
