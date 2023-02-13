@@ -25,13 +25,13 @@
 
 <script setup>
 import { ref, computed, onBeforeMount } from "vue";
-import { millisecondsToHours } from "date-fns";
 import { getGeoLocalization } from "@/utils/getGeoLocalization";
 import { getWeatherFromGeo } from "@/services/fetchWeather";
 import {
   getLocalStorageWeatherData,
   setLocalStorageWeatherData,
 } from "@/services/localStorageWeather";
+import { getOutdatedItems } from "@/utils/getOutdatedItems";
 import ManageButton from "@/components/ManageButton.vue";
 import WeatherSection from "@/components/WeatherSection.vue";
 import SettingsSection from "@/components/SettingsSection.vue";
@@ -39,7 +39,6 @@ import LoadingSpinner from "@/components/LoadingSpinner.vue";
 
 const API_URL = import.meta.env.VITE_API_URL;
 const API_KEY = import.meta.env.VITE_API_KEY;
-const UPDATE_PERIOD_IN_HOURS = 2;
 
 const locationsList = ref([]);
 const isSettingsOpened = ref(false);
@@ -53,20 +52,22 @@ onBeforeMount(() => {
   locationsList.value = getLocalStorageWeatherData();
 
   if (locationsList.value.length === 0) {
-    isLoading.value = true;
-    getGeoLocalization()
-      .then((res) => {
-        if (res) {
-          getWeatherData(res).then((location) => addLocation(location));
-        } else {
-          errStatus.value = "Oops..., error! Try to update page";
-        }
-      })
-      .finally(() => (isLoading.value = false));
+    getGeoWeather();
   } else {
-    updateLocalData();
+    refreshLocalData();
   }
 });
+async function getGeoWeather() {
+  isLoading.value = true;
+  const geo = await getGeoLocalization();
+  if (geo) {
+    const location = await getWeatherData(geo);
+    addLocation(location);
+  } else {
+    errStatus.value = "Oops..., error! Try to update page";
+  }
+  isLoading.value = false;
+}
 async function getWeatherData({ lat, lon }) {
   try {
     isLoading.value = true;
@@ -77,21 +78,17 @@ async function getWeatherData({ lat, lon }) {
     isLoading.value = false;
   }
 }
-function updateLocalData() {
-  for (let i = 0; i < locationsList.value.length; i++) {
-    const hoursFromLastUpdate = millisecondsToHours(
-      Date.now() - +locationsList.value[i]?.lastUpdated
-    );
+function refreshLocalData() {
+  const outdatedElements = getOutdatedItems(locationsList.value);
 
-    if (hoursFromLastUpdate >= UPDATE_PERIOD_IN_HOURS) {
-      getWeatherData({
-        lat: locationsList.value[i].coord.lat,
-        lon: locationsList.value[i].coord.lon,
-      }).then((location) => {
-        locationsList.value[i] = { ...location };
-        setLocalStorageWeatherData(locationsList.value);
-      });
-    }
+  for (let index of outdatedElements) {
+    getWeatherData({
+      lat: locationsList.value[index].coord.lat,
+      lon: locationsList.value[index].coord.lon,
+    }).then((location) => {
+      locationsList.value[index] = { ...location };
+      setLocalStorageWeatherData(locationsList.value);
+    });
   }
 }
 function addLocation(location) {
@@ -134,14 +131,14 @@ function onManageButtonClick() {
 
 .app-error {
   width: 100%;
-  padding: 0 30px;
+  max-width: 220px;
   margin: 0;
 
   font-weight: bold;
   color: $red;
+}
 
-  &--hide {
-    display: none;
-  }
+.app-error.app-error--hide {
+  display: none;
 }
 </style>

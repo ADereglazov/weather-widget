@@ -32,7 +32,7 @@
       outline-color: $blue;
     }
 
-    &--error {
+    &.location-input__input--error {
       outline-color: $red;
 
       &:focus,
