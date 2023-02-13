@@ -1,0 +1,47 @@
+.settigs-section {
+  &__title {
+    margin: 0;
+    font-size: 15px;
+    font-weight: bold;
+  }
+
+  &__list {
+    padding: 0;
+    margin: 20px 0 30px 0;
+    list-style: none;
+  }
+
+  &__list-item {
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 5px;
+
+    background-color: $gray;
+  }
+
+  &__list-item + &__list-item {
+    margin-top: 10px;
+  }
+
+  &__list-item-icon--move {
+    &:hover {
+      cursor: move;
+    }
+
+    &:active {
+      opacity: 0.5;
+    }
+  }
+
+  &__list-item-text {
+    display: block;
+    max-width: 80%;
+    padding: 0 5px;
+    margin-right: auto;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+}

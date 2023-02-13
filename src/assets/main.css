@@ -1,16 +1,13 @@
-html {
-  box-sizing: border-box;
-}
+weather-widget {
+  position: relative;
 
-*,
-*::before,
-*::after {
-  box-sizing: inherit;
-}
+  display: block;
+  width: 100%;
+  max-width: 250px;
+  min-height: 292px;
 
-body {
-  padding: 0;
-  margin: 0;
+  padding: 10px;
+  border: 1px solid gray;
 
   font-family: "Fira Sans", sans-serif;
   font-size: 13px;
@@ -18,41 +15,4 @@ body {
   line-height: 20px;
 
   background-color: white;
-}
-
-button {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 2px;
-  margin: 0;
-
-  color: black;
-  border: none;
-  background: none;
-  cursor: default;
-}
-
-button:hover {
-   cursor: pointer;
- }
-
-button:active {
-   opacity: 0.7;
- }
-
-button:disabled {
-  cursor: default;
-  opacity: 0.5;
-}
-
-#weather-widget-app {
-  position: relative;
-
-  width: 100%;
-  max-width: 250px;
-  min-height: 292px;
-
-  padding: 10px;
-  border: 1px solid gray;
 }

@@ -114,7 +114,7 @@ function onManageButtonClick() {
 }
 </script>
 
-<style lang="scss" scoped>
+<style lang="scss">
 .app-settings-button {
   position: absolute;
   top: 10px;

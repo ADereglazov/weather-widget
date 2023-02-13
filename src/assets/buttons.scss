@@ -1,0 +1,25 @@
+button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2px;
+  margin: 0;
+
+  color: black;
+  border: none;
+  background: none;
+  cursor: default;
+
+  &:hover {
+    cursor: pointer;
+  }
+
+  &:active {
+    opacity: 0.7;
+  }
+
+  &:disabled {
+    cursor: default;
+    opacity: 0.5;
+  }
+}
