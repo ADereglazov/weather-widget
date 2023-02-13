@@ -81,7 +81,7 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .settigs-section {
   &__title {
     margin: 0;
@@ -101,7 +101,7 @@ export default {
     justify-content: flex-start;
     padding: 5px;
 
-    background-color: @gray;
+    background-color: $gray;
   }
 
   &__list-item + &__list-item {

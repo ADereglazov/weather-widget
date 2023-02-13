@@ -73,7 +73,7 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .weather-section {
   padding-bottom: 10px;
 
@@ -83,7 +83,7 @@ export default {
 
   & + & {
     padding-top: 10px;
-    border-top: 1px solid @black;
+    border-top: 1px solid $black;
   }
 
   &__title {

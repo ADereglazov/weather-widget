@@ -114,7 +114,7 @@ function onManageButtonClick() {
 }
 </script>
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .app-settings-button {
   position: absolute;
   top: 10px;
@@ -135,7 +135,7 @@ function onManageButtonClick() {
   margin: 0;
 
   font-weight: bold;
-  color: @red;
+  color: $red;
 
   &--hide {
     display: none;

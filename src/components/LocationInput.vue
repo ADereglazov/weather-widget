@@ -116,7 +116,7 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .location-input {
   &__wrapper {
     position: relative;
@@ -142,22 +142,22 @@ export default {
     padding: 5px 25px 5px 5px;
     margin-right: 10px;
 
-    outline: 2px solid @gray-dark;
+    outline: 2px solid $gray-dark;
     border: none;
     border-radius: 2px;
 
-    &&--error {
-      outline-color: @red;
+    &--error {
+      outline-color: $red;
 
       &:focus,
       &:focus-visible {
-        outline-color: @red;
+        outline-color: $red;
       }
     }
 
     &:focus,
     &:focus-visible {
-      outline-color: @blue;
+      outline-color: $blue;
     }
 
     &:-webkit-autofill,
@@ -190,7 +190,7 @@ export default {
     display: inline-block;
 
     font-size: inherit;
-    color: @red;
+    color: $red;
   }
 
   &__spinner {

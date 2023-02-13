@@ -21,9 +21,9 @@ export default {
 };
 </script>
 
-<style lang="less" scoped>
+<style lang="scss" scoped>
 .loading-spinner {
-  color: @gray;
+  color: $gray;
   display: inline-block;
   position: relative;
   width: 80px;
@@ -43,7 +43,7 @@ export default {
     width: 6px;
     height: 18px;
     border-radius: 20%;
-    background: @black;
+    background: $black;
   }
 
   &:nth-child(1) {
