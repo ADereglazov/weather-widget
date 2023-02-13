@@ -1,6 +1,6 @@
 export async function getWeatherFromGeo({ lat, lon }, apiUrl, apiKey) {
   const response = await fetch(
-    `${apiUrl}?lat=${lat}&lon=${lon}&units=metric&APPID=${apiKey}`
+    `${apiUrl}?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`
   );
 
   if (response.ok) {
@@ -14,7 +14,7 @@ export async function getWeatherFromGeo({ lat, lon }, apiUrl, apiKey) {
 }
 export async function getWeatherCity(value, apiUrl, apiKey) {
   const response = await fetch(
-    `${apiUrl}?q=${value}&units=metric&APPID=${apiKey}`
+    `${apiUrl}?q=${value}&units=metric&appid=${apiKey}`
   );
 
   if (response.ok) {
