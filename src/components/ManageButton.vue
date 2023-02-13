@@ -28,7 +28,7 @@ export default {
   },
   setup(props, { emit }) {
     const ariaLabel = computed(() =>
-      props.isSettingsOpened ? "Settigs" : "Close settigs"
+      props.isSettingsOpened ? "Close settigs" : "Settigs"
     );
     function onClick() {
       emit("button-click");
