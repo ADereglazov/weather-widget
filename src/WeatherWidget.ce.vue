@@ -39,6 +39,7 @@ import LoadingSpinner from "@/components/LoadingSpinner.vue";
 
 const API_URL = import.meta.env.VITE_API_URL;
 const API_KEY = import.meta.env.VITE_API_KEY;
+const UPDATE_PERIOD_IN_HOURS = 2;
 
 const locationsList = ref([]);
 const isSettingsOpened = ref(false);
@@ -78,16 +79,16 @@ async function getWeatherData({ lat, lon }) {
 }
 function updateLocalData() {
   for (let i = 0; i < locationsList.value.length; i++) {
-    const hours = millisecondsToHours(
+    const hoursFromLastUpdate = millisecondsToHours(
       Date.now() - +locationsList.value[i]?.lastUpdated
     );
 
-    if (hours >= 2) {
+    if (hoursFromLastUpdate >= UPDATE_PERIOD_IN_HOURS) {
       getWeatherData({
         lat: locationsList.value[i].coord.lat,
         lon: locationsList.value[i].coord.lon,
-      }).then((res) => {
-        locationsList.value[i] = { ...res };
+      }).then((location) => {
+        locationsList.value[i] = { ...location };
         setLocalStorageWeatherData(locationsList.value);
       });
     }
