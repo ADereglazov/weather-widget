@@ -57,7 +57,7 @@ onBeforeMount(() => {
       if (res) {
         getWeatherData(res).then((location) => addLocation(location));
       } else {
-        errStatus.value = "Ooops..., error! Try to update page";
+        errStatus.value = "Oops..., error! Try to update page";
       }
     });
   } else {
@@ -69,7 +69,7 @@ async function getWeatherData({ lat, lon }) {
     isLoading.value = true;
     return getWeatherFromGeo({ lat, lon }, API_URL, API_KEY);
   } catch (e) {
-    errStatus.value = "Ooops... " + e.message + ", try to update page";
+    errStatus.value = "Oops... " + e.message + ", try to update page";
   } finally {
     isLoading.value = false;
   }

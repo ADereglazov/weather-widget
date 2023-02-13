@@ -91,7 +91,7 @@ export default {
         isLoading.value = true;
         return await getWeatherCity(value, apiUrl.value, apiKey.value);
       } catch (e) {
-        errStatus.value = "Ooops, " + e.message + ", try again";
+        errStatus.value = "Oops, " + e.message + ", try again";
         inputField.value.focus();
       } finally {
         isLoading.value = false;
