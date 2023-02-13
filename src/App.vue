@@ -25,7 +25,7 @@
 </template>
 
 <script setup>
-import { ref, onBeforeMount } from "vue";
+import { ref, computed, onBeforeMount } from "vue";
 import { millisecondsToHours } from "date-fns";
 import { getGeoLocalization } from "@/utils/getGeoLocalization";
 import { getWeatherFromGeo } from "@/services/fetchWeather";
@@ -45,6 +45,9 @@ const locationsList = ref([]);
 const isSettingsOpened = ref(false);
 const isLoading = ref(false);
 const errStatus = ref("");
+
+const apiUrl = computed(() => API_URL);
+const apiKey = computed(() => API_KEY);
 
 onBeforeMount(() => {
   locationsList.value = getLocalStorageWeatherData();
