@@ -52,13 +52,16 @@ onBeforeMount(() => {
   locationsList.value = getLocalStorageWeatherData();
 
   if (locationsList.value.length === 0) {
-    getGeoLocalization().then((res) => {
-      if (res) {
-        getWeatherData(res).then((location) => addLocation(location));
-      } else {
-        errStatus.value = "Oops..., error! Try to update page";
-      }
-    });
+    isLoading.value = true;
+    getGeoLocalization()
+      .then((res) => {
+        if (res) {
+          getWeatherData(res).then((location) => addLocation(location));
+        } else {
+          errStatus.value = "Oops..., error! Try to update page";
+        }
+      })
+      .finally(() => (isLoading.value = false));
   } else {
     updateLocalData();
   }
