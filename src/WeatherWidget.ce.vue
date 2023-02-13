@@ -56,7 +56,10 @@ onBeforeMount(() => {
     getGeoLocalization()
       .then((res) => {
         if (res) {
-          getWeatherData(res).then((location) => addLocation(location));
+          isLoading.value = true;
+          getWeatherData(res)
+            .then((location) => addLocation(location))
+            .finally(() => (isLoading.value = false));
         } else {
           errStatus.value = "Oops..., error! Try to update page";
         }
