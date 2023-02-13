@@ -69,7 +69,7 @@ onBeforeMount(() => {
 async function getWeatherData({ lat, lon }) {
   try {
     isLoading.value = true;
-    return getWeatherFromGeo({ lat, lon }, API_URL, API_KEY);
+    return await getWeatherFromGeo({ lat, lon }, API_URL, API_KEY);
   } catch (e) {
     errStatus.value = "Oops... " + e.message + ", try to update page";
   } finally {
