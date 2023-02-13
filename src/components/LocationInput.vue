@@ -89,7 +89,7 @@ export default {
     async function getWeatherData(value) {
       try {
         isLoading.value = true;
-        return await getWeatherCity(value, apiUrl, apiKey);
+        return await getWeatherCity(value, apiUrl.value, apiKey.value);
       } catch (e) {
         errStatus.value = "Ooops, " + e.message + ", try again";
         inputField.value.focus();
