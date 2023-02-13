@@ -1,6 +1,6 @@
 <template>
   <ManageButton
-    class="app-settings-button"
+    class="app-manage-button"
     :is-settings-opened="isSettingsOpened"
     @button-click="onManageButtonClick"
   />
@@ -9,16 +9,15 @@
     :api-url="apiUrl"
     :api-key="apiKey"
     :locations-list="locationsList"
-    class="app-settings-section"
     @delete="onDelete"
     @add-location="addLocation"
     @change-locations-list="onChange"
   />
   <WeatherSection v-else :locations-list="locationsList" />
-  <LoadingSpinner v-show="isLoading" class="app-settings-spinner" />
+  <LoadingSpinner v-show="isLoading" class="app-spinner" />
   <p
-    :class="{ 'app-settings-error--hide': isSettingsOpened || !errStatus }"
-    class="app-settings-error"
+    :class="{ 'app-error--hide': isSettingsOpened || !errStatus }"
+    class="app-error"
   >
     {{ errStatus }}
   </p>
@@ -115,21 +114,21 @@ function onManageButtonClick() {
 </script>
 
 <style lang="scss">
-.app-settings-button {
+.app-manage-button {
   position: absolute;
   top: 10px;
   right: 10px;
 }
 
-.app-settings-error,
-.app-settings-spinner {
+.app-error,
+.app-spinner {
   position: absolute;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
 }
 
-.app-settings-error {
+.app-error {
   width: 100%;
   padding: 0 30px;
   margin: 0;
