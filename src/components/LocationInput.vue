@@ -99,6 +99,7 @@ export default {
     }
     function onClickClear() {
       newLocationString.value = "";
+      errStatus.value = "";
       inputField.value.focus();
     }
 
