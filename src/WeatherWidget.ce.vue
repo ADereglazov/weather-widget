@@ -11,7 +11,7 @@
     :locations-list="locationsList"
     @delete="onDelete"
     @add-location="addLocation"
-    @change-locations-list="onChange"
+    @sorting-locations-list="onSorting"
   />
   <WeatherSection v-else :locations-list="locationsList" />
   <LoadingSpinner v-show="isLoading" class="app-spinner" />
@@ -50,8 +50,9 @@ const apiKey = computed(() => API_KEY);
 
 onBeforeMount(() => {
   locationsList.value = getLocalStorageWeatherData();
+  const isEmptyLocationsList = locationsList.value.length === 0;
 
-  if (locationsList.value.length === 0) {
+  if (isEmptyLocationsList) {
     getGeoWeather();
   } else {
     refreshLocalData();
@@ -86,7 +87,7 @@ function refreshLocalData() {
       lat: locationsList.value[index].coord.lat,
       lon: locationsList.value[index].coord.lon,
     }).then((location) => {
-      locationsList.value[index] = { ...location };
+      locationsList.value.splice(index, 1, location);
       setLocalStorageWeatherData(locationsList.value);
     });
   }
@@ -97,7 +98,7 @@ function addLocation(location) {
   setLocalStorageWeatherData(locationsList.value);
   errStatus.value = "";
 }
-function onChange(e) {
+function onSorting(e) {
   locationsList.value = e;
   setLocalStorageWeatherData(locationsList.value);
 }

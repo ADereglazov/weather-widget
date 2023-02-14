@@ -40,7 +40,7 @@ import LocationInput from "@/components/LocationInput.vue";
 export default {
   name: "SettingsSection",
   components: { Draggable, BurgerIcon, DeleteButton, LocationInput },
-  emits: ["add-location", "delete"],
+  emits: ["sorting-locations-list", "add-location", "delete"],
   props: {
     locationsList: {
       type: Array,
@@ -61,9 +61,8 @@ export default {
 
     const listModel = computed({
       get: () => [...props.locationsList],
-      set: (val) => emit("changeLocationsList", val),
+      set: (val) => emit("sorting-locations-list", val),
     });
-
     function onAddLocation(location) {
       emit("add-location", location);
     }
