@@ -17,13 +17,8 @@
         />
       </div>
       <div class="weather-section__temperature">
-        <span>
-          {{
-            location.main.temp > 0
-              ? "+" + location.main.temp
-              : location.main.temp
-          }}
-        </span>
+        <span v-if="location.main.temp > 0">+</span>
+        <span>{{ location.main.temp }}</span>
         <sup> o</sup>
         <span>C</span>
       </div>
