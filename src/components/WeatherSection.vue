@@ -10,22 +10,28 @@
 
     <div class="weather-section__wrapper-main">
       <div class="weather-section__wrapper-img">
+        <div class="weather-section__placeholder">
+          <PlaceholderIcon />
+        </div>
         <img
           :src="`https://openweathermap.org/img/wn/${location.weather[0].icon}@2x.png`"
           alt="weather-img"
           class="weather-section__img"
+          onload="this.style.display = 'block'"
+          onerror="this.style.display = 'none'"
         />
       </div>
       <div class="weather-section__temperature">
         <span v-if="location.main.temp > 0">+</span>
         <span>{{ location.main.temp }}</span>
-        <sup> o</sup>
-        <span>C</span>
+        <sup> o</sup>C
       </div>
     </div>
 
     <p class="weather-section__wrapper-description">
-      Feels like {{ location.main.feels_like }}<sup>o</sup>C,
+      Feels like <span v-if="location.main.feels_like > 0">+</span>
+      <span>{{ location.main.feels_like }}</span>
+      <sup> o</sup>C,
       {{
         location.weather[0].description.charAt(0).toUpperCase() +
         location.weather[0].description.slice(1)
@@ -54,9 +60,10 @@
 import getWindDirection from "@/utils/getWindDirection";
 import DirectionIcon from "@/assets/icons/direction.svg";
 import BarometerIcon from "@/assets/icons/barometer.svg";
+import PlaceholderIcon from "@/assets/icons/placeholder.svg";
 export default {
   name: "WeatherSection",
-  components: { DirectionIcon, BarometerIcon },
+  components: { DirectionIcon, BarometerIcon, PlaceholderIcon },
   props: {
     locationsList: {
       type: Array,
