@@ -60,6 +60,12 @@ export default {
     apiKey: {
       type: String,
     },
+    lang: {
+      type: String,
+    },
+    units: {
+      type: String,
+    },
   },
   setup(props, { emit }) {
     let newLocationObj = null;
@@ -68,7 +74,7 @@ export default {
     const isLoading = ref(false);
     const newLocationString = ref("");
     const errStatus = ref("");
-    const { apiUrl, apiKey } = toRefs(props);
+    const { apiUrl, apiKey, lang, units } = toRefs(props);
 
     const isSubmitButtonDisabled = computed(
       () => newLocationString.value.length === 0 || isLoading.value
@@ -77,7 +83,13 @@ export default {
       errStatus.value = "";
     }
     async function onSubmit() {
-      newLocationObj = await getWeatherData(newLocationString.value);
+      newLocationObj = await getWeatherData({
+        city: newLocationString.value,
+        lang: lang.value,
+        units: units.value,
+        apiUrl: apiUrl.value,
+        apiKey: apiKey.value,
+      });
 
       if (newLocationObj) {
         newLocationObj.lastUpdated = Date.now();
@@ -86,10 +98,10 @@ export default {
       }
       inputField.value.focus();
     }
-    async function getWeatherData(value) {
+    async function getWeatherData({ city, lang, units, apiUrl, apiKey }) {
       try {
         isLoading.value = true;
-        return await getWeatherCity(value, apiUrl.value, apiKey.value);
+        return await getWeatherCity({ city, lang, units, apiUrl, apiKey });
       } catch (e) {
         errStatus.value = "Oops, " + e.message + ", try again";
         inputField.value.focus();

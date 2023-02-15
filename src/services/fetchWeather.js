@@ -1,6 +1,13 @@
-export async function getWeatherFromGeo({ lat, lon }, apiUrl, apiKey) {
+export async function getWeatherFromGeo({
+  lat,
+  lon,
+  lang = "en",
+  units = "metric",
+  apiUrl = "",
+  apiKey = "",
+}) {
   const response = await fetch(
-    `${apiUrl}?lat=${lat}&lon=${lon}&units=metric&appid=${apiKey}`
+    `${apiUrl}?lat=${lat}&lon=${lon}&lang=${lang}&units=${units}&appid=${apiKey}`
   );
 
   if (response.ok) {
@@ -12,9 +19,16 @@ export async function getWeatherFromGeo({ lat, lon }, apiUrl, apiKey) {
     throw new Error(err.message);
   }
 }
-export async function getWeatherCity(value, apiUrl, apiKey) {
+
+export async function getWeatherCity({
+  city = "",
+  lang = "en",
+  units = "metric",
+  apiUrl = "",
+  apiKey = "",
+}) {
   const response = await fetch(
-    `${apiUrl}?q=${value}&units=metric&appid=${apiKey}`
+    `${apiUrl}?q=${city}&lang=${lang}&units=${units}&appid=${apiKey}`
   );
 
   if (response.ok) {

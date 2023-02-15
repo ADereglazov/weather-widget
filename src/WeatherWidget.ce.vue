@@ -6,6 +6,8 @@
   />
   <SettingsSection
     v-if="isSettingsOpened"
+    :lang="lang"
+    :units="units"
     :api-url="apiUrl"
     :api-key="apiKey"
     :locations-list="locationsList"
@@ -37,6 +39,8 @@ import WeatherSection from "@/components/WeatherSection.vue";
 import SettingsSection from "@/components/SettingsSection.vue";
 import LoadingSpinner from "@/components/LoadingSpinner.vue";
 
+const LANG = import.meta.env.VITE_LANG || "en";
+const UNITS = import.meta.env.VITE_UNITS || "metric";
 const API_URL = import.meta.env.VITE_API_URL;
 const API_KEY = import.meta.env.VITE_API_KEY;
 
@@ -45,6 +49,8 @@ const isSettingsOpened = ref(false);
 const isLoading = ref(false);
 const errStatus = ref("");
 
+const lang = computed(() => LANG);
+const units = computed(() => UNITS);
 const apiUrl = computed(() => API_URL);
 const apiKey = computed(() => API_KEY);
 
@@ -72,7 +78,14 @@ async function getGeoWeather() {
 async function getWeatherData({ lat, lon }) {
   try {
     isLoading.value = true;
-    return await getWeatherFromGeo({ lat, lon }, API_URL, API_KEY);
+    return await getWeatherFromGeo({
+      lat,
+      lon,
+      lang: LANG,
+      units: UNITS,
+      apiUrl: API_URL,
+      apiKey: API_KEY,
+    });
   } catch (e) {
     errStatus.value = "Oops... " + e.message + ", try to update page";
   } finally {

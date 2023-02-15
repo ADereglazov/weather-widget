@@ -4,6 +4,8 @@
 
     <LocationInput
       class="settigs-section__location-input"
+      :lang="lang"
+      :units="units"
       :api-url="apiUrl"
       :api-key="apiKey"
       @add-location="onAddLocation"
@@ -49,6 +51,12 @@ export default {
       type: String,
     },
     apiKey: {
+      type: String,
+    },
+    lang: {
+      type: String,
+    },
+    units: {
       type: String,
     },
   },
