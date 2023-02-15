@@ -1,3 +1,8 @@
+<p align="center">
+    <img src="docs/example1.png" alt="img" width="294" height="343" >
+    <img src="docs/example2.png" alt="img" width="294" height="343" >
+</p>
+
 ### Environment variables in .env file
 
 > **LANG** - language, for example: en, fr, ru  
