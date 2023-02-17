@@ -103,7 +103,7 @@ export default defineComponent({
         });
 
         if (result.status !== "succeed") {
-          const message = `Oops... ${result.message}, try to update page`;
+          const message = `Oops... ${result.message}, try again`;
           errStatus.value = message;
           console.error(message);
 
