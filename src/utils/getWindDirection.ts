@@ -17,5 +17,5 @@ export default function getWindDirection(value = 0) {
     "NW",
     "NNW",
   ];
-  return windDirections[(value / 22.5).toFixed(0)];
+  return windDirections[+(value / 22.5).toFixed(0)];
 }

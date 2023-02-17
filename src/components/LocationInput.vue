@@ -42,39 +42,36 @@
   </form>
 </template>
 
-<script>
-import { ref, computed, toRefs } from "vue";
-import { getWeatherCity } from "@/services/fetchWeather";
-import CloseIcon from "@/assets/icons/close.svg";
-import EnterIcon from "@/assets/icons/enter.svg";
+<script lang="ts">
+import { defineComponent, ref, watchEffect, computed } from "vue";
+import {
+  getWeatherByCityName,
+  IGetWeatherSucceed,
+} from "@/services/fetchWeather";
+import { TLanguage } from "@/types/languages";
+import { TUnits } from "@/types/units";
+import CloseIcon from "@/components/icons/CloseIcon.vue";
+import EnterIcon from "@/components/icons/EnterIcon.vue";
 import LoadingSpinner from "@/components/LoadingSpinner.vue";
 
-export default {
+export default defineComponent({
   name: "LocationInput",
   components: { CloseIcon, EnterIcon, LoadingSpinner },
-  emits: ["add-location"],
-  props: {
-    apiUrl: {
-      type: String,
-    },
-    apiKey: {
-      type: String,
-    },
-    lang: {
-      type: String,
-    },
-    units: {
-      type: String,
-    },
-  },
+  emits: ["add-location", "loading"],
   setup(props, { emit }) {
-    let newLocationObj = null;
+    let newLocation: IGetWeatherSucceed | null = null;
 
-    const inputField = ref(null);
-    const isLoading = ref(false);
-    const newLocationString = ref("");
-    const errStatus = ref("");
-    const { apiUrl, apiKey, lang, units } = toRefs(props);
+    const LANG: TLanguage = process.env.VUE_APP_LANG || "en";
+    const UNITS: TUnits = process.env.VUE_APP_UNITS || "metric";
+    const API_URL: string = process.env.VUE_APP_API_URL || "";
+    const API_KEY: string = process.env.VUE_APP_API_KEY || "";
+
+    const inputField = ref<HTMLInputElement>();
+    const isLoading = ref<boolean>(false);
+    const newLocationString = ref<string>("");
+    const errStatus = ref<string>("");
+
+    watchEffect(() => emit("loading", isLoading.value));
 
     const isSubmitButtonDisabled = computed(
       () => newLocationString.value.length === 0 || isLoading.value
@@ -83,36 +80,49 @@ export default {
       errStatus.value = "";
     }
     async function onSubmit() {
-      newLocationObj = await getWeatherData({
-        city: newLocationString.value,
-        lang: lang.value,
-        units: units.value,
-        apiUrl: apiUrl.value,
-        apiKey: apiKey.value,
-      });
+      isLoading.value = true;
+      newLocation = await getWeatherData(newLocationString.value);
 
-      if (newLocationObj) {
-        newLocationObj.lastUpdated = Date.now();
-        emit("add-location", newLocationObj);
+      if (newLocation) {
+        emit("add-location", newLocation);
         newLocationString.value = "";
       }
-      inputField.value.focus();
+      if (inputField.value) inputField.value.focus();
+      isLoading.value = false;
     }
-    async function getWeatherData({ city, lang, units, apiUrl, apiKey }) {
+    async function getWeatherData(
+      city: string
+    ): Promise<IGetWeatherSucceed | null> {
       try {
-        isLoading.value = true;
-        return await getWeatherCity({ city, lang, units, apiUrl, apiKey });
+        const result = await getWeatherByCityName({
+          city,
+          lang: LANG,
+          units: UNITS,
+          apiUrl: API_URL,
+          apiKey: API_KEY,
+        });
+
+        if (result.status !== "succeed") {
+          const message = `Oops... ${result.message}, try to update page`;
+          errStatus.value = message;
+          console.error(message);
+
+          return null;
+        }
+
+        return result;
       } catch (e) {
-        errStatus.value = "Oops, " + e.message + ", try again";
-        inputField.value.focus();
-      } finally {
-        isLoading.value = false;
+        errStatus.value = "Oops... something went wrong, try to update page";
+        if (inputField.value) inputField.value.focus();
+        console.error(e);
+
+        return null;
       }
     }
     function onClickClear() {
       newLocationString.value = "";
       errStatus.value = "";
-      inputField.value.focus();
+      if (inputField.value) inputField.value.focus();
     }
 
     return {
@@ -126,5 +136,5 @@ export default {
       onSubmit,
     };
   },
-};
+});
 </script>

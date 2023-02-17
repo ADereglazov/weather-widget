@@ -2,6 +2,7 @@
   <button
     type="button"
     name="toggle"
+    :disabled="disabled"
     :aria-label="ariaLabel"
     class="settings-button"
     @click="onClick"
@@ -11,17 +12,21 @@
   </button>
 </template>
 
-<script>
-import { computed } from "vue";
-import SettingsIcon from "@/assets/icons/settings.svg";
-import CloseIcon from "@/assets/icons/close.svg";
+<script lang="ts">
+import { defineComponent, computed } from "vue";
+import SettingsIcon from "@/components/icons/SettingsIcon.vue";
+import CloseIcon from "@/components/icons/CloseIcon.vue";
 
-export default {
+export default defineComponent({
   name: "ManageButton",
   components: { SettingsIcon, CloseIcon },
   emits: ["button-click"],
   props: {
     isSettingsOpened: {
+      type: Boolean,
+      default: false,
+    },
+    disabled: {
       type: Boolean,
       default: false,
     },
@@ -39,5 +44,5 @@ export default {
       onClick,
     };
   },
-};
+});
 </script>

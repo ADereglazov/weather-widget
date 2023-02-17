@@ -58,9 +58,9 @@
 
 <script>
 import getWindDirection from "@/utils/getWindDirection";
-import DirectionIcon from "@/assets/icons/direction.svg";
-import BarometerIcon from "@/assets/icons/barometer.svg";
-import PlaceholderIcon from "@/assets/icons/placeholder.svg";
+import DirectionIcon from "@/components/icons/DirectionIcon.vue";
+import BarometerIcon from "@/components/icons/BarometerIcon.vue";
+import PlaceholderIcon from "@/components/icons/PlaceholderIcon.vue";
 export default {
   name: "WeatherSection",
   components: { DirectionIcon, BarometerIcon, PlaceholderIcon },

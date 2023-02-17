@@ -1,4 +1,4 @@
-let isLocalStorageAvailable;
+let isLocalStorageAvailable: boolean;
 
 export function testLocalStorage() {
   if (isLocalStorageAvailable !== undefined) {

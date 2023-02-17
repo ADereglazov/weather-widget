@@ -10,10 +10,11 @@
   </button>
 </template>
 
-<script>
-import DeleteIcon from "@/assets/icons/delete.svg";
+<script lang="ts">
+import { defineComponent } from "vue";
+import DeleteIcon from "@/components/icons/DeleteIcon.vue";
 
-export default {
+export default defineComponent({
   name: "DeleteButton",
   components: { DeleteIcon },
   emits: ["delete"],
@@ -26,5 +27,5 @@ export default {
       onClick,
     };
   },
-};
+});
 </script>

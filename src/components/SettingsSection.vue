@@ -4,10 +4,7 @@
 
     <LocationInput
       class="settigs-section__location-input"
-      :lang="lang"
-      :units="units"
-      :api-url="apiUrl"
-      :api-key="apiKey"
+      @loading="onLoading"
       @add-location="onAddLocation"
     />
 
@@ -32,32 +29,22 @@
   </section>
 </template>
 
-<script>
-import { computed } from "vue";
+<script lang="ts">
+import { defineComponent, computed, toRefs } from "vue";
 import Draggable from "vuedraggable";
-import BurgerIcon from "@/assets/icons/burger.svg";
+import BurgerIcon from "@/components/icons/BurgerIcon.vue";
 import DeleteButton from "@/components/DeleteButton.vue";
 import LocationInput from "@/components/LocationInput.vue";
+import { IWeatherLocationTimestamped } from "@/types/weatherLocation";
 
-export default {
+export default defineComponent({
   name: "SettingsSection",
   components: { Draggable, BurgerIcon, DeleteButton, LocationInput },
-  emits: ["sorting-locations-list", "add-location", "delete"],
+  emits: ["sorting-locations-list", "add-location", "delete", "loading"],
   props: {
     locationsList: {
       type: Array,
-    },
-    apiUrl: {
-      type: String,
-    },
-    apiKey: {
-      type: String,
-    },
-    lang: {
-      type: String,
-    },
-    units: {
-      type: String,
+      default: () => [],
     },
   },
   setup(props, { emit }) {
@@ -66,16 +53,21 @@ export default {
       disabled: false,
       ghostClass: "ghost",
     };
+    const { locationsList } = toRefs(props);
 
     const listModel = computed({
-      get: () => [...props.locationsList],
+      get: () => [...locationsList.value],
       set: (val) => emit("sorting-locations-list", val),
     });
-    function onAddLocation(location) {
+    function onAddLocation(location: IWeatherLocationTimestamped) {
       emit("add-location", location);
     }
-    function onDelete(index) {
+    function onDelete(index: number) {
       emit("delete", index);
+    }
+
+    function onLoading(e: boolean) {
+      emit("loading", e);
     }
 
     return {
@@ -83,7 +75,8 @@ export default {
       listModel,
       onAddLocation,
       onDelete,
+      onLoading,
     };
   },
-};
+});
 </script>
