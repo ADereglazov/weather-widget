@@ -173,10 +173,13 @@ function onManageButtonClick() {
 .app-error {
   width: 100%;
   max-width: 220px;
+  padding: 20px 10px;
   margin: 0;
 
   font-weight: bold;
+  background-color: $white;
   color: $red;
+  box-shadow: 2px 2px 10px 0 $black;
 }
 
 .app-error.app-error--hide {

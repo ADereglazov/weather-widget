@@ -56,7 +56,7 @@
   </section>
 </template>
 
-<script>
+<script lang="ts">
 import getWindDirection from "@/utils/getWindDirection";
 import DirectionIcon from "@/components/icons/DirectionIcon.vue";
 import BarometerIcon from "@/components/icons/BarometerIcon.vue";
