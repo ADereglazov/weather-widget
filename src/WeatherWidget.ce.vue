@@ -15,12 +15,20 @@
   />
   <WeatherSection v-else :locations-list="locationsList" />
   <LoadingSpinner v-show="isLoading" class="app-spinner" />
-  <p
+  <div
     :class="{ 'app-error--hide': isSettingsOpened || !errStatus }"
     class="app-error"
   >
     {{ errStatus }}
-  </p>
+    <button
+      class="app-reload-button"
+      type="button"
+      aria-label="Reload"
+      @click="getInitData"
+    >
+      <ReloadIcon />
+    </button>
+  </div>
 </template>
 
 <script setup lang="ts">
@@ -37,6 +45,7 @@ import { TLanguage } from "@/types/languages";
 import { TUnits } from "@/types/units";
 import { getOutdatedWeatherLocationIndexes } from "@/utils/getOutdatedWeatherLocationIndexes";
 import ManageButton from "@/components/ManageButton.vue";
+import ReloadIcon from "@/components/icons/ReloadIcon.vue";
 import WeatherSection from "@/components/WeatherSection.vue";
 import SettingsSection from "@/components/SettingsSection.vue";
 import LoadingSpinner from "@/components/LoadingSpinner.vue";
@@ -53,6 +62,9 @@ const isLoadingInSettings = ref<boolean>(false);
 const errStatus = ref<string>("");
 
 onBeforeMount(() => {
+  getInitData();
+});
+function getInitData() {
   locationsList.value = getLocalStorageWeatherData();
 
   if (locationsList.value.length === 0) {
@@ -60,13 +72,14 @@ onBeforeMount(() => {
   } else {
     refreshLocalData();
   }
-});
+}
 async function getGeoWeather() {
   isLoading.value = true;
 
   const geo = await getGeoLocalization();
   if (!geo) {
-    errStatus.value = "Oops..., error! Try to update page";
+    errStatus.value =
+      "Oops..., error! Try to press reload button for update widget";
     isLoading.value = false;
     return;
   }
@@ -93,7 +106,7 @@ async function getWeatherData(
     });
 
     if (result.status !== "succeed") {
-      const message = `Oops... ${result.message}, try to update page`;
+      const message = `Oops... ${result.message}, try to press reload button for update widget`;
       errStatus.value = message;
       console.error(message);
 
@@ -102,7 +115,8 @@ async function getWeatherData(
 
     return result;
   } catch (e) {
-    errStatus.value = "Oops... something went wrong, try to update page";
+    errStatus.value =
+      "Oops... something went wrong, try to press reload button for update widget";
     console.error(e);
 
     return null;
@@ -150,7 +164,7 @@ function onManageButtonClick() {
   isSettingsOpened.value = !isSettingsOpened.value;
 
   if (!isSettingsOpened.value && !locationsList.value.length) {
-    errStatus.value = "No data! Update page or add your city in settings";
+    errStatus.value = "No data! Press reload button or add city in settings";
   }
 }
 </script>
@@ -184,5 +198,10 @@ function onManageButtonClick() {
 
 .app-error.app-error--hide {
   display: none;
+}
+
+.app-reload-button {
+  display: block;
+  margin: 10px auto 0 auto;
 }
 </style>
