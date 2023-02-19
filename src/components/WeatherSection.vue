@@ -56,21 +56,15 @@
   </section>
 </template>
 
-<script lang="ts">
+<script setup lang="ts">
+import { defineProps } from "vue";
 import getWindDirection from "@/utils/getWindDirection";
 import DirectionIcon from "@/components/icons/DirectionIcon.vue";
 import BarometerIcon from "@/components/icons/BarometerIcon.vue";
 import PlaceholderIcon from "@/components/icons/PlaceholderIcon.vue";
-export default {
-  name: "WeatherSection",
-  components: { DirectionIcon, BarometerIcon, PlaceholderIcon },
-  props: {
-    locationsList: {
-      type: Array,
-    },
-  },
-  methods: {
-    getWindDirection,
-  },
-};
+import { IWeatherLocationTimestamped } from "@/types/weatherLocation";
+
+defineProps<{
+  locationsList: IWeatherLocationTimestamped[];
+}>();
 </script>
