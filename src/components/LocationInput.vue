@@ -42,8 +42,8 @@
   </form>
 </template>
 
-<script lang="ts">
-import { defineComponent, ref, watchEffect, computed } from "vue";
+<script setup lang="ts">
+import { ref, watchEffect, computed, defineEmits, defineProps } from "vue";
 import {
   getWeatherByCityName,
   IGetWeatherSucceed,
@@ -54,87 +54,73 @@ import CloseIcon from "@/components/icons/CloseIcon.vue";
 import EnterIcon from "@/components/icons/EnterIcon.vue";
 import LoadingSpinner from "@/components/LoadingSpinner.vue";
 
-export default defineComponent({
-  name: "LocationInput",
-  components: { CloseIcon, EnterIcon, LoadingSpinner },
-  emits: ["add-location", "loading"],
-  setup(props, { emit }) {
-    let newLocation: IGetWeatherSucceed | null = null;
+const emit = defineEmits(["add-location", "loading"]);
 
-    const LANG: TLanguage = process.env.VUE_APP_LANG || "en";
-    const UNITS: TUnits = process.env.VUE_APP_UNITS || "metric";
-    const API_URL: string = process.env.VUE_APP_API_URL || "";
-    const API_KEY: string = process.env.VUE_APP_API_KEY || "";
+const props = defineProps<{
+  lang: TLanguage;
+  units: TUnits;
+  apiUrl: string;
+  apiKey: string;
+}>();
 
-    const inputField = ref<HTMLInputElement>();
-    const isLoading = ref<boolean>(false);
-    const newLocationString = ref<string>("");
-    const errStatus = ref<string>("");
+let newLocation: IGetWeatherSucceed | null = null;
+const inputField = ref<HTMLInputElement>();
+const isLoading = ref<boolean>(false);
+const newLocationString = ref<string>("");
+const errStatus = ref<string>("");
 
-    watchEffect(() => emit("loading", isLoading.value));
+watchEffect(() => emit("loading", isLoading.value));
 
-    const isSubmitButtonDisabled = computed(
-      () => newLocationString.value.length === 0 || isLoading.value
-    );
-    function onInput() {
-      errStatus.value = "";
-    }
-    async function onSubmit() {
-      isLoading.value = true;
-      newLocation = await getWeatherData(newLocationString.value);
+const isSubmitButtonDisabled = computed<boolean>(
+  () => newLocationString.value.length === 0 || isLoading.value
+);
 
-      if (newLocation) {
-        emit("add-location", newLocation);
-        newLocationString.value = "";
-      }
-      if (inputField.value) inputField.value.focus();
-      isLoading.value = false;
-    }
-    async function getWeatherData(
-      city: string
-    ): Promise<IGetWeatherSucceed | null> {
-      try {
-        const result = await getWeatherByCityName({
-          city,
-          lang: LANG,
-          units: UNITS,
-          apiUrl: API_URL,
-          apiKey: API_KEY,
-        });
+function onInput() {
+  errStatus.value = "";
+}
+async function onSubmit() {
+  isLoading.value = true;
+  newLocation = await getWeatherData(newLocationString.value);
 
-        if (result.status !== "succeed") {
-          const message = `Oops... ${result.message}, try again`;
-          errStatus.value = message;
-          console.error(message);
+  if (newLocation) {
+    emit("add-location", newLocation);
+    newLocationString.value = "";
+  }
+  if (inputField.value) inputField.value.focus();
+  isLoading.value = false;
+}
+async function getWeatherData(
+  city: string
+): Promise<IGetWeatherSucceed | null> {
+  try {
+    const result = await getWeatherByCityName({
+      city,
+      lang: props.lang,
+      units: props.units,
+      apiUrl: props.apiUrl,
+      apiKey: props.apiKey,
+    });
 
-          return null;
-        }
+    if (result.status !== "succeed") {
+      const message = `Oops... ${result.message}, try again`;
+      errStatus.value = message;
+      console.error(message);
 
-        return result;
-      } catch (e) {
-        errStatus.value = "Oops... something went wrong, try to update page";
-        if (inputField.value) inputField.value.focus();
-        console.error(e);
-
-        return null;
-      }
-    }
-    function onClickClear() {
-      newLocationString.value = "";
-      errStatus.value = "";
-      if (inputField.value) inputField.value.focus();
+      return null;
     }
 
-    return {
-      newLocationString,
-      errStatus,
-      inputField,
-      isLoading,
-      isSubmitButtonDisabled,
-      onInput,
-      onClickClear,
-      onSubmit,
-    };
-  },
-});
+    return result;
+  } catch (e) {
+    errStatus.value = "Oops... something went wrong, try to update page";
+    if (inputField.value) inputField.value.focus();
+    console.error(e);
+
+    return null;
+  }
+}
+function onClickClear() {
+  newLocationString.value = "";
+  errStatus.value = "";
+  if (inputField.value) inputField.value.focus();
+}
 </script>

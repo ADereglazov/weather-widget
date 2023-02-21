@@ -10,22 +10,12 @@
   </button>
 </template>
 
-<script lang="ts">
-import { defineComponent } from "vue";
+<script setup lang="ts">
+import { defineEmits } from "vue";
 import DeleteIcon from "@/components/icons/DeleteIcon.vue";
 
-export default defineComponent({
-  name: "DeleteButton",
-  components: { DeleteIcon },
-  emits: ["delete"],
-  setup(props, { emit }) {
-    function onClick() {
-      emit("delete");
-    }
-
-    return {
-      onClick,
-    };
-  },
-});
+const emit = defineEmits(["delete"]);
+function onClick() {
+  emit("delete");
+}
 </script>

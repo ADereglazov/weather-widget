@@ -4,6 +4,10 @@
 
     <LocationInput
       class="settigs-section__location-input"
+      :lang="lang"
+      :units="units"
+      :apiUrl="apiUrl"
+      :apiKey="apiKey"
       @loading="onLoading"
       @add-location="onAddLocation"
     />
@@ -29,54 +33,49 @@
   </section>
 </template>
 
-<script lang="ts">
-import { defineComponent, computed, toRefs } from "vue";
+<script setup lang="ts">
+import { computed, defineEmits, defineProps } from "vue";
+import { IWeatherLocationTimestamped } from "@/types/weatherLocation";
+import { TLanguage } from "@/types/languages";
+import { TUnits } from "@/types/units";
 import Draggable from "vuedraggable";
 import BurgerIcon from "@/components/icons/BurgerIcon.vue";
 import DeleteButton from "@/components/DeleteButton.vue";
 import LocationInput from "@/components/LocationInput.vue";
-import { IWeatherLocationTimestamped } from "@/types/weatherLocation";
 
-export default defineComponent({
-  name: "SettingsSection",
-  components: { Draggable, BurgerIcon, DeleteButton, LocationInput },
-  emits: ["sorting-locations-list", "add-location", "delete", "loading"],
-  props: {
-    locationsList: {
-      type: Array,
-      default: () => [],
-    },
-  },
-  setup(props, { emit }) {
-    const dragOptions = {
-      animation: 200,
-      disabled: false,
-      ghostClass: "ghost",
-    };
-    const { locationsList } = toRefs(props);
+const emit = defineEmits([
+  "sorting-locations-list",
+  "add-location",
+  "delete",
+  "loading",
+]);
 
-    const listModel = computed({
-      get: () => [...locationsList.value],
-      set: (val) => emit("sorting-locations-list", val),
-    });
-    function onAddLocation(location: IWeatherLocationTimestamped) {
-      emit("add-location", location);
-    }
-    function onDelete(index: number) {
-      emit("delete", index);
-    }
+const props = defineProps<{
+  locationsList: IWeatherLocationTimestamped[];
+  lang: TLanguage;
+  units: TUnits;
+  apiUrl: string;
+  apiKey: string;
+}>();
 
-    function onLoading(e: boolean) {
-      emit("loading", e);
-    }
+const dragOptions = {
+  animation: 200,
+  disabled: false,
+  ghostClass: "ghost",
+};
 
-    return {
-      dragOptions,
-      listModel,
-      onAddLocation,
-      onDelete,
-      onLoading,
-    };
-  },
+const listModel = computed<IWeatherLocationTimestamped[]>({
+  get: () => [...props.locationsList],
+  set: (value) => emit("sorting-locations-list", value),
 });
+
+function onAddLocation(location: IWeatherLocationTimestamped) {
+  emit("add-location", location);
+}
+function onDelete(index: number) {
+  emit("delete", index);
+}
+function onLoading(e: boolean) {
+  emit("loading", e);
+}
 </script>

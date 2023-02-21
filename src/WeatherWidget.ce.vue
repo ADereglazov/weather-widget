@@ -8,6 +8,10 @@
   <SettingsSection
     v-if="isSettingsOpened"
     :locations-list="locationsList"
+    :lang="LANG"
+    :units="UNITS"
+    :apiUrl="API_URL"
+    :apiKey="API_KEY"
     @delete="onDelete"
     @add-location="addLocation"
     @sorting-locations-list="onSorting"

@@ -12,37 +12,22 @@
   </button>
 </template>
 
-<script lang="ts">
-import { defineComponent, computed } from "vue";
+<script setup lang="ts">
+import { defineEmits, defineProps, computed } from "vue";
 import SettingsIcon from "@/components/icons/SettingsIcon.vue";
 import CloseIcon from "@/components/icons/CloseIcon.vue";
 
-export default defineComponent({
-  name: "ManageButton",
-  components: { SettingsIcon, CloseIcon },
-  emits: ["button-click"],
-  props: {
-    isSettingsOpened: {
-      type: Boolean,
-      default: false,
-    },
-    disabled: {
-      type: Boolean,
-      default: false,
-    },
-  },
-  setup(props, { emit }) {
-    const ariaLabel = computed(() =>
-      props.isSettingsOpened ? "Close settings" : "Settings"
-    );
-    function onClick() {
-      emit("button-click");
-    }
+const emit = defineEmits(["button-click"]);
 
-    return {
-      ariaLabel,
-      onClick,
-    };
-  },
-});
+const props = defineProps<{
+  isSettingsOpened: boolean;
+  disabled: boolean;
+}>();
+
+const ariaLabel = computed<string>(() =>
+  props.isSettingsOpened ? "Close settings" : "Settings"
+);
+function onClick() {
+  emit("button-click");
+}
 </script>
