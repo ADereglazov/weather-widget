@@ -17,15 +17,6 @@
         @input="onInput"
       />
       <button
-        class="location-input__button-submit"
-        type="submit"
-        name="enter"
-        aria-label="Add new location"
-        :disabled="isSubmitButtonDisabled"
-      >
-        <EnterIcon />
-      </button>
-      <button
         v-show="newLocationString.length > 0 && !isLoading"
         type="button"
         name="clear"
@@ -35,6 +26,15 @@
         @click="onClickClear"
       >
         <CloseIcon />
+      </button>
+      <button
+        class="location-input__button-submit"
+        type="submit"
+        name="enter"
+        aria-label="Add new location"
+        :disabled="isSubmitButtonDisabled"
+      >
+        <EnterIcon />
       </button>
       <LoadingSpinner v-show="isLoading" class="location-input__spinner" />
     </div>
@@ -64,7 +64,7 @@ const props = defineProps<{
 }>();
 
 let newLocation: IGetWeatherSucceed | null = null;
-const inputField = ref<HTMLInputElement>();
+const inputField = ref<HTMLInputElement | null>(null);
 const isLoading = ref<boolean>(false);
 const newLocationString = ref<string>("");
 const errStatus = ref<string>("");
@@ -86,7 +86,7 @@ async function onSubmit() {
     emit("add-location", newLocation);
     newLocationString.value = "";
   }
-  if (inputField.value) inputField.value.focus();
+  inputField.value?.focus();
   isLoading.value = false;
 }
 async function getWeatherData(
@@ -112,7 +112,7 @@ async function getWeatherData(
     return result;
   } catch (e) {
     errStatus.value = "Oops... something went wrong, try to update page";
-    if (inputField.value) inputField.value.focus();
+    inputField.value?.focus();
     console.error(e);
 
     return null;
@@ -121,6 +121,6 @@ async function getWeatherData(
 function onClickClear() {
   newLocationString.value = "";
   errStatus.value = "";
-  if (inputField.value) inputField.value.focus();
+  inputField.value?.focus();
 }
 </script>
