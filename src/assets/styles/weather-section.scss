@@ -1,13 +1,15 @@
 .weather-section {
-  padding-bottom: 10px;
+  &-wrapper {
+    padding-bottom: 10px;
 
-  &:last-child {
-     padding-bottom: 0;
-   }
+    &:last-child {
+      padding-bottom: 0;
+    }
 
-  & + & {
-    padding-top: 10px;
-    border-top: 1px solid $black;
+    & + & {
+      padding-top: 10px;
+      border-top: 1px solid $black;
+    }
   }
 
   &__title {

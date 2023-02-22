@@ -17,7 +17,12 @@
     @sorting-locations-list="onSorting"
     @loading="isLoadingInSettings = $event"
   />
-  <WeatherSection v-else :locations-list="locationsList" />
+  <WeatherSection
+    v-else
+    :locations-list="locationsList"
+    class="app-weather-section"
+    :class="{ 'app-weather-section--loading': isLoading }"
+  />
   <LoadingSpinner v-show="isLoading" class="app-spinner" />
   <div
     :class="{ 'app-error--hide': isSettingsOpened || !errStatus }"
@@ -178,6 +183,10 @@ function onManageButtonClick() {
   position: absolute;
   top: 10px;
   right: 10px;
+}
+
+.app-weather-section--loading {
+  opacity: 0.3;
 }
 
 .app-error,

@@ -3,9 +3,10 @@ weather-widget {
 
   display: block;
   width: 100%;
-  max-width: 250px;
+  max-width: 270px;
   min-height: 292px;
-  max-height: 300px;
+  max-height: 302px;
+  box-sizing: border-box;
   overflow: hidden auto;
 
   padding: 10px;
