@@ -15,7 +15,7 @@
     <Draggable
       v-model="listModel"
       v-bind="dragOptions"
-      item-key="id"
+      item-key="id + lastUpdated"
       handle=".handle"
       tag="ul"
       class="settigs-section__list"

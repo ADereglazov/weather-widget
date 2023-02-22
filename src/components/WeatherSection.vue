@@ -2,7 +2,7 @@
   <section class="weather-section">
     <div
       v-for="location in locationsList"
-      :key="location.id"
+      :key="location.id + location.lastUpdated"
       class="weather-section-wrapper"
     >
       <h2 class="weather-section__title">
