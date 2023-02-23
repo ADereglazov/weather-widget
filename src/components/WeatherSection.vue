@@ -43,7 +43,7 @@
       </p>
 
       <p class="weather-section__wrapper-details">
-        <span style="display: flex; align-items: center">
+        <span>
           <span
             :style="{
               backgroundImage: `url(${require('@/assets/icons/direction.svg')})`,
@@ -51,12 +51,10 @@
             }"
             class="weather-section__wrapper-description-icon"
           />
-          <span style="margin-left: 10px; margin-right: 5px"
-            >{{ location.wind.speed }}m/s
-          </span>
+          <span style="margin-left: 10px">{{ location.wind.speed }}m/s </span>
           {{ getWindDirection(location.wind.deg) }}
         </span>
-        <span style="display: flex; align-items: center">
+        <span>
           <span
             :style="{
               backgroundImage: `url(${require('@/assets/icons/barometer.svg')})`,
