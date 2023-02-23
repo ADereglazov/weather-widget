@@ -33,10 +33,11 @@
       class="app-reload-button"
       type="button"
       aria-label="Reload"
+      :style="{
+        backgroundImage: `url(${require('@/assets/icons/reload.svg')})`,
+      }"
       @click="getInitData"
-    >
-      <ReloadIcon />
-    </button>
+    />
   </div>
 </template>
 
@@ -54,7 +55,6 @@ import { TLanguage } from "@/types/languages";
 import { TUnits } from "@/types/units";
 import { getOutdatedWeatherLocationIndexes } from "@/utils/getOutdatedWeatherLocationIndexes";
 import ManageButton from "@/components/ManageButton.vue";
-import ReloadIcon from "@/components/icons/ReloadIcon.vue";
 import WeatherSection from "@/components/WeatherSection.vue";
 import SettingsSection from "@/components/SettingsSection.vue";
 import LoadingSpinner from "@/components/LoadingSpinner.vue";
@@ -214,7 +214,6 @@ function onManageButtonClick() {
 }
 
 .app-reload-button {
-  display: block;
   margin: 10px auto 0 auto;
 }
 </style>

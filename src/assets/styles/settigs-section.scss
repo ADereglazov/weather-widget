@@ -26,6 +26,9 @@
   }
 
   &__list-item-icon--move {
+    width: 16px;
+    height: 16px;
+
     &:hover {
       cursor: move;
     }

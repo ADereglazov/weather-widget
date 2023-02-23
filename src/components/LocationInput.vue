@@ -21,21 +21,23 @@
         type="button"
         name="clear"
         :disabled="newLocationString.length === 0"
+        :style="{
+          backgroundImage: `url(${require('@/assets/icons/close.svg')})`,
+        }"
         aria-label="Clear location input"
         class="location-input__button-clear"
         @click="onClickClear"
-      >
-        <CloseIcon />
-      </button>
+      />
       <button
         class="location-input__button-submit"
         type="submit"
         name="enter"
         aria-label="Add new location"
         :disabled="isSubmitButtonDisabled"
-      >
-        <EnterIcon />
-      </button>
+        :style="{
+          backgroundImage: `url(${require('@/assets/icons/enter.svg')})`,
+        }"
+      />
       <LoadingSpinner v-show="isLoading" class="location-input__spinner" />
     </div>
     <span class="location-input__status">{{ errStatus }}</span>
@@ -50,8 +52,6 @@ import {
 } from "@/services/fetchWeather";
 import { TLanguage } from "@/types/languages";
 import { TUnits } from "@/types/units";
-import CloseIcon from "@/components/icons/CloseIcon.vue";
-import EnterIcon from "@/components/icons/EnterIcon.vue";
 import LoadingSpinner from "@/components/LoadingSpinner.vue";
 
 const emit = defineEmits(["add-location", "loading"]);

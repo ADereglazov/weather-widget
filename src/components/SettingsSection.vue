@@ -22,7 +22,12 @@
     >
       <template #item="{ element, index }">
         <li class="settigs-section__list-item">
-          <BurgerIcon class="settigs-section__list-item-icon--move handle" />
+          <div
+            :style="{
+              backgroundImage: `url(${require('@/assets/icons/burger.svg')})`,
+            }"
+            class="settigs-section__list-item-icon--move handle"
+          />
           <span class="settigs-section__list-item-text">{{
             element.name + ", " + element.sys.country
           }}</span>
@@ -39,7 +44,6 @@ import { IWeatherLocationTimestamped } from "@/types/weatherLocation";
 import { TLanguage } from "@/types/languages";
 import { TUnits } from "@/types/units";
 import Draggable from "vuedraggable";
-import BurgerIcon from "@/components/icons/BurgerIcon.vue";
 import DeleteButton from "@/components/DeleteButton.vue";
 import LocationInput from "@/components/LocationInput.vue";
 

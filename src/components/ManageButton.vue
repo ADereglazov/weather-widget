@@ -4,18 +4,18 @@
     name="toggle"
     :disabled="disabled"
     :aria-label="ariaLabel"
+    :style="{
+      backgroundImage: isSettingsOpened
+        ? `url(${require('@/assets/icons/close.svg')})`
+        : `url(${require('@/assets/icons/settings.svg')})`,
+    }"
     class="settings-button"
     @click="onClick"
-  >
-    <CloseIcon v-if="isSettingsOpened" />
-    <SettingsIcon v-else />
-  </button>
+  />
 </template>
 
 <script setup lang="ts">
 import { defineEmits, defineProps, computed } from "vue";
-import SettingsIcon from "@/components/icons/SettingsIcon.vue";
-import CloseIcon from "@/components/icons/CloseIcon.vue";
 
 const emit = defineEmits(["button-click"]);
 

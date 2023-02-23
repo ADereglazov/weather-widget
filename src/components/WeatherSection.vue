@@ -11,9 +11,12 @@
 
       <div class="weather-section__wrapper-main">
         <div class="weather-section__wrapper-img">
-          <div class="weather-section__placeholder">
-            <PlaceholderIcon />
-          </div>
+          <div
+            :style="{
+              backgroundImage: `url(${require('@/assets/icons/placeholder.svg')})`,
+            }"
+            class="weather-section__placeholder"
+          />
           <img
             :src="`https://openweathermap.org/img/wn/${location.weather[0].icon}@2x.png`"
             alt="weather-img"
@@ -40,15 +43,26 @@
       </p>
 
       <p class="weather-section__wrapper-details">
-        <span>
-          <DirectionIcon
-            :style="{ transform: `rotate(${45 + location.wind.deg}deg)` }"
+        <span style="display: flex; align-items: center">
+          <span
+            :style="{
+              backgroundImage: `url(${require('@/assets/icons/direction.svg')})`,
+              transform: `rotate(${location.wind.deg}deg)`,
+            }"
+            class="weather-section__wrapper-description-icon"
           />
-          <span style="margin-left: 10px">{{ location.wind.speed }}m/s </span>
+          <span style="margin-left: 10px; margin-right: 5px"
+            >{{ location.wind.speed }}m/s
+          </span>
           {{ getWindDirection(location.wind.deg) }}
         </span>
-        <span>
-          <BarometerIcon />
+        <span style="display: flex; align-items: center">
+          <span
+            :style="{
+              backgroundImage: `url(${require('@/assets/icons/barometer.svg')})`,
+            }"
+            class="weather-section__wrapper-description-icon test"
+          />
           <span style="margin-left: 10px">{{ location.main.pressure }}hPa</span>
         </span>
         <span>Humidity: {{ location.main.humidity }}%</span>
@@ -61,9 +75,6 @@
 <script setup lang="ts">
 import { defineProps } from "vue";
 import getWindDirection from "@/utils/getWindDirection";
-import DirectionIcon from "@/components/icons/DirectionIcon.vue";
-import BarometerIcon from "@/components/icons/BarometerIcon.vue";
-import PlaceholderIcon from "@/components/icons/PlaceholderIcon.vue";
 import { IWeatherLocationTimestamped } from "@/types/weatherLocation";
 
 defineProps<{
