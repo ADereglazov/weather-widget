@@ -25,6 +25,8 @@
           <div
             :style="{
               backgroundImage: `url(${require('@/assets/icons/burger.svg')})`,
+              backgroundRepeat: 'no-repeat',
+              backgroundPosition: 'center',
             }"
             class="settigs-section__list-item-icon--move handle"
           />
