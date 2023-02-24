@@ -1,9 +1,9 @@
 <template>
-  <section class="settigs-section">
-    <h2 class="settigs-section__title">Settings</h2>
+  <section class="settings-section">
+    <h2 class="settings-section__title">Settings</h2>
 
     <LocationInput
-      class="settigs-section__location-input"
+      class="settings-section__location-input"
       :lang="lang"
       :units="units"
       :apiUrl="apiUrl"
@@ -18,19 +18,19 @@
       item-key="id + lastUpdated"
       handle=".handle"
       tag="ul"
-      class="settigs-section__list"
+      class="settings-section__list"
     >
       <template #item="{ element, index }">
-        <li class="settigs-section__list-item">
+        <li class="settings-section__list-item">
           <div
             :style="{
               backgroundImage: `url(${require('@/assets/icons/burger.svg')})`,
               backgroundRepeat: 'no-repeat',
               backgroundPosition: 'center',
             }"
-            class="settigs-section__list-item-icon--move handle"
+            class="settings-section__list-item-icon--move handle"
           />
-          <span class="settigs-section__list-item-text">{{
+          <span class="settings-section__list-item-text">{{
             element.name + ", " + element.sys.country
           }}</span>
           <DeleteButton @delete="onDelete(index)" />
