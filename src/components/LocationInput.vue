@@ -86,7 +86,7 @@ async function onSubmit() {
     emit("add-location", newLocation);
     newLocationString.value = "";
   }
-  inputField.value?.focus();
+  setTimeout(() => inputField.value?.focus(), 0);
   isLoading.value = false;
 }
 async function getWeatherData(
