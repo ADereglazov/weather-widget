@@ -33,7 +33,17 @@
           <span class="settings-section__list-item-text">{{
             element.name + ", " + element.sys.country
           }}</span>
-          <DeleteButton @delete="onDelete(index)" />
+
+          <button
+            class="settings-section__delete-button"
+            type="button"
+            name="delete"
+            aria-label="Delete item"
+            :style="{
+              backgroundImage: `url(${require('@/assets/icons/delete.svg')})`,
+            }"
+            @click="onClickDelete(index)"
+          />
         </li>
       </template>
     </Draggable>
@@ -46,7 +56,6 @@ import { IWeatherLocationTimestamped } from "@/types/weatherLocation";
 import { TLanguage } from "@/types/languages";
 import { TUnits } from "@/types/units";
 import Draggable from "vuedraggable";
-import DeleteButton from "@/components/DeleteButton.vue";
 import LocationInput from "@/components/LocationInput.vue";
 
 const emit = defineEmits([
@@ -78,7 +87,7 @@ const listModel = computed<IWeatherLocationTimestamped[]>({
 function onAddLocation(location: IWeatherLocationTimestamped) {
   emit("add-location", location);
 }
-function onDelete(index: number) {
+function onClickDelete(index: number) {
   emit("delete", index);
 }
 function onLoading(e: boolean) {
