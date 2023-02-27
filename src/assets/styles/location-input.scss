@@ -64,6 +64,32 @@
     transform: translateY(-50%);
   }
 
+  &__datalist {
+    position: absolute;
+    top: 26px;
+
+    display: block;
+    width: 213px;
+    max-height: 15em;
+
+    border: 1px solid $gray-dark;
+    background-color: $white;
+    box-shadow: 5px 8px 8px 0 $black;
+    overflow: hidden auto;
+  }
+
+  &__datalist-option {
+    padding: 4px;
+    margin-bottom: 1px;
+
+    cursor: pointer;
+
+    &:hover,
+    &--active {
+      background-color: $light-blue;
+    }
+  }
+
   &__status {
     display: block;
     width: 100%;

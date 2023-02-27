@@ -11,11 +11,26 @@
         }"
         class="location-input__input"
         type="search"
+        autocomplete="off"
         name="new-location-input"
         placeholder="Input location"
         :disabled="isLoading"
         @input="onInput"
       />
+      <datalist v-show="foundList.length > 1" class="location-input__datalist">
+        <option
+          v-for="(item, index) in foundList"
+          :key="item.id"
+          :value="`${item.name}, ${item.country}`"
+          :class="{
+            'location-input__datalist-option--active': currentFocus === index,
+          }"
+          class="location-input__datalist-option"
+          @click="onOptionClick"
+        >
+          {{ item.name }}, {{ item.country }}
+        </option>
+      </datalist>
       <button
         v-show="newLocationString.length > 0 && !isLoading"
         type="button"
@@ -46,13 +61,17 @@
 
 <script setup lang="ts">
 import { ref, watchEffect, computed, defineEmits, defineProps } from "vue";
+import throttle from "lodash.throttle";
+import LoadingSpinner from "@/components/LoadingSpinner.vue";
 import {
   getWeatherByCityName,
   IGetWeatherSucceed,
 } from "@/services/fetchWeather";
 import { TLanguage } from "@/types/languages";
 import { TUnits } from "@/types/units";
-import LoadingSpinner from "@/components/LoadingSpinner.vue";
+import { ICitiListItem } from "@/types/cityList";
+import { OptionEvent } from "@/types/events";
+import cityList from "@/assets/city-list.json";
 
 const emit = defineEmits(["add-location", "loading"]);
 
@@ -62,6 +81,10 @@ const props = defineProps<{
   apiUrl: string;
   apiKey: string;
 }>();
+
+const foundList = ref<ICitiListItem[]>([]);
+const currentFocus = ref<number>(-1);
+const throttledOnInput = throttle(findCity, 1000);
 
 let newLocation: IGetWeatherSucceed | null = null;
 const inputField = ref<HTMLInputElement | null>(null);
@@ -77,9 +100,29 @@ const isSubmitButtonDisabled = computed<boolean>(
 
 function onInput() {
   errStatus.value = "";
+  currentFocus.value = -1;
+  const searchString = newLocationString.value.trim().toLowerCase();
+  if (searchString.length < 3) {
+    foundList.value = [];
+    return;
+  }
+  throttledOnInput();
 }
+function findCity() {
+  const searchString = newLocationString.value.trim().toLowerCase();
+  foundList.value = cityList.filter((item: ICitiListItem) =>
+    `${item.name}, ${item.country}`.toLowerCase().includes(searchString)
+  );
+}
+function onOptionClick(e: OptionEvent) {
+  newLocationString.value = e.target.value;
+  foundList.value = [];
+  inputField.value?.focus();
+}
+
 async function onSubmit() {
   isLoading.value = true;
+  foundList.value = [];
   newLocation = await getWeatherData(newLocationString.value);
 
   if (newLocation) {
@@ -121,6 +164,8 @@ async function getWeatherData(
 function onClickClear() {
   newLocationString.value = "";
   errStatus.value = "";
+  currentFocus.value = -1;
+  foundList.value = [];
   inputField.value?.focus();
 }
 </script>
