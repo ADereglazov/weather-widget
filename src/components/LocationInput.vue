@@ -101,6 +101,7 @@ const isSubmitButtonDisabled = computed<boolean>(
 function onInput() {
   errStatus.value = "";
   currentFocus.value = -1;
+
   const searchString = newLocationString.value.trim().toLowerCase();
   if (searchString.length < 3) {
     foundList.value = [];
