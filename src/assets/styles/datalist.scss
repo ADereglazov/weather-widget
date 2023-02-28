@@ -43,8 +43,10 @@
     cursor: pointer;
 
     &:hover,
+    &:focus-visible,
     &--active {
       background-color: $light-blue;
+      outline: none;
     }
   }
 }
