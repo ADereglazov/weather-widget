@@ -8,10 +8,7 @@
         'datalist__option--active': currentFocus === index,
       }"
       class="datalist__option"
-      tabindex="0"
-      @focus="currentFocus = index"
-      @click="onOptionSelect"
-      @keydown.enter.prevent="onOptionSelect"
+      @click="onOptionSelect(index)"
     >
       {{ item.name }}, {{ item.country }}
     </option>
@@ -20,27 +17,39 @@
 
 <script setup lang="ts">
 import { defineEmits, defineProps, ref, watchEffect } from "vue";
-import { OptionEvent } from "@/types/events";
 import { ICitiListItem } from "@/types/cityList";
 
 const emit = defineEmits(["option-select"]);
 
 const props = defineProps<{
   list: ICitiListItem[];
-  isLostFocus: boolean;
 }>();
 
-const currentFocus = ref<number>(-1);
+const currentFocus = ref(0);
 
 watchEffect(() => {
-  if (!props.list.length) currentFocus.value = -1;
+  if (props.list.length) {
+    document.addEventListener("keydown", keyHandler);
+  } else {
+    currentFocus.value = 0;
+    document.removeEventListener("keydown", keyHandler);
+  }
 });
 
-watchEffect(() => {
-  if (props.isLostFocus) currentFocus.value = -1;
-});
-
-function onOptionSelect(e: OptionEvent) {
-  emit("option-select", e.target.value);
+function keyHandler(e: KeyboardEvent) {
+  if (e.key === "ArrowDown") {
+    currentFocus.value = Math.min(
+      props.list.length - 1,
+      currentFocus.value + 1
+    );
+  } else if (e.key === "ArrowUp") {
+    currentFocus.value = Math.max(0, currentFocus.value - 1);
+  } else if (e.key === "Enter") {
+    onOptionSelect(currentFocus.value);
+  }
+}
+function onOptionSelect(index: number) {
+  const item = props.list[index];
+  emit("option-select", `${item.name}, ${item.country}`);
 }
 </script>
