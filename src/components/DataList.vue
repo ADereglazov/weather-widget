@@ -9,7 +9,7 @@
           'datalist__option--active': currentFocus === index,
         }"
         class="datalist__option"
-        v-html="optionText(`${item.name}, ${item.country}`)"
+        v-html="modifyMatchText(`${item.name}, ${item.country}`, searchString)"
         @click="onOptionSelect(index)"
       />
     </ul>
@@ -25,6 +25,8 @@ import {
   onBeforeUpdate,
 } from "vue";
 import { ICitiListItem } from "@/types/cityList";
+import modifyMatchText from "@/utils/modifyMatchText";
+import scrollSelectionIntoView from "@/utils/scrollSelectionIntoView";
 
 const emit = defineEmits(["option-select"]);
 
@@ -37,7 +39,6 @@ const props = defineProps<{
 const currentFocus = ref(0);
 const dataList = ref<HTMLUListElement | null>(null);
 let optionRefs: HTMLLIElement[] = [];
-
 const setOptionsRef = (el: HTMLLIElement) => {
   if (el) optionRefs.push(el);
 };
@@ -61,33 +62,20 @@ watchEffect(() => {
 function keyHandler(e: KeyboardEvent) {
   const maxListIndex = props.list.length - 1;
 
-  if (e.key === "ArrowDown") {
+  if (e.key === "Enter") {
+    onOptionSelect(currentFocus.value);
+    return;
+  } else if (e.key === "ArrowDown") {
     currentFocus.value =
       currentFocus.value === maxListIndex ? 0 : currentFocus.value + 1;
-    scrollSelectionIntoView(optionRefs[currentFocus.value]);
   } else if (e.key === "ArrowUp") {
     currentFocus.value =
       currentFocus.value === 0 ? maxListIndex : currentFocus.value - 1;
-    scrollSelectionIntoView(optionRefs[currentFocus.value]);
-  } else if (e.key === "Enter") {
-    onOptionSelect(currentFocus.value);
   }
-}
-function scrollSelectionIntoView(item: HTMLLIElement) {
-  if (item && item.scrollIntoView) {
-    item.scrollIntoView(false);
-  }
+  scrollSelectionIntoView(optionRefs[currentFocus.value]);
 }
 function onOptionSelect(index: number) {
   const item = props.list[index];
   emit("option-select", `${item.name}, ${item.country}`);
-}
-function optionText(text: string) {
-  const match = text.toLowerCase().indexOf(props.searchString.toLowerCase());
-  if (~match) {
-    const textSubstr = text.substring(match, match + props.searchString.length);
-    return text.replace(textSubstr, "<b>" + textSubstr + "</b>");
-  }
-  return text;
 }
 </script>
