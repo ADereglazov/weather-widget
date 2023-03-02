@@ -1,7 +1,7 @@
 <template>
   <div v-show="list.length && isInputFocused" class="datalist">
-    <ul ref="dataList" class="datalist__list">
-      <li
+    <datalist ref="dataList" class="datalist__list">
+      <option
         v-for="(item, index) in list"
         :key="item.id"
         :ref="setOptionsRef"
@@ -12,7 +12,7 @@
         v-html="modifyMatchText(`${item.name}, ${item.country}`, searchString)"
         @click="onOptionSelect(index)"
       />
-    </ul>
+    </datalist>
   </div>
 </template>
 

@@ -81,14 +81,14 @@ const props = defineProps<{
 
 const foundList = ref<ICitiListItem[]>([]);
 const throttledOnInput = throttle(findCity, 1000);
-
-let newLocation: IGetWeatherSucceed | null = null;
 const inputField = ref<HTMLInputElement | null>(null);
 const isInputFocused = ref(false);
 const newLocationString = ref("");
-let cityId = 0;
 const errStatus = ref("");
 const isLoading = ref(false);
+
+let newLocation: IGetWeatherSucceed | null = null;
+let cityId = 0;
 
 watchEffect(() => emit("loading", isLoading.value));
 
