@@ -1,20 +1,29 @@
 <template>
-  <ul v-show="list.length && isInputFocused" class="datalist">
-    <li
-      v-for="(item, index) in list"
-      :key="item.id"
-      :class="{
-        'datalist__option--active': currentFocus === index,
-      }"
-      class="datalist__option"
-      v-html="optionText(`${item.name}, ${item.country}`)"
-      @click="onOptionSelect(index)"
-    />
-  </ul>
+  <div v-show="list.length && isInputFocused" class="datalist">
+    <ul ref="dataList" class="datalist__list">
+      <li
+        v-for="(item, index) in list"
+        :key="item.id"
+        :ref="setOptionsRef"
+        :class="{
+          'datalist__option--active': currentFocus === index,
+        }"
+        class="datalist__option"
+        v-html="optionText(`${item.name}, ${item.country}`)"
+        @click="onOptionSelect(index)"
+      />
+    </ul>
+  </div>
 </template>
 
 <script setup lang="ts">
-import { defineEmits, defineProps, ref, watchEffect } from "vue";
+import {
+  defineEmits,
+  defineProps,
+  ref,
+  watchEffect,
+  onBeforeUpdate,
+} from "vue";
 import { ICitiListItem } from "@/types/cityList";
 
 const emit = defineEmits(["option-select"]);
@@ -26,6 +35,16 @@ const props = defineProps<{
 }>();
 
 const currentFocus = ref(0);
+const dataList = ref<HTMLUListElement | null>(null);
+let optionRefs: HTMLLIElement[] = [];
+
+const setOptionsRef = (el: HTMLLIElement) => {
+  if (el) optionRefs.push(el);
+};
+
+onBeforeUpdate(() => {
+  optionRefs = [];
+});
 
 watchEffect(() => {
   const listLength = props.list.length;
@@ -45,11 +64,18 @@ function keyHandler(e: KeyboardEvent) {
   if (e.key === "ArrowDown") {
     currentFocus.value =
       currentFocus.value === maxListIndex ? 0 : currentFocus.value + 1;
+    scrollSelectionIntoView(optionRefs[currentFocus.value]);
   } else if (e.key === "ArrowUp") {
     currentFocus.value =
       currentFocus.value === 0 ? maxListIndex : currentFocus.value - 1;
+    scrollSelectionIntoView(optionRefs[currentFocus.value]);
   } else if (e.key === "Enter") {
     onOptionSelect(currentFocus.value);
+  }
+}
+function scrollSelectionIntoView(item: HTMLLIElement) {
+  if (item && item.scrollIntoView) {
+    item.scrollIntoView(false);
   }
 }
 function onOptionSelect(index: number) {
