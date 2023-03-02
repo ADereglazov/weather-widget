@@ -15,12 +15,19 @@
         name="new-location-input"
         placeholder="Input location"
         :disabled="isLoading"
+        @blur="isInputFocused = false"
+        @focus="isInputFocused = true"
         @keydown.up.prevent
         @keydown.down.prevent
         @keydown.esc.prevent="foundList = []"
         @input="onInput"
       />
-      <DataList :list="foundList" @option-select="onOptionSelect" />
+      <DataList
+        :list="foundList"
+        :search-string="newLocationString"
+        :is-input-focused="isInputFocused"
+        @option-select="onOptionSelect"
+      />
       <button
         v-show="newLocationString.length > 0 && !isLoading"
         type="button"
@@ -77,6 +84,7 @@ const throttledOnInput = throttle(findCity, 1000);
 
 let newLocation: IGetWeatherSucceed | null = null;
 const inputField = ref<HTMLInputElement | null>(null);
+const isInputFocused = ref(false);
 const newLocationString = ref("");
 const errStatus = ref("");
 const isLoading = ref(false);
