@@ -14,6 +14,10 @@ export interface IGetWeatherByCityNameParameters
   extends IGetWeatherCommonParameters {
   city: string;
 }
+export interface IGetWeatherByCityIdParameters
+  extends IGetWeatherCommonParameters {
+  id: number;
+}
 interface IGetWeatherCommonParameters {
   lang?: TLanguage;
   units?: TUnits;

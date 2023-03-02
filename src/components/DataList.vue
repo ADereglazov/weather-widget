@@ -75,7 +75,6 @@ function keyHandler(e: KeyboardEvent) {
   scrollSelectionIntoView(optionRefs[currentFocus.value]);
 }
 function onOptionSelect(index: number) {
-  const item = props.list[index];
-  emit("option-select", `${item.name}, ${item.country}`);
+  emit("option-select", props.list[index]);
 }
 </script>

@@ -62,7 +62,7 @@ import throttle from "lodash.throttle";
 import DataList from "@/components/DataList.vue";
 import LoadingSpinner from "@/components/LoadingSpinner.vue";
 import {
-  getWeatherByCityName,
+  getWeatherByCityId,
   IGetWeatherSucceed,
 } from "@/services/fetchWeather";
 import { TLanguage } from "@/types/languages";
@@ -86,6 +86,7 @@ let newLocation: IGetWeatherSucceed | null = null;
 const inputField = ref<HTMLInputElement | null>(null);
 const isInputFocused = ref(false);
 const newLocationString = ref("");
+let cityId = 0;
 const errStatus = ref("");
 const isLoading = ref(false);
 
@@ -112,8 +113,9 @@ function findCity() {
     `${item.name}, ${item.country}`.toLowerCase().includes(searchString)
   );
 }
-function onOptionSelect(e: string) {
-  newLocationString.value = e;
+function onOptionSelect(item: ICitiListItem) {
+  cityId = item.id;
+  newLocationString.value = `${item.name}, ${item.country}`;
   foundList.value = [];
   inputField.value?.focus();
 }
@@ -121,7 +123,7 @@ function onOptionSelect(e: string) {
 async function onSubmit() {
   isLoading.value = true;
   foundList.value = [];
-  newLocation = await getWeatherData(newLocationString.value);
+  newLocation = await getWeatherData(cityId);
 
   if (newLocation) {
     emit("add-location", newLocation);
@@ -131,11 +133,11 @@ async function onSubmit() {
   isLoading.value = false;
 }
 async function getWeatherData(
-  city: string
+  cityId: number
 ): Promise<IGetWeatherSucceed | null> {
   try {
-    const result = await getWeatherByCityName({
-      city,
+    const result = await getWeatherByCityId({
+      id: cityId,
       lang: props.lang,
       units: props.units,
       apiUrl: props.apiUrl,
