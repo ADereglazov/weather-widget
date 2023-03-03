@@ -1,5 +1,5 @@
 <template>
-  <div v-show="list.length && isInputFocused" class="datalist">
+  <div class="datalist">
     <ul ref="dataList" class="datalist__list">
       <li
         v-for="(item, index) in list"
@@ -33,11 +33,11 @@ const emit = defineEmits(["option-select"]);
 const props = defineProps<{
   list: ICitiListItem[];
   searchString: string;
-  isInputFocused: boolean;
 }>();
 
 const currentFocus = ref(0);
 const dataList = ref<HTMLUListElement | null>(null);
+
 let optionRefs: HTMLLIElement[] = [];
 const setOptionsRef = (el: HTMLLIElement) => {
   if (el) optionRefs.push(el);
@@ -50,7 +50,7 @@ onBeforeUpdate(() => {
 watchEffect(() => {
   const listLength = props.list.length;
 
-  if (listLength && props.isInputFocused) {
+  if (listLength) {
     document.addEventListener("keydown", keyHandler);
   } else {
     document.removeEventListener("keydown", keyHandler);

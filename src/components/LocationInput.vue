@@ -15,17 +15,15 @@
         name="new-location-input"
         placeholder="Input location"
         :disabled="isLoading"
-        @blur="isInputFocused = false"
-        @focus="isInputFocused = true"
         @keydown.up.prevent
         @keydown.down.prevent
         @keydown.esc.prevent="foundList = []"
         @input="onInput"
       />
       <DataList
+        v-show="foundList.length"
         :list="foundList"
         :search-string="newLocationString"
-        :is-input-focused="isInputFocused"
         @option-select="onOptionSelect"
       />
       <button
@@ -38,6 +36,7 @@
         }"
         aria-label="Clear location input"
         class="location-input__button-clear"
+        @keydown.enter.prevent="onClickClear"
         @click="onClickClear"
       />
       <button
@@ -82,7 +81,6 @@ const props = defineProps<{
 const foundList = ref<ICitiListItem[]>([]);
 const throttledOnInput = throttle(findCity, 1000);
 const inputField = ref<HTMLInputElement | null>(null);
-const isInputFocused = ref(false);
 const newLocationString = ref("");
 const errStatus = ref("");
 const isLoading = ref(false);
@@ -155,7 +153,6 @@ async function getWeatherData(
     return result;
   } catch (e) {
     errStatus.value = "Oops... something went wrong, try to update page";
-    inputField.value?.focus();
     console.error(e);
 
     return null;
