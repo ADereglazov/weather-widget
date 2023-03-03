@@ -6,7 +6,7 @@
         :key="item.id"
         :ref="setSuggestionRef"
         :class="{
-          'suggestion-list__option--active': currentFocus === index,
+          'suggestion-list__item--active': currentFocus === index,
         }"
         class="suggestion-list__item"
         v-html="modifyMatchText(`${item.name}, ${item.country}`, searchString)"
