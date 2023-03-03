@@ -1,4 +1,4 @@
-.datalist {
+.suggestion-list {
   position: absolute;
   top: 26px;
   left: -1px;
@@ -45,7 +45,7 @@
     }
   }
 
-  &__option {
+  &__item {
     padding: 4px;
     margin-bottom: 1px;
 

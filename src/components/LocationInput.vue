@@ -20,11 +20,11 @@
         @keydown.esc.prevent="foundList = []"
         @input="onInput"
       />
-      <DataList
+      <SuggestionList
         v-show="foundList.length"
         :list="foundList"
         :search-string="newLocationString"
-        @option-select="onOptionSelect"
+        @suggestion-select="onSuggestionSelect"
       />
       <button
         v-show="newLocationString.length > 0 && !isLoading"
@@ -58,7 +58,7 @@
 <script setup lang="ts">
 import { ref, watchEffect, computed, defineEmits, defineProps } from "vue";
 import throttle from "lodash.throttle";
-import DataList from "@/components/DataList.vue";
+import SuggestionList from "@/components/SuggestionList.vue";
 import LoadingSpinner from "@/components/LoadingSpinner.vue";
 import {
   getWeatherByCityId,
@@ -111,7 +111,7 @@ function findCity() {
     `${item.name}, ${item.country}`.toLowerCase().includes(searchString)
   );
 }
-function onOptionSelect(item: ICitiListItem) {
+function onSuggestionSelect(item: ICitiListItem) {
   cityId = item.id;
   newLocationString.value = `${item.name}, ${item.country}`;
   foundList.value = [];
