@@ -10,7 +10,7 @@
         }"
         class="suggestion-list__item"
         v-html="modifyMatchText(`${item.name}, ${item.country}`, searchString)"
-        @click="onSuggestionSelect(index)"
+        @click="onSuggestionSelect(index, true)"
       />
     </ul>
   </div>
@@ -21,8 +21,10 @@ import {
   defineEmits,
   defineProps,
   ref,
-  watchEffect,
+  watch,
+  computed,
   onBeforeUpdate,
+  onUpdated,
 } from "vue";
 import { ICitiListItem } from "@/types/cityList";
 import modifyMatchText from "@/utils/modifyMatchText";
@@ -35,6 +37,8 @@ const props = defineProps<{
   searchString: string;
 }>();
 
+const listLength = computed(() => props.list.length);
+
 const currentFocus = ref(0);
 
 let suggestionsRefs: HTMLLIElement[] = [];
@@ -46,34 +50,37 @@ onBeforeUpdate(() => {
   suggestionsRefs = [];
 });
 
-watchEffect(() => {
-  const listLength = props.list.length;
-
-  if (listLength) {
+onUpdated(() => {
+  if (listLength.value) {
+    onSuggestionSelect(currentFocus.value);
     document.addEventListener("keydown", keyHandler);
   } else {
+    currentFocus.value = 0;
     document.removeEventListener("keydown", keyHandler);
   }
+});
 
-  if (!listLength || listLength <= currentFocus.value) currentFocus.value = 0;
+watch(listLength, (newVal, oldVal) => {
+  if (newVal < oldVal) {
+    currentFocus.value = 0;
+  }
 });
 
 function keyHandler(e: KeyboardEvent) {
   const maxListIndex = props.list.length - 1;
 
-  if (e.key === "Enter") {
-    onSuggestionSelect(currentFocus.value);
-    return;
-  } else if (e.key === "ArrowDown") {
+  if (e.key === "ArrowDown") {
     currentFocus.value =
       currentFocus.value === maxListIndex ? 0 : currentFocus.value + 1;
   } else if (e.key === "ArrowUp") {
     currentFocus.value =
       currentFocus.value === 0 ? maxListIndex : currentFocus.value - 1;
   }
+  onSuggestionSelect(currentFocus.value);
   scrollSelectionIntoView(suggestionsRefs[currentFocus.value]);
 }
-function onSuggestionSelect(index: number) {
-  emit("suggestion-select", props.list[index]);
+function onSuggestionSelect(index: number, isClickSuggestionItem = false) {
+  const item = props.list[index];
+  emit("suggestion-select", { item, isClickSuggestionItem });
 }
 </script>

@@ -81,6 +81,7 @@ const props = defineProps<{
 const foundList = ref<ICitiListItem[]>([]);
 const throttledOnInput = throttle(findCity, 1000);
 const inputField = ref<HTMLInputElement | null>(null);
+const selectedSuggestionListItem = ref<ICitiListItem | null>(null);
 const newLocationString = ref("");
 const errStatus = ref("");
 const isLoading = ref(false);
@@ -91,13 +92,16 @@ let cityId = 0;
 watchEffect(() => emit("loading", isLoading.value));
 
 const isSubmitButtonDisabled = computed<boolean>(
-  () => newLocationString.value.length === 0 || isLoading.value
+  () =>
+    newLocationString.value.length === 0 ||
+    isLoading.value ||
+    !foundList.value.length
 );
 
 function onInput() {
   errStatus.value = "";
 
-  const searchString = newLocationString.value.trim().toLowerCase();
+  const searchString = newLocationString.value.trim();
   if (searchString.length < 3) {
     foundList.value = [];
     return;
@@ -105,28 +109,42 @@ function onInput() {
   throttledOnInput();
 }
 function findCity() {
-  const searchString = newLocationString.value.trim().toLowerCase();
+  const searchString = newLocationString.value
+    .trim()
+    .toLowerCase()
+    .replace(
+      /(\w+) (\w+)/,
+      (match, firstWord, secondWord) => `${firstWord}, ${secondWord}`
+    );
 
   foundList.value = cityList.filter((item: ICitiListItem) =>
     `${item.name}, ${item.country}`.toLowerCase().includes(searchString)
   );
 }
-function onSuggestionSelect(item: ICitiListItem) {
+function onSuggestionSelect({
+  item,
+  isClickSuggestionItem,
+}: {
+  item: ICitiListItem;
+  isClickSuggestionItem: boolean;
+}) {
   cityId = item.id;
-  newLocationString.value = `${item.name}, ${item.country}`;
-  foundList.value = [];
-  inputField.value?.focus();
+  selectedSuggestionListItem.value = item;
+  if (isClickSuggestionItem) onSubmit();
 }
 
 async function onSubmit() {
   isLoading.value = true;
   foundList.value = [];
-  newLocation = await getWeatherData(cityId);
+  newLocationString.value = `${selectedSuggestionListItem.value?.name}, ${selectedSuggestionListItem.value?.country}`;
+  if (cityId) newLocation = await getWeatherData(cityId);
 
   if (newLocation) {
     emit("add-location", newLocation);
     newLocationString.value = "";
   }
+
+  cityId = 0;
   setTimeout(() => inputField.value?.focus(), 0);
   isLoading.value = false;
 }
