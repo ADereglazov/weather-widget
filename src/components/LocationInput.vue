@@ -67,7 +67,7 @@ import {
 import { TLanguage } from "@/types/languages";
 import { TUnits } from "@/types/units";
 import { ICitiListItem } from "@/types/cityList";
-import cityList from "@/assets/city-list.json";
+import cityList from "@/assets/city-list.min.json";
 
 const emit = defineEmits(["add-location", "loading"]);
 
