@@ -110,7 +110,7 @@ function onInput() {
   }
   throttledOnInput();
 }
-function findCity() {
+function findCities() {
   const searchString = newLocationString.value
     .trim()
     .toLowerCase()
@@ -124,7 +124,7 @@ function findCity() {
   );
 }
 function updateFoundList() {
-  findCity();
+  findCities();
   currentFocus.value = 0;
   onSuggestionSelect({
     item: foundList.value[currentFocus.value],
