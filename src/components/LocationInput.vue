@@ -80,7 +80,7 @@ const props = defineProps<{
 }>();
 
 const foundList = ref<ICitiListItem[]>([]);
-const throttledOnInput = throttle(findCity, 1000);
+const throttledOnInput = throttle(updateFoundList, 1000);
 const inputField = ref<HTMLInputElement | null>(null);
 const currentFocus = ref(0);
 const selectedSuggestionListItem = ref<ICitiListItem | null>(null);
@@ -102,7 +102,6 @@ const isSubmitButtonDisabled = computed<boolean>(
 
 function onInput() {
   errStatus.value = "";
-  currentFocus.value = 0;
 
   const searchString = newLocationString.value.trim();
   if (searchString.length < 3) {
@@ -123,6 +122,14 @@ function findCity() {
   foundList.value = cityList.filter((item: ICitiListItem) =>
     `${item.name}, ${item.country}`.toLowerCase().includes(searchString)
   );
+}
+function updateFoundList() {
+  findCity();
+  currentFocus.value = 0;
+  onSuggestionSelect({
+    item: foundList.value[currentFocus.value],
+    isClickSuggestionItem: false,
+  });
 }
 function onSuggestionSelect({
   item,
