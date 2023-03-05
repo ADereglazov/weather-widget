@@ -15,8 +15,8 @@
         name="new-location-input"
         placeholder="Input location"
         :disabled="isLoading"
-        @keydown.up.prevent
-        @keydown.down.prevent
+        @keydown.up.prevent="onKeyArrow"
+        @keydown.down.prevent="onKeyArrow"
         @keydown.esc.prevent="foundList = []"
         @input="onInput"
       />
@@ -24,6 +24,7 @@
         v-show="foundList.length"
         :list="foundList"
         :search-string="newLocationString"
+        :current-focus="currentFocus"
         @suggestion-select="onSuggestionSelect"
       />
       <button
@@ -81,6 +82,7 @@ const props = defineProps<{
 const foundList = ref<ICitiListItem[]>([]);
 const throttledOnInput = throttle(findCity, 1000);
 const inputField = ref<HTMLInputElement | null>(null);
+const currentFocus = ref(0);
 const selectedSuggestionListItem = ref<ICitiListItem | null>(null);
 const newLocationString = ref("");
 const errStatus = ref("");
@@ -100,6 +102,7 @@ const isSubmitButtonDisabled = computed<boolean>(
 
 function onInput() {
   errStatus.value = "";
+  currentFocus.value = 0;
 
   const searchString = newLocationString.value.trim();
   if (searchString.length < 3) {
@@ -175,6 +178,22 @@ async function getWeatherData(
 
     return null;
   }
+}
+function onKeyArrow(e: KeyboardEvent) {
+  const maxListIndex = foundList.value.length - 1;
+
+  if (e.key === "ArrowDown") {
+    currentFocus.value =
+      currentFocus.value === maxListIndex ? 0 : currentFocus.value + 1;
+  } else if (e.key === "ArrowUp") {
+    currentFocus.value =
+      currentFocus.value === 0 ? maxListIndex : currentFocus.value - 1;
+  }
+
+  onSuggestionSelect({
+    item: foundList.value[currentFocus.value],
+    isClickSuggestionItem: false,
+  });
 }
 function onClickClear() {
   newLocationString.value = "";
