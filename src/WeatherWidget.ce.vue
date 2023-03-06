@@ -139,8 +139,7 @@ async function refreshLocalData() {
   }
 }
 function addLocation(location: IWeatherLocationTimestamped) {
-  const locationListLength = locationsList.value.length;
-  locationsList.value.splice(locationListLength, 0, location);
+  locationsList.value.splice(locationsList.value.length, 0, location);
   setLocalStorageWeatherData(locationsList.value);
   errStatus.value = "";
 }
