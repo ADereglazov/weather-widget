@@ -68,7 +68,7 @@ import {
 import { TLanguage } from "@/types/languages";
 import { TUnits } from "@/types/units";
 import { ICitiListItem } from "@/types/cityList";
-import cityList from "@/assets/city-list.min.json";
+import { findSuggestionCities } from "@/utils/findSuggestionCities";
 
 const emit = defineEmits(["add-location", "loading"]);
 
@@ -110,26 +110,19 @@ function onInput() {
   }
   throttledOnInput();
 }
-function findCities() {
-  const searchString = newLocationString.value
-    .trim()
-    .toLowerCase()
-    .replace(
-      /(\w+) (\w+)/,
-      (match, firstWord, secondWord) => `${firstWord}, ${secondWord}`
-    );
-
-  foundList.value = cityList.filter((item: ICitiListItem) =>
-    `${item.name}, ${item.country}`.toLowerCase().includes(searchString)
-  );
-}
 function updateFoundList() {
-  findCities();
+  foundList.value = findSuggestionCities(newLocationString.value);
   currentFocus.value = 0;
-  onSuggestionSelect({
-    item: foundList.value[currentFocus.value],
-    isClickSuggestionItem: false,
-  });
+
+  if (foundList.value.length) {
+    onSuggestionSelect({
+      item: foundList.value[currentFocus.value],
+      isClickSuggestionItem: false,
+    });
+  } else {
+    cityId = 0;
+    selectedSuggestionListItem.value = null;
+  }
 }
 function onSuggestionSelect({
   item,
