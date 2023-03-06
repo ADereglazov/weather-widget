@@ -8,10 +8,10 @@
   <SettingsSection
     v-if="isSettingsOpened"
     :locations-list="locationsList"
-    :lang="LANG"
-    :units="UNITS"
-    :apiUrl="API_URL"
-    :apiKey="API_KEY"
+    :lang="props.lang"
+    :units="props.units"
+    :apiUrl="props.apiUrl"
+    :apiKey="props.apiKey"
     @delete="onDelete"
     @add-location="addLocation"
     @sorting-locations-list="onSorting"
@@ -49,10 +49,10 @@ import {
   getLocalStorageWeatherData,
   setLocalStorageWeatherData,
 } from "@/services/localStorageWeather";
+import { getOutdatedWeatherLocationIndexes } from "@/utils/getOutdatedWeatherLocationIndexes";
 import { IWeatherLocationTimestamped } from "@/types/weatherLocation";
 import { TLanguage } from "@/types/languages";
 import { TUnits } from "@/types/units";
-import { getOutdatedWeatherLocationIndexes } from "@/utils/getOutdatedWeatherLocationIndexes";
 import ManageButton from "@/components/ManageButton.vue";
 import WeatherSection from "@/components/WeatherSection.vue";
 import SettingsSection from "@/components/SettingsSection.vue";
@@ -62,6 +62,7 @@ const LANG: TLanguage = process.env.VUE_APP_LANG || "en";
 const UNITS: TUnits = process.env.VUE_APP_UNITS || "metric";
 const API_URL: string = process.env.VUE_APP_API_URL || "";
 const API_KEY: string = process.env.VUE_APP_API_KEY || "";
+
 const props = {
   lang: LANG,
   units: UNITS,
