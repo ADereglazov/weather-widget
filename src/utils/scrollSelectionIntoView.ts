@@ -1,4 +1,4 @@
-export default function scrollSelectionIntoView(item: HTMLElement) {
+export function scrollSelectionIntoView(item: HTMLElement) {
   if (item && item.scrollIntoView) {
     item.scrollIntoView(false);
   }

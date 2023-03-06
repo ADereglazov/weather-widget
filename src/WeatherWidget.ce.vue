@@ -49,10 +49,8 @@ import {
   getLocalStorageWeatherData,
   setLocalStorageWeatherData,
 } from "@/services/localStorageWeather";
-import { getOutdatedWeatherLocationIndexes } from "@/utils/getOutdatedWeatherLocationIndexes";
-import { IWeatherLocationTimestamped } from "@/types/weatherLocation";
-import { TLanguage } from "@/types/languages";
-import { TUnits } from "@/types/units";
+import { getOutdatedWeatherLocationIndexes } from "@/utils";
+import { IWeatherLocationTimestamped, TLanguage, TUnits } from "@/types";
 import ManageButton from "@/components/ManageButton.vue";
 import WeatherSection from "@/components/WeatherSection.vue";
 import SettingsSection from "@/components/SettingsSection.vue";

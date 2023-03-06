@@ -52,10 +52,8 @@
 
 <script setup lang="ts">
 import { computed, defineEmits, defineProps } from "vue";
-import { IWeatherLocationTimestamped } from "@/types/weatherLocation";
-import { TLanguage } from "@/types/languages";
-import { TUnits } from "@/types/units";
 import Draggable from "vuedraggable";
+import { IWeatherLocationTimestamped, TLanguage, TUnits } from "@/types";
 import LocationInput from "@/components/LocationInput.vue";
 
 const emit = defineEmits([

@@ -72,7 +72,7 @@
 
 <script setup lang="ts">
 import { defineProps } from "vue";
-import getWindDirection from "@/utils/getWindDirection";
+import { getWindDirection } from "@/utils";
 import { IWeatherLocationTimestamped } from "@/types/weatherLocation";
 
 defineProps<{

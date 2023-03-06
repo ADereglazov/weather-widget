@@ -59,17 +59,14 @@
 <script setup lang="ts">
 import { ref, watchEffect, computed, defineEmits, defineProps } from "vue";
 import throttle from "lodash.throttle";
-import SuggestionList from "@/components/SuggestionList.vue";
-import LoadingSpinner from "@/components/LoadingSpinner.vue";
 import {
   getWeatherByCityId,
   IGetWeatherSucceed,
 } from "@/services/fetchWeather";
-import { TLanguage } from "@/types/languages";
-import { TUnits } from "@/types/units";
-import { ICitiListItem } from "@/types/cityList";
-import { findSuggestionCities } from "@/utils/findSuggestionCities";
-import { getCurrentFocusValue } from "@/utils/getCurrentFocusValue";
+import { TLanguage, TUnits, ICitiListItem } from "@/types";
+import { findSuggestionCities, getCurrentFocusValue } from "@/utils";
+import SuggestionList from "@/components/SuggestionList.vue";
+import LoadingSpinner from "@/components/LoadingSpinner.vue";
 
 const emit = defineEmits(["add-location", "loading"]);
 

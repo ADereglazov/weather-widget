@@ -1,4 +1,4 @@
-export default function getWindDirection(value = 0) {
+export function getWindDirection(value = 0) {
   const windDirections = [
     "N",
     "NNE",

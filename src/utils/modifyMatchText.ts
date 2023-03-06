@@ -1,4 +1,4 @@
-export default function modifyMatchText(text: string, subString: string) {
+export function modifyMatchText(text: string, subString: string) {
   const subStringModified = subString
     .trim()
     .replace(

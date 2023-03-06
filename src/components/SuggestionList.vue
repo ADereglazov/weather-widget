@@ -18,9 +18,8 @@
 
 <script setup lang="ts">
 import { defineProps, defineEmits, onBeforeUpdate, onUpdated } from "vue";
-import { ICitiListItem } from "@/types/cityList";
-import modifyMatchText from "@/utils/modifyMatchText";
-import scrollSelectionIntoView from "@/utils/scrollSelectionIntoView";
+import { ICitiListItem } from "@/types";
+import { modifyMatchText, scrollSelectionIntoView } from "@/utils";
 
 let suggestionsRefs: HTMLLIElement[] = [];
 const setSuggestionRef = (el: HTMLLIElement) => {
