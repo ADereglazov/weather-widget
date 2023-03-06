@@ -83,13 +83,11 @@ const foundList = ref<ICitiListItem[]>([]);
 const throttledOnInput = throttle(updateFoundList, 1000);
 const inputField = ref<HTMLInputElement | null>(null);
 const currentFocus = ref(0);
+const cityId = ref(0);
 const selectedSuggestionListItem = ref<ICitiListItem | null>(null);
 const newLocationString = ref("");
 const errStatus = ref("");
 const isLoading = ref(false);
-
-let newLocation: IGetWeatherSucceed | null = null;
-let cityId = 0;
 
 watchEffect(() => emit("loading", isLoading.value));
 
@@ -120,7 +118,7 @@ function updateFoundList() {
       isClickSuggestionItem: false,
     });
   } else {
-    cityId = 0;
+    cityId.value = 0;
     selectedSuggestionListItem.value = null;
   }
 }
@@ -131,7 +129,7 @@ function onSuggestionSelect({
   item: ICitiListItem;
   isClickSuggestionItem: boolean;
 }) {
-  cityId = item.id;
+  cityId.value = item.id;
   selectedSuggestionListItem.value = item;
   if (isClickSuggestionItem) onSubmit();
 }
@@ -139,15 +137,19 @@ function onSuggestionSelect({
 async function onSubmit() {
   isLoading.value = true;
   foundList.value = [];
-  newLocationString.value = `${selectedSuggestionListItem.value?.name}, ${selectedSuggestionListItem.value?.country}`;
-  if (cityId) newLocation = await getWeatherData(cityId);
+  newLocationString.value = selectedSuggestionListItem.value
+    ? `${selectedSuggestionListItem.value.name}, ${selectedSuggestionListItem.value.country}`
+    : "";
+
+  let newLocation: IGetWeatherSucceed | null = null;
+  if (cityId.value) newLocation = await getWeatherData(cityId.value);
 
   if (newLocation) {
     emit("add-location", newLocation);
     newLocationString.value = "";
   }
 
-  cityId = 0;
+  cityId.value = 0;
   setTimeout(() => inputField.value?.focus(), 0);
   isLoading.value = false;
 }
