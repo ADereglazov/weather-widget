@@ -110,6 +110,10 @@ function onInput() {
 }
 function updateFoundList() {
   foundList.value = findSuggestionCities(newLocationString.value);
+  /* Если во вновь сформированном списке foundList есть элемент,
+   * который был до этого текущим (выбранным с помощью клавиатуры),
+   * то выбрать его, найдя его индекс в новом списке.
+   */
   currentFocus.value = getCurrentFocusValue();
 
   if (foundList.value.length) {
