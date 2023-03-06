@@ -110,7 +110,7 @@ function onInput() {
 }
 function updateFoundList() {
   foundList.value = findSuggestionCities(newLocationString.value);
-  currentFocus.value = 0;
+  currentFocus.value = getCurrentFocusValue();
 
   if (foundList.value.length) {
     onSuggestionSelect({
@@ -121,6 +121,12 @@ function updateFoundList() {
     cityId.value = 0;
     selectedSuggestionListItem.value = null;
   }
+}
+function getCurrentFocusValue() {
+  const currentCityIndex = foundList.value.findIndex(
+    (item) => item.id === cityId.value
+  );
+  return ~currentCityIndex ? currentCityIndex : 0;
 }
 function onSuggestionSelect({
   item,
