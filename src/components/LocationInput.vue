@@ -147,7 +147,7 @@ async function onSubmit() {
 
   let newWeatherLocation: IGetWeatherSucceed | null = null;
   if (cityId.value)
-    ({ result: newWeatherLocation, message: errStatus.value } =
+    ({ location: newWeatherLocation, message: errStatus.value } =
       await getWeatherByCityId(cityId.value, props));
 
   if (newWeatherLocation) {

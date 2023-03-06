@@ -16,7 +16,7 @@ export async function getWeatherByCityId(
     apiUrl: string;
     apiKey: string;
   }
-): Promise<{ result: IGetWeatherSucceed | null; message: string }> {
+): Promise<{ location: IGetWeatherSucceed | null; message: string }> {
   try {
     const result = await getWeather({
       id: cityId,
@@ -30,15 +30,15 @@ export async function getWeatherByCityId(
       const message = `Oops... ${result.message}, try again`;
       console.error(message);
 
-      return { result: null, message };
+      return { location: null, message };
     }
 
-    return { result, message: "" };
+    return { location: result, message: "" };
   } catch (e) {
     const message = "Oops... something went wrong, try again";
     console.error(e);
 
-    return { result: null, message };
+    return { location: null, message };
   }
 }
 async function getWeather({
