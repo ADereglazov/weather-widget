@@ -151,15 +151,15 @@ async function onSubmit() {
     ? `${selectedSuggestionListItem.value.name}, ${selectedSuggestionListItem.value.country}`
     : "";
 
-  let newLocation: IGetWeatherSucceed | null = null;
-  if (cityId.value) newLocation = await getWeatherData(cityId.value);
+  let newWeatherLocation: IGetWeatherSucceed | null = null;
+  if (cityId.value) newWeatherLocation = await getWeatherData(cityId.value);
 
-  if (newLocation) {
-    emit("add-location", newLocation);
+  if (newWeatherLocation) {
+    emit("add-location", newWeatherLocation);
     newLocationString.value = "";
+    cityId.value = 0;
   }
 
-  cityId.value = 0;
   setTimeout(() => inputField.value?.focus(), 0);
   isLoading.value = false;
 }
@@ -185,7 +185,7 @@ async function getWeatherData(
 
     return result;
   } catch (e) {
-    errStatus.value = "Oops... something went wrong, try to update page";
+    errStatus.value = "Oops... something went wrong, try again";
     console.error(e);
 
     return null;
