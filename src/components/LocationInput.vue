@@ -69,6 +69,7 @@ import { TLanguage } from "@/types/languages";
 import { TUnits } from "@/types/units";
 import { ICitiListItem } from "@/types/cityList";
 import { findSuggestionCities } from "@/utils/findSuggestionCities";
+import { getCurrentFocusValue } from "@/utils/getCurrentFocusValue";
 
 const emit = defineEmits(["add-location", "loading"]);
 
@@ -114,7 +115,7 @@ function updateFoundList() {
    * который был до этого текущим (выбранным с помощью клавиатуры),
    * то выбрать его, найдя его индекс в новом списке.
    */
-  currentFocus.value = getCurrentFocusValue();
+  currentFocus.value = getCurrentFocusValue(cityId.value, foundList.value);
 
   if (foundList.value.length) {
     onSuggestionSelect({
@@ -125,12 +126,6 @@ function updateFoundList() {
     cityId.value = 0;
     selectedSuggestionListItem.value = null;
   }
-}
-function getCurrentFocusValue() {
-  const currentCityIndex = foundList.value.findIndex(
-    (item) => item.id === cityId.value
-  );
-  return ~currentCityIndex ? currentCityIndex : 0;
 }
 function onSuggestionSelect({
   item,
@@ -143,7 +138,6 @@ function onSuggestionSelect({
   selectedSuggestionListItem.value = item;
   if (isClickSuggestionItem) onSubmit();
 }
-
 async function onSubmit() {
   isLoading.value = true;
   foundList.value = [];
@@ -152,7 +146,9 @@ async function onSubmit() {
     : "";
 
   let newWeatherLocation: IGetWeatherSucceed | null = null;
-  if (cityId.value) newWeatherLocation = await getWeatherData(cityId.value);
+  if (cityId.value)
+    ({ result: newWeatherLocation, message: errStatus.value } =
+      await getWeatherByCityId(cityId.value, props));
 
   if (newWeatherLocation) {
     emit("add-location", newWeatherLocation);
@@ -162,34 +158,6 @@ async function onSubmit() {
 
   setTimeout(() => inputField.value?.focus(), 0);
   isLoading.value = false;
-}
-async function getWeatherData(
-  cityId: number
-): Promise<IGetWeatherSucceed | null> {
-  try {
-    const result = await getWeatherByCityId({
-      id: cityId,
-      lang: props.lang,
-      units: props.units,
-      apiUrl: props.apiUrl,
-      apiKey: props.apiKey,
-    });
-
-    if (result.status !== "succeed") {
-      const message = `Oops... ${result.message}, try again`;
-      errStatus.value = message;
-      console.error(message);
-
-      return null;
-    }
-
-    return result;
-  } catch (e) {
-    errStatus.value = "Oops... something went wrong, try again";
-    console.error(e);
-
-    return null;
-  }
 }
 function onKeyArrow(e: KeyboardEvent) {
   const maxListIndex = foundList.value.length - 1;

@@ -1,3 +1,6 @@
+import { IGetWeatherSucceed } from "@/services/fetchWeather";
+import { TLanguage } from "@/types/languages";
+import { TUnits } from "@/types/units";
 import {
   IGetWeatherByCityIdParameters,
   IGetWeatherFetchFailed,
@@ -5,7 +8,40 @@ import {
   TGetWeatherFetchSucceed,
 } from "./types";
 
-export async function getWeatherByCityId({
+export async function getWeatherByCityId(
+  cityId: number,
+  props: {
+    lang: TLanguage;
+    units: TUnits;
+    apiUrl: string;
+    apiKey: string;
+  }
+): Promise<{ result: IGetWeatherSucceed | null; message: string }> {
+  try {
+    const result = await getWeather({
+      id: cityId,
+      lang: props.lang,
+      units: props.units,
+      apiUrl: props.apiUrl,
+      apiKey: props.apiKey,
+    });
+
+    if (result.status !== "succeed") {
+      const message = `Oops... ${result.message}, try again`;
+      console.error(message);
+
+      return { result: null, message };
+    }
+
+    return { result, message: "" };
+  } catch (e) {
+    const message = "Oops... something went wrong, try again";
+    console.error(e);
+
+    return { result: null, message };
+  }
+}
+async function getWeather({
   id,
   lang = "en",
   units = "metric",
