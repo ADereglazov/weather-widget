@@ -10,7 +10,7 @@
     <template #item="{ element, index }">
       <li
         :ref="setListItemRef"
-        tabindex="0"
+        :tabindex="locationsListLength > 1 ? 0 : -1"
         :class="{
           'draggable-list__item--top': index === 0,
           'draggable-list__item--bottom': index === locationsListLength - 1,
