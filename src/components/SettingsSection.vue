@@ -12,49 +12,20 @@
       @add-location="onAddLocation"
     />
 
-    <Draggable
-      v-model="listModel"
-      v-bind="dragOptions"
-      item-key="id + lastUpdated"
-      handle=".handle"
-      tag="ul"
-      class="settings-section__list"
-    >
-      <template #item="{ element, index }">
-        <li class="settings-section__list-item">
-          <div
-            :style="{
-              backgroundImage: `url(${require('@/assets/icons/burger.svg')})`,
-              backgroundRepeat: 'no-repeat',
-              backgroundPosition: 'center',
-            }"
-            class="settings-section__list-item-icon--move handle"
-          />
-          <span class="settings-section__list-item-text">{{
-            element.name + ", " + element.sys.country
-          }}</span>
-
-          <button
-            class="settings-section__delete-button"
-            type="button"
-            name="delete"
-            aria-label="Delete item"
-            :style="{
-              backgroundImage: `url(${require('@/assets/icons/delete.svg')})`,
-            }"
-            @click="onClickDelete(index)"
-          />
-        </li>
-      </template>
-    </Draggable>
+    <DraggableList
+      :locations-list="locationsList"
+      class="settings-section__draggable-list"
+      @sorting-locations-list="onSorting"
+      @delete="onDelete"
+    />
   </section>
 </template>
 
 <script setup lang="ts">
-import { computed, defineEmits, defineProps } from "vue";
-import Draggable from "vuedraggable";
+import { defineEmits, defineProps } from "vue";
 import { IWeatherLocationTimestamped, TLanguage, TUnits } from "@/types";
 import LocationInput from "@/components/LocationInput.vue";
+import DraggableList from "@/components/DraggableList.vue";
 
 const emit = defineEmits([
   "sorting-locations-list",
@@ -63,7 +34,7 @@ const emit = defineEmits([
   "loading",
 ]);
 
-const props = defineProps<{
+defineProps<{
   locationsList: IWeatherLocationTimestamped[];
   lang: TLanguage;
   units: TUnits;
@@ -71,21 +42,13 @@ const props = defineProps<{
   apiKey: string;
 }>();
 
-const dragOptions = {
-  animation: 200,
-  disabled: false,
-  ghostClass: "ghost",
-};
-
-const listModel = computed<IWeatherLocationTimestamped[]>({
-  get: () => [...props.locationsList],
-  set: (value) => emit("sorting-locations-list", value),
-});
-
 function onAddLocation(location: IWeatherLocationTimestamped) {
   emit("add-location", location);
 }
-function onClickDelete(index: number) {
+function onSorting(value: IWeatherLocationTimestamped[]) {
+  emit("sorting-locations-list", value);
+}
+function onDelete(index: number) {
   emit("delete", index);
 }
 function onLoading(e: boolean) {
