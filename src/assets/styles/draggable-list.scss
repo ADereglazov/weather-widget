@@ -1,0 +1,82 @@
+.draggable-list {
+    padding: 0;
+    margin: 0;
+    list-style: none;
+
+  &__item {
+    position: relative;
+
+    display: flex;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 3px;
+
+    border: 2px solid transparent;
+    background-color: $gray;
+
+    &:focus-visible {
+      outline: none;
+      border: 2px solid $black;
+
+      &::before,
+      &::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+
+        display: block;
+        width: 0;
+        height: 0;
+        border-left: 5px solid transparent;
+        border-right: 5px solid transparent;
+      }
+
+      &::before {
+        top: -8px;
+        border-bottom: 10px solid $black;
+      }
+
+      &::after {
+        bottom: -8px;
+        border-top: 10px solid $black;
+      }
+    }
+
+    &--top:focus-visible::before {
+      content: none;
+    }
+
+    &--bottom:focus-visible::after {
+      content: none;
+    }
+  }
+
+  &__item + &__item {
+    margin-top: 10px;
+  }
+
+  &__item-icon-move {
+    width: 20px;
+    height: 20px;
+
+    &:hover {
+      cursor: move;
+    }
+
+    &:active {
+      opacity: 0.5;
+    }
+  }
+
+  &__item-text {
+    display: block;
+    max-width: 80%;
+    padding: 0 5px;
+    margin-right: auto;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+}

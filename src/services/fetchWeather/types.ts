@@ -10,9 +10,9 @@ export interface IGetWeatherFromGeoParameters
   extends IGetWeatherCommonParameters {
   coordinates: ICoordinates;
 }
-export interface IGetWeatherByCityNameParameters
+export interface IGetWeatherByCityIdParameters
   extends IGetWeatherCommonParameters {
-  city: string;
+  id: number;
 }
 interface IGetWeatherCommonParameters {
   lang?: TLanguage;

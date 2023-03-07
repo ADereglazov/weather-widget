@@ -11,10 +11,21 @@
         }"
         class="location-input__input"
         type="search"
+        autocomplete="off"
         name="new-location-input"
         placeholder="Input location"
         :disabled="isLoading"
+        @keydown.up.prevent="onKeyArrow"
+        @keydown.down.prevent="onKeyArrow"
+        @keydown.esc.prevent="foundList = []"
         @input="onInput"
+      />
+      <SuggestionList
+        v-show="foundList.length"
+        :list="foundList"
+        :search-string="newLocationString"
+        :current-focus="currentFocus"
+        @suggestion-select="onSuggestionSelect"
       />
       <button
         v-show="newLocationString.length > 0 && !isLoading"
@@ -26,6 +37,7 @@
         }"
         aria-label="Clear location input"
         class="location-input__button-clear"
+        @keydown.enter.prevent="onClickClear"
         @click="onClickClear"
       />
       <button
@@ -46,12 +58,14 @@
 
 <script setup lang="ts">
 import { ref, watchEffect, computed, defineEmits, defineProps } from "vue";
+import throttle from "lodash.throttle";
 import {
-  getWeatherByCityName,
+  getWeatherByCityId,
   IGetWeatherSucceed,
 } from "@/services/fetchWeather";
-import { TLanguage } from "@/types/languages";
-import { TUnits } from "@/types/units";
+import { TLanguage, TUnits, ICitiListItem } from "@/types";
+import { findSuggestionCities, getCurrentFocusValue } from "@/utils";
+import SuggestionList from "@/components/SuggestionList.vue";
 import LoadingSpinner from "@/components/LoadingSpinner.vue";
 
 const emit = defineEmits(["add-location", "loading"]);
@@ -63,64 +77,105 @@ const props = defineProps<{
   apiKey: string;
 }>();
 
-let newLocation: IGetWeatherSucceed | null = null;
+const foundList = ref<ICitiListItem[]>([]);
+const throttledOnInput = throttle(updateFoundList, 1000);
 const inputField = ref<HTMLInputElement | null>(null);
-const isLoading = ref<boolean>(false);
-const newLocationString = ref<string>("");
-const errStatus = ref<string>("");
+const currentFocus = ref(0);
+const cityId = ref(0);
+const selectedSuggestionListItem = ref<ICitiListItem | null>(null);
+const newLocationString = ref("");
+const errStatus = ref("");
+const isLoading = ref(false);
 
 watchEffect(() => emit("loading", isLoading.value));
 
 const isSubmitButtonDisabled = computed<boolean>(
-  () => newLocationString.value.length === 0 || isLoading.value
+  () =>
+    newLocationString.value.length === 0 ||
+    isLoading.value ||
+    !foundList.value.length
 );
 
 function onInput() {
   errStatus.value = "";
+
+  const searchString = newLocationString.value.trim();
+  if (searchString.length < 3) {
+    foundList.value = [];
+    return;
+  }
+  throttledOnInput();
+}
+function updateFoundList() {
+  foundList.value = findSuggestionCities(newLocationString.value);
+  /* Если во вновь сформированном списке foundList есть элемент,
+   * который был до этого текущим (выбранным с помощью клавиатуры),
+   * то выбрать его, найдя его индекс в новом списке.
+   */
+  currentFocus.value = getCurrentFocusValue(cityId.value, foundList.value);
+
+  if (foundList.value.length) {
+    onSuggestionSelect({
+      item: foundList.value[currentFocus.value],
+      isClickSuggestionItem: false,
+    });
+  } else {
+    cityId.value = 0;
+    selectedSuggestionListItem.value = null;
+  }
+}
+function onSuggestionSelect({
+  item,
+  isClickSuggestionItem,
+}: {
+  item: ICitiListItem;
+  isClickSuggestionItem: boolean;
+}) {
+  cityId.value = item.id;
+  selectedSuggestionListItem.value = item;
+  if (isClickSuggestionItem) onSubmit();
 }
 async function onSubmit() {
   isLoading.value = true;
-  newLocation = await getWeatherData(newLocationString.value);
+  foundList.value = [];
+  newLocationString.value = selectedSuggestionListItem.value
+    ? `${selectedSuggestionListItem.value.name}, ${selectedSuggestionListItem.value.country}`
+    : "";
 
-  if (newLocation) {
-    emit("add-location", newLocation);
+  let newWeatherLocation: IGetWeatherSucceed | null = null;
+  if (cityId.value)
+    ({ location: newWeatherLocation, message: errStatus.value } =
+      await getWeatherByCityId(cityId.value, props));
+
+  if (newWeatherLocation) {
+    emit("add-location", newWeatherLocation);
     newLocationString.value = "";
+    cityId.value = 0;
   }
+
   setTimeout(() => inputField.value?.focus(), 0);
   isLoading.value = false;
 }
-async function getWeatherData(
-  city: string
-): Promise<IGetWeatherSucceed | null> {
-  try {
-    const result = await getWeatherByCityName({
-      city,
-      lang: props.lang,
-      units: props.units,
-      apiUrl: props.apiUrl,
-      apiKey: props.apiKey,
-    });
+function onKeyArrow(e: KeyboardEvent) {
+  const maxListIndex = foundList.value.length - 1;
 
-    if (result.status !== "succeed") {
-      const message = `Oops... ${result.message}, try again`;
-      errStatus.value = message;
-      console.error(message);
-
-      return null;
-    }
-
-    return result;
-  } catch (e) {
-    errStatus.value = "Oops... something went wrong, try to update page";
-    inputField.value?.focus();
-    console.error(e);
-
-    return null;
+  if (e.key === "ArrowDown") {
+    currentFocus.value =
+      currentFocus.value === maxListIndex ? 0 : currentFocus.value + 1;
+  } else if (e.key === "ArrowUp") {
+    currentFocus.value =
+      currentFocus.value === 0 ? maxListIndex : currentFocus.value - 1;
   }
+
+  onSuggestionSelect({
+    item: foundList.value[currentFocus.value],
+    isClickSuggestionItem: false,
+  });
 }
 function onClickClear() {
   newLocationString.value = "";
   errStatus.value = "";
+  foundList.value = [];
   inputField.value?.focus();
 }
 </script>

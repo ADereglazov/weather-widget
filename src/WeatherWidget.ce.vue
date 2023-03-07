@@ -8,10 +8,10 @@
   <SettingsSection
     v-if="isSettingsOpened"
     :locations-list="locationsList"
-    :lang="LANG"
-    :units="UNITS"
-    :apiUrl="API_URL"
-    :apiKey="API_KEY"
+    :lang="props.lang"
+    :units="props.units"
+    :apiUrl="props.apiUrl"
+    :apiKey="props.apiKey"
     @delete="onDelete"
     @add-location="addLocation"
     @sorting-locations-list="onSorting"
@@ -49,11 +49,8 @@ import {
   getLocalStorageWeatherData,
   setLocalStorageWeatherData,
 } from "@/services/localStorageWeather";
-import { ICoordinates } from "@/types/coordinates";
-import { IWeatherLocationTimestamped } from "@/types/weatherLocation";
-import { TLanguage } from "@/types/languages";
-import { TUnits } from "@/types/units";
-import { getOutdatedWeatherLocationIndexes } from "@/utils/getOutdatedWeatherLocationIndexes";
+import { getOutdatedWeatherLocationIndexes } from "@/utils";
+import { IWeatherLocationTimestamped, TLanguage, TUnits } from "@/types";
 import ManageButton from "@/components/ManageButton.vue";
 import WeatherSection from "@/components/WeatherSection.vue";
 import SettingsSection from "@/components/SettingsSection.vue";
@@ -64,6 +61,12 @@ const UNITS: TUnits = process.env.VUE_APP_UNITS || "metric";
 const API_URL: string = process.env.VUE_APP_API_URL || "";
 const API_KEY: string = process.env.VUE_APP_API_KEY || "";
 
+const props = {
+  lang: LANG,
+  units: UNITS,
+  apiUrl: API_URL,
+  apiKey: API_KEY,
+};
 const locationsList = ref<IWeatherLocationTimestamped[]>([]);
 const isSettingsOpened = ref<boolean>(false);
 const isLoading = ref<boolean>(false);
@@ -93,7 +96,11 @@ async function getGeoWeather() {
     return;
   }
 
-  const location = await getWeatherData(geo);
+  let location: IGetWeatherSucceed | null;
+  ({ location, message: errStatus.value } = await getWeatherFromGeo(
+    geo,
+    props
+  ));
   if (!location) {
     isLoading.value = false;
     return;
@@ -102,49 +109,23 @@ async function getGeoWeather() {
   addLocation(location);
   isLoading.value = false;
 }
-async function getWeatherData(
-  coordinates: ICoordinates
-): Promise<IGetWeatherSucceed | null> {
-  try {
-    const result = await getWeatherFromGeo({
-      coordinates,
-      lang: LANG,
-      units: UNITS,
-      apiUrl: API_URL,
-      apiKey: API_KEY,
-    });
-
-    if (result.status !== "succeed") {
-      const message = `Oops... ${result.message}, try to press reload button for update widget`;
-      errStatus.value = message;
-      console.error(message);
-
-      return null;
-    }
-
-    return result;
-  } catch (e) {
-    errStatus.value =
-      "Oops... something went wrong, try to press reload button for update widget";
-    console.error(e);
-
-    return null;
-  }
-}
 async function refreshLocalData() {
   const outdatedElements = getOutdatedWeatherLocationIndexes(
     locationsList.value
   );
 
   const promises = outdatedElements.map((index) =>
-    getWeatherData(locationsList.value[index].coord).then((location) => {
-      if (!location) {
-        return null;
-      }
+    getWeatherFromGeo(locationsList.value[index].coord, props).then(
+      (result) => {
+        if (!result.location) {
+          errStatus.value = result.message;
+          return null;
+        }
 
-      locationsList.value.splice(index, 1, location);
-      setLocalStorageWeatherData(locationsList.value);
-    })
+        locationsList.value.splice(index, 1, result.location);
+        setLocalStorageWeatherData(locationsList.value);
+      }
+    )
   );
 
   isLoading.value = true;
@@ -156,8 +137,7 @@ async function refreshLocalData() {
   }
 }
 function addLocation(location: IWeatherLocationTimestamped) {
-  const locationListLength = locationsList.value.length;
-  locationsList.value.splice(locationListLength, 0, location);
+  locationsList.value.splice(locationsList.value.length, 0, location);
   setLocalStorageWeatherData(locationsList.value);
   errStatus.value = "";
 }
