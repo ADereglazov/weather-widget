@@ -7,6 +7,7 @@ button {
 
   color: black;
   border: none;
+  border-radius: 2px;
 
   background-size: 16px 16px;
   background-color: transparent;
@@ -20,7 +21,7 @@ button {
   }
 
   &:focus-visible {
-    outline-color: $black;
+    outline: 2px solid $black;
   }
 
   &:active {

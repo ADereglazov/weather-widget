@@ -1,6 +1,6 @@
 <template>
   <div class="suggestion-list">
-    <ul class="suggestion-list__list">
+    <ul tabindex="-1" class="suggestion-list__list">
       <li
         v-for="(item, index) in list"
         :key="item.id"
