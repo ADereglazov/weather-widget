@@ -163,6 +163,7 @@ function onManageButtonClick() {
   position: absolute;
   top: 10px;
   right: 10px;
+  z-index: 2;
 }
 
 .app-weather-section--loading {

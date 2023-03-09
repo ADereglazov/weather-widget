@@ -1,15 +1,6 @@
 .weather-section {
-  &-wrapper {
-    padding-bottom: 10px;
-
-    &:last-child {
-      padding-bottom: 0;
-    }
-
-    & + & {
-      padding-top: 10px;
-      border-top: 1px solid $black;
-    }
+  &__swiper {
+    min-height: 292px;
   }
 
   &__title {

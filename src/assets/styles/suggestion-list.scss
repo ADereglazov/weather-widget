@@ -14,36 +14,12 @@
   &__list {
     display: block;
     width: 215px;
-    max-height: 173px;
+    max-height: 196px;
     padding: 0;
     margin: 0;
 
     overflow: hidden auto;
     list-style: none;
-
-    &::-webkit-scrollbar {
-      width: 5px;
-      height: 5px;
-    }
-
-    &::-webkit-scrollbar-track {
-      background: none;
-    }
-
-    &::-webkit-scrollbar-track-piece {
-      background-color: $gray-light;
-    }
-
-    &::-webkit-scrollbar-thumb {
-      width: 5px;
-      height: 30px;
-      border-radius: 3px;
-      background-color: $gray-scroll-bg
-    }
-
-    &::-webkit-scrollbar-thumb:active {
-      background-color: $black;
-    }
   }
 
   &__item {
