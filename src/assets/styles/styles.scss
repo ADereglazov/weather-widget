@@ -10,8 +10,11 @@
 @import "swiper-pagination.scss";
 
 ul {
-  scrollbar-width: thin;
-  scrollbar-color: $gray-scroll-bg $gray-light;
+  border-radius: 2px;
+
+  &:focus-visible {
+    outline: 2px solid $black;
+  }
 
   &::-webkit-scrollbar {
     width: 5px;
