@@ -2,7 +2,8 @@ weather-widget {
   position: relative;
 
   display: block;
-  max-width: 270px;
+  max-width: 280px;
+  min-height: 314px;
   box-sizing: border-box;
 
   padding: 10px;
