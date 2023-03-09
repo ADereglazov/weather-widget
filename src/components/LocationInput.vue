@@ -57,7 +57,14 @@
 </template>
 
 <script setup lang="ts">
-import { ref, watchEffect, computed, defineEmits, defineProps } from "vue";
+import {
+  ref,
+  watchEffect,
+  computed,
+  defineEmits,
+  defineProps,
+  onMounted,
+} from "vue";
 import throttle from "lodash.throttle";
 import {
   getWeatherByCityId,
@@ -86,6 +93,8 @@ const selectedSuggestionListItem = ref<ICitiListItem | null>(null);
 const newLocationString = ref("");
 const errStatus = ref("");
 const isLoading = ref(false);
+
+onMounted(() => inputField.value?.focus());
 
 watchEffect(() => emit("loading", isLoading.value));
 
