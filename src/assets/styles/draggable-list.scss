@@ -1,7 +1,10 @@
 .draggable-list {
-    padding: 0;
-    margin: 0;
-    list-style: none;
+  max-height: 180px;
+  padding: 0 2px 0 0;
+  margin: 0;
+
+  list-style: none;
+  overflow: hidden auto;
 
   &__item {
     position: relative;

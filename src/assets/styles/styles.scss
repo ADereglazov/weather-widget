@@ -6,3 +6,34 @@
 @import "location-input.scss";
 @import "suggestion-list";
 @import "buttons.scss";
+@import "swiper.scss";
+@import "swiper-pagination.scss";
+
+ul {
+  scrollbar-width: thin;
+  scrollbar-color: $gray-scroll-bg $gray-light;
+
+  &::-webkit-scrollbar {
+    width: 5px;
+    height: 5px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: none;
+  }
+
+  &::-webkit-scrollbar-track-piece {
+    background-color: $gray-light;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    width: 5px;
+    height: 30px;
+    border-radius: 3px;
+    background-color: $gray-scroll-bg
+  }
+
+  &::-webkit-scrollbar-thumb:active {
+    background-color: $black;
+  }
+}

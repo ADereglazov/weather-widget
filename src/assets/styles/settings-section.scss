@@ -1,8 +1,14 @@
 .settings-section {
+  min-height: 292px;
+
   &__title {
     margin-top: 0;
     margin-bottom: 10px;
     font-size: 15px;
     font-weight: bold;
+  }
+
+  &__location-input {
+    margin-bottom: 5px;
   }
 }
