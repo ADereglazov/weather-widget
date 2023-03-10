@@ -64,6 +64,9 @@
     width: 20px;
     height: 20px;
 
+    background-repeat: no-repeat;
+    background-position: center;
+
     &:hover {
       cursor: move;
     }
@@ -82,5 +85,9 @@
     text-overflow: ellipsis;
     white-space: nowrap;
     overflow: hidden;
+  }
+
+  &__item-delete-button {
+    background-color: transparent;
   }
 }

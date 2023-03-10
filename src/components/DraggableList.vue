@@ -22,8 +22,6 @@
         <div
           :style="{
             backgroundImage: `url(${require('@/assets/icons/burger.svg')})`,
-            backgroundRepeat: 'no-repeat',
-            backgroundPosition: 'center',
           }"
           class="draggable-list__item-icon-move handle"
         />
