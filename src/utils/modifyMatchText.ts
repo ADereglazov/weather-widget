@@ -1,10 +1,5 @@
 export function modifyMatchText(text: string, subString: string) {
-  const subStringModified = subString
-    .trim()
-    .replace(
-      /(\w+) (\w+)/,
-      (match, firstWord, secondWord) => `${firstWord}, ${secondWord}`
-    );
+  const subStringModified = subString.trim();
 
   const match = text.toLowerCase().indexOf(subStringModified.toLowerCase());
 
