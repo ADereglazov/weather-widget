@@ -33,18 +33,19 @@
           <div class="weather-section__temperature">
             <span v-if="location.main.temp > 0">+</span>
             <span>{{ location.main.temp }}</span>
-            <sup> o</sup>C
+            {{ unitsDict[units].temperature }}
           </div>
         </div>
 
         <p class="weather-section__wrapper-description">
-          Feels like <span v-if="location.main.feels_like > 0">+</span>
+          {{ dict.feelsLike }}:
+          <span v-if="location.main.feels_like > 0">+</span>
           <span>{{ location.main.feels_like }}</span>
-          <sup> o</sup>C,
+          {{ unitsDict[units].temperature }},
           {{
             location.weather[0].description.charAt(0).toUpperCase() +
             location.weather[0].description.slice(1)
-          }}, Cloud cover {{ location.clouds.all }}%
+          }}, {{ dict.cloudCover }}: {{ location.clouds.all }}%
         </p>
 
         <p class="weather-section__wrapper-details">
@@ -56,7 +57,9 @@
               }"
               class="weather-section__wrapper-description-icon"
             />
-            <span style="margin-left: 10px">{{ location.wind.speed }}m/s </span>
+            <span style="margin-left: 10px">
+              {{ location.wind.speed }}{{ unitsDict[units].windSpeed }}
+            </span>
             {{ getWindDirection(location.wind.deg) }}
           </span>
           <span>
@@ -66,12 +69,14 @@
               }"
               class="weather-section__wrapper-description-icon test"
             />
-            <span style="margin-left: 10px"
-              >{{ location.main.pressure }}hPa</span
-            >
+            <span style="margin-left: 10px">
+              {{ location.main.pressure }}{{ dict.pressure }}
+            </span>
           </span>
-          <span>Humidity: {{ location.main.humidity }}%</span>
-          <span>Visibility: {{ location.visibility / 1000 }}km</span>
+          <span>{{ dict.humidity }}: {{ location.main.humidity }}%</span>
+          <span>
+            {{ dict.visibility }}: {{ location.visibility / 1000 }}{{ dict.km }}
+          </span>
         </p>
       </SwiperSlide>
     </Swiper>
@@ -82,13 +87,32 @@
 import { defineProps } from "vue";
 import { getWindDirection } from "@/utils";
 import { IWeatherLocationTimestamped } from "@/types/weatherLocation";
+import { IDictionary } from "@/locales/types";
+import { TUnits } from "@/types";
 
 import SwiperCore, { Pagination, A11y } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/vue";
 
-defineProps<{
+const props = defineProps<{
   locationsList: IWeatherLocationTimestamped[];
+  dict: IDictionary;
+  units: TUnits;
 }>();
+
+const unitsDict = {
+  standard: {
+    temperature: "K",
+    windSpeed: props.dict.windSpeed,
+  },
+  metric: {
+    temperature: "\u00B0C",
+    windSpeed: props.dict.windSpeed,
+  },
+  imperial: {
+    temperature: "K",
+    windSpeed: props.dict.windSpeedImperial,
+  },
+};
 
 SwiperCore.use([Pagination, A11y]);
 </script>

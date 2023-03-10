@@ -7,6 +7,7 @@ import {
   IGetWeatherResult,
   TGetWeatherFetchSucceed,
 } from "./types";
+import { dict } from "@/locales";
 
 export async function getWeatherByCityId(
   cityId: number,
@@ -27,7 +28,9 @@ export async function getWeatherByCityId(
     });
 
     if (result.status !== "succeed") {
-      const message = `Oops... ${result.message}, try again`;
+      const message = `${dict[props.lang].oops}, ${result.message}, ${
+        dict[props.lang].tryAgain
+      }`;
       console.error(message);
 
       return { location: null, message };
@@ -35,7 +38,9 @@ export async function getWeatherByCityId(
 
     return { location: result, message: "" };
   } catch (e) {
-    const message = "Oops... something went wrong, try again";
+    const message = `${dict[props.lang].oops}, ${
+      dict[props.lang].somethingWentWrong
+    }, ${dict[props.lang].tryAgain}`;
     console.error(e);
 
     return { location: null, message };

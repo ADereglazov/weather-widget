@@ -1,6 +1,6 @@
 <template>
   <section class="settings-section">
-    <h2 class="settings-section__title">Settings</h2>
+    <h2 class="settings-section__title">{{ dict.settings }}</h2>
 
     <LocationInput
       class="settings-section__location-input"
@@ -8,12 +8,14 @@
       :units="units"
       :apiUrl="apiUrl"
       :apiKey="apiKey"
+      :dict="dict"
       @loading="onLoading"
       @add-location="onAddLocation"
     />
 
     <DraggableList
       :locations-list="locationsList"
+      :dict="dict"
       class="settings-section__draggable-list"
       @sorting-locations-list="onSorting"
       @delete="onDelete"
@@ -24,6 +26,7 @@
 <script setup lang="ts">
 import { defineEmits, defineProps } from "vue";
 import { IWeatherLocationTimestamped, TLanguage, TUnits } from "@/types";
+import { IDictionary } from "@/locales/types";
 import LocationInput from "@/components/LocationInput.vue";
 import DraggableList from "@/components/DraggableList.vue";
 
@@ -40,6 +43,7 @@ defineProps<{
   units: TUnits;
   apiUrl: string;
   apiKey: string;
+  dict: IDictionary;
 }>();
 
 function onAddLocation(location: IWeatherLocationTimestamped) {

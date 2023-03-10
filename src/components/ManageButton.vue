@@ -16,16 +16,18 @@
 
 <script setup lang="ts">
 import { defineEmits, defineProps, computed } from "vue";
+import { IDictionary } from "@/locales/types";
 
 const emit = defineEmits(["button-click"]);
 
 const props = defineProps<{
   isSettingsOpened: boolean;
   disabled: boolean;
+  dict: IDictionary;
 }>();
 
 const ariaLabel = computed<string>(() =>
-  props.isSettingsOpened ? "Close settings" : "Settings"
+  props.isSettingsOpened ? props.dict.closeSettings : props.dict.settings
 );
 function onClick() {
   emit("button-click");

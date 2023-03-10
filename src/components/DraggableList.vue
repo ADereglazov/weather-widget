@@ -33,7 +33,7 @@
           class="draggable-list__item-delete-button"
           type="button"
           name="delete"
-          aria-label="Delete item"
+          :aria-label="dict.deleteItem"
           :style="{
             backgroundImage: `url(${require('@/assets/icons/delete.svg')})`,
           }"
@@ -54,9 +54,11 @@ import {
 } from "vue";
 import Draggable from "vuedraggable";
 import { IWeatherLocationTimestamped } from "@/types";
+import { IDictionary } from "@/locales/types";
 
 const props = defineProps<{
   locationsList: IWeatherLocationTimestamped[];
+  dict: IDictionary;
 }>();
 
 const emit = defineEmits(["sorting-locations-list", "delete"]);

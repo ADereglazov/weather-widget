@@ -8,6 +8,7 @@ import {
   IGetWeatherResult,
   IGetWeatherSucceed,
 } from "./types";
+import { dict } from "@/locales";
 
 export async function getWeatherFromGeo(
   coordinates: ICoordinates,
@@ -28,7 +29,9 @@ export async function getWeatherFromGeo(
     });
 
     if (result.status !== "succeed") {
-      const message = `Oops... ${result.message}, try to press reload button for update widget`;
+      const message = `${dict[props.lang].oops} ${result.message}, ${
+        dict[props.lang].tryReload
+      }`;
       console.error(message);
 
       return { location: null, message };
@@ -36,8 +39,9 @@ export async function getWeatherFromGeo(
 
     return { location: result, message: "" };
   } catch (e) {
-    const message =
-      "Oops... something went wrong, try to press reload button for update widget";
+    const message = `${dict[props.lang].oops} ${
+      dict[props.lang].somethingWentWrong
+    }, ${dict[props.lang].tryReload}`;
     console.error(e);
 
     return { location: null, message };
