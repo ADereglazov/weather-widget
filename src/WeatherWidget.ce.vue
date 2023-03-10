@@ -3,6 +3,7 @@
     class="app-manage-button"
     :disabled="isLoading || isLoadingInSettings"
     :is-settings-opened="isSettingsOpened"
+    :dict="dict[props.lang]"
     @button-click="onManageButtonClick"
   />
   <SettingsSection
@@ -12,6 +13,7 @@
     :units="props.units"
     :apiUrl="props.apiUrl"
     :apiKey="props.apiKey"
+    :dict="dict[props.lang]"
     @delete="onDelete"
     @add-location="addLocation"
     @sorting-locations-list="onSorting"
@@ -20,6 +22,8 @@
   <WeatherSection
     v-else
     :locations-list="locationsList"
+    :dict="dict[props.lang]"
+    :units="props.units"
     class="app-weather-section"
     :class="{ 'app-weather-section--loading': isLoading }"
   />
@@ -32,7 +36,7 @@
     <button
       class="app-reload-button"
       type="button"
-      aria-label="Reload"
+      :aria-label="dict[props.lang].reload"
       :style="{
         backgroundImage: `url(${require('@/assets/icons/reload.svg')})`,
       }"
@@ -43,6 +47,7 @@
 
 <script setup lang="ts">
 import { ref, onBeforeMount } from "vue";
+import { dict } from "@/locales";
 import { getGeoLocalization } from "@/services/getGeoLocalization";
 import { getWeatherFromGeo, IGetWeatherSucceed } from "@/services/fetchWeather";
 import {
@@ -179,6 +184,8 @@ function onManageButtonClick() {
 }
 
 .app-error {
+  z-index: 2;
+
   width: 100%;
   max-width: 220px;
   padding: 20px 10px;

@@ -1,6 +1,8 @@
 <template>
   <form class="location-input" name="location-form" @submit.prevent="onSubmit">
-    <label class="location-input__label" for="inputField">Add location</label>
+    <label class="location-input__label" for="inputField">
+      {{ dict.addLocation }}
+    </label>
     <div class="location-input__wrapper">
       <input
         id="inputField"
@@ -13,7 +15,7 @@
         type="search"
         autocomplete="off"
         name="new-location-input"
-        placeholder="Input location"
+        :placeholder="dict.inputPlaceholder"
         :disabled="isLoading"
         @keydown.up.prevent="onKeyArrow"
         @keydown.down.prevent="onKeyArrow"
@@ -35,7 +37,7 @@
         :style="{
           backgroundImage: `url(${require('@/assets/icons/close.svg')})`,
         }"
-        aria-label="Clear location input"
+        :aria-label="dict.clearInput"
         class="location-input__button-clear"
         @keydown.enter.prevent="onClickClear"
         @click="onClickClear"
@@ -44,7 +46,7 @@
         class="location-input__button-submit"
         type="submit"
         name="enter"
-        aria-label="Add new location"
+        :aria-label="dict.addNewLocation"
         :disabled="isSubmitButtonDisabled"
         :style="{
           backgroundImage: `url(${require('@/assets/icons/enter.svg')})`,
@@ -71,6 +73,7 @@ import {
   IGetWeatherSucceed,
 } from "@/services/fetchWeather";
 import { TLanguage, TUnits, ICitiListItem } from "@/types";
+import { IDictionary } from "@/locales/types";
 import { findSuggestionCities, getCurrentFocusValue } from "@/utils";
 import SuggestionList from "@/components/SuggestionList.vue";
 import LoadingSpinner from "@/components/LoadingSpinner.vue";
@@ -82,6 +85,7 @@ const props = defineProps<{
   units: TUnits;
   apiUrl: string;
   apiKey: string;
+  dict: IDictionary;
 }>();
 
 const foundList = ref<ICitiListItem[]>([]);
