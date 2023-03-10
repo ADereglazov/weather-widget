@@ -15,7 +15,9 @@ export interface IDictionary {
   visibility: string;
   km: string;
   oops: string;
+  error: string;
   tryAgain: string;
+  noDataMessage: string;
   somethingWentWrong: string;
   tryReload: string;
   reload: string;

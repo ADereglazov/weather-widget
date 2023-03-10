@@ -95,8 +95,14 @@ async function getGeoWeather() {
 
   const geo = await getGeoLocalization();
   if (!geo) {
-    errStatus.value =
-      "Oops..., error! Try to press reload button for update widget";
+    const tryText =
+      dict[props.lang].tryReload.charAt(0).toUpperCase() +
+      dict[props.lang].tryReload.slice(1);
+
+    errStatus.value = `${dict[props.lang].oops}, ${
+      dict[props.lang].error
+    }! ${tryText}`;
+
     isLoading.value = false;
     return;
   }
@@ -158,7 +164,7 @@ function onManageButtonClick() {
   isSettingsOpened.value = !isSettingsOpened.value;
 
   if (!isSettingsOpened.value && !locationsList.value.length) {
-    errStatus.value = "No data! Press reload button or add city in settings";
+    errStatus.value = dict[props.lang].noDataMessage;
   }
 }
 </script>

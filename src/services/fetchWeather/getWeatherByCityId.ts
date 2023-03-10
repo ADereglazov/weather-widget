@@ -28,7 +28,7 @@ export async function getWeatherByCityId(
     });
 
     if (result.status !== "succeed") {
-      const message = `${dict[props.lang].oops} ${result.message}, ${
+      const message = `${dict[props.lang].oops}, ${result.message}, ${
         dict[props.lang].tryAgain
       }`;
       console.error(message);
@@ -38,7 +38,7 @@ export async function getWeatherByCityId(
 
     return { location: result, message: "" };
   } catch (e) {
-    const message = `${dict[props.lang].oops} ${
+    const message = `${dict[props.lang].oops}, ${
       dict[props.lang].somethingWentWrong
     }, ${dict[props.lang].tryAgain}`;
     console.error(e);
