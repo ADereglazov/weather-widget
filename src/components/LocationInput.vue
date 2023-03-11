@@ -145,7 +145,7 @@ function onSuggestionSelect({
   isClickSuggestionItem: boolean;
 }) {
   cityId.value = item.id;
-  selectedSuggestionListItem.value = item;
+  selectedSuggestionListItem.value = { ...item };
   if (isClickSuggestionItem) onSubmit();
 }
 async function onSubmit() {
