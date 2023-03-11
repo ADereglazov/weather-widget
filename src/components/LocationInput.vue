@@ -12,7 +12,7 @@
           'location-input__input--error': errStatus,
         }"
         class="location-input__input"
-        type="text"
+        type="search"
         autocomplete="off"
         name="new-location-input"
         :placeholder="dict.inputPlaceholder"
