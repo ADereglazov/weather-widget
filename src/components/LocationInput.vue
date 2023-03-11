@@ -12,7 +12,7 @@
           'location-input__input--error': errStatus,
         }"
         class="location-input__input"
-        type="search"
+        type="text"
         autocomplete="off"
         name="new-location-input"
         :placeholder="dict.inputPlaceholder"
@@ -145,7 +145,7 @@ function onSuggestionSelect({
   isClickSuggestionItem: boolean;
 }) {
   cityId.value = item.id;
-  selectedSuggestionListItem.value = item;
+  selectedSuggestionListItem.value = { ...item };
   if (isClickSuggestionItem) onSubmit();
 }
 async function onSubmit() {
