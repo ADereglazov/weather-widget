@@ -10,7 +10,7 @@
         }"
         class="suggestion-list__item"
         v-html="modifyMatchText(`${item.name}, ${item.country}`, searchString)"
-        @click="onSuggestionSelect(index, true)"
+        @click="onSuggestionSelect(item, true)"
       />
     </ul>
   </div>
@@ -40,7 +40,10 @@ const props = defineProps<{
 
 const emit = defineEmits(["suggestion-select"]);
 
-function onSuggestionSelect(index: number, isClickSuggestionItem = false) {
-  emit("suggestion-select", { item: props.list[index], isClickSuggestionItem });
+function onSuggestionSelect(
+  item: ICitiListItem,
+  isClickSuggestionItem = false
+) {
+  emit("suggestion-select", { item, isClickSuggestionItem });
 }
 </script>
