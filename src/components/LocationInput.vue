@@ -23,7 +23,7 @@
         @input="onInput"
       />
       <SuggestionList
-        v-show="foundList.length"
+        v-if="foundList.length"
         :list="foundList"
         :search-string="newLocationString"
         :current-focus="currentFocus"
