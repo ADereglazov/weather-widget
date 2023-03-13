@@ -19,17 +19,6 @@
           {{ item.name }}
         </option>
       </select>
-
-      <div
-        class="select-language__tooltip"
-        :style="{
-          backgroundImage: `url(${require('@/assets/icons/info.svg')})`,
-        }"
-      >
-        <span class="select-language__tooltip-text">
-          {{ dict.tooltipText }}
-        </span>
-      </div>
     </div>
   </div>
 </template>
@@ -51,7 +40,7 @@ onBeforeMount(() => (langModel.value = props.lang));
 const langModel = ref<TLanguage>("en");
 const languages = [
   { name: "English", value: "en" },
-  { name: "Russian", value: "ru" },
+  { name: "Русский", value: "ru" },
 ];
 
 function onChange() {

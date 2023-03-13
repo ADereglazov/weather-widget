@@ -38,49 +38,4 @@
       outline: 1px solid $blue;
     }
   }
-
-  &__tooltip {
-    position: relative;
-
-    display: inline-block;
-    width: 25px;
-    height: 25px;
-
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: 20px 20px;
-
-    &:hover .select-language__tooltip-text {
-      visibility: visible;
-    }
-  }
-
-  &__tooltip-text {
-    position: absolute;
-    top: 120%;
-    left: -163px;
-    z-index: 1;
-
-    width: 248px;
-    padding: 5px;
-
-    border-radius: 6px;
-    background-color: $black;
-    color: $white;
-    text-align: center;
-
-    visibility: hidden;
-
-    &::after {
-      content: "";
-      position: absolute;
-      bottom: 100%;
-      left: 68%;
-
-      margin-left: -5px;
-      border-width: 5px;
-      border-style: solid;
-      border-color: transparent transparent black transparent;
-    }
-  }
 }

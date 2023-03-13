@@ -14,7 +14,7 @@
     :apiUrl="props.apiUrl"
     :apiKey="props.apiKey"
     :dict="dict[props.lang]"
-    @change-language="onChangeSettings({ lang: $event, units: props.units })"
+    @change-language="onChangeLang({ lang: $event, units: props.units })"
     @change-units="onChangeSettings({ lang: props.lang, units: $event })"
     @delete="onDelete"
     @add-location="addLocation"
@@ -104,7 +104,7 @@ function getInitData() {
   if (locationsList.value.length === 0) {
     getGeoWeather();
   } else {
-    refreshLocalData();
+    refreshOutdatedLocalData();
   }
 }
 async function getGeoWeather() {
@@ -137,7 +137,7 @@ async function getGeoWeather() {
   addLocation(location);
   isLoading.value = false;
 }
-async function refreshLocalData() {
+async function refreshOutdatedLocalData() {
   const outdatedElements = getOutdatedWeatherLocationIndexes(
     locationsList.value
   );
@@ -154,6 +154,27 @@ async function refreshLocalData() {
         setLocalStorageWeatherData(locationsList.value);
       }
     )
+  );
+
+  isLoading.value = true;
+
+  try {
+    await Promise.all(promises);
+  } finally {
+    isLoading.value = false;
+  }
+}
+async function refreshLocalData() {
+  const promises = locationsList.value.map((item, index) =>
+    getWeatherFromGeo(item.coord, props).then((result) => {
+      if (!result.location) {
+        errStatus.value = result.message;
+        return null;
+      }
+
+      locationsList.value.splice(index, 1, result.location);
+      setLocalStorageWeatherData(locationsList.value);
+    })
   );
 
   isLoading.value = true;
@@ -184,9 +205,13 @@ function onManageButtonClick() {
     errStatus.value = dict[props.lang].noDataMessage;
   }
 }
+function onChangeLang({ lang, units }: ISettings) {
+  props.lang = lang;
+  refreshLocalData();
+  onChangeSettings({ lang, units });
+}
 function onChangeSettings({ lang, units }: ISettings) {
   setLocalStorageSettings({ lang, units });
-  props.lang = lang;
   props.units = units;
 }
 </script>

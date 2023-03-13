@@ -27,8 +27,6 @@ const en: IDictionary = {
   selectUnits: "Units of measurement",
   additionalSettings: "Additional settings",
   baseSettings: "Base settings",
-  tooltipText:
-    "After changing the language, delete and add the desired cities again. This is necessary in order to display all data in the selected language.",
   units: {
     standard: "standard",
     metric: "metric",

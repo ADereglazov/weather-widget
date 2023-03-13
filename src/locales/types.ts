@@ -27,7 +27,6 @@ export interface IDictionary {
   selectUnits: string;
   additionalSettings: string;
   baseSettings: string;
-  tooltipText: string;
   units: TUnitsAll;
 }
 
