@@ -14,6 +14,8 @@
     :apiUrl="props.apiUrl"
     :apiKey="props.apiKey"
     :dict="dict[props.lang]"
+    @change-language="onChangeLang({ lang: $event, units: props.units })"
+    @change-units="onChangeSettings({ lang: props.lang, units: $event })"
     @delete="onDelete"
     @add-location="addLocation"
     @sorting-locations-list="onSorting"
@@ -46,7 +48,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onBeforeMount } from "vue";
+import { ref, onBeforeMount, reactive } from "vue";
 import { dict } from "@/locales";
 import { getGeoLocalization } from "@/services/getGeoLocalization";
 import { getWeatherFromGeo, IGetWeatherSucceed } from "@/services/fetchWeather";
@@ -54,24 +56,36 @@ import {
   getLocalStorageWeatherData,
   setLocalStorageWeatherData,
 } from "@/services/localStorageWeather";
+import {
+  getLocalStorageSettings,
+  setLocalStorageSettings,
+} from "@/services/localStorageSettings";
 import { getOutdatedWeatherLocationIndexes } from "@/utils";
-import { IWeatherLocationTimestamped, TLanguage, TUnits } from "@/types";
+import {
+  ISettings,
+  IWeatherLocationTimestamped,
+  TLanguage,
+  TUnits,
+} from "@/types";
 import ManageButton from "@/components/ManageButton.vue";
 import WeatherSection from "@/components/WeatherSection.vue";
 import SettingsSection from "@/components/SettingsSection.vue";
 import LoadingSpinner from "@/components/LoadingSpinner.vue";
 
-const LANG: TLanguage = process.env.VUE_APP_LANG || "en";
-const UNITS: TUnits = process.env.VUE_APP_UNITS || "metric";
 const API_URL: string = process.env.VUE_APP_API_URL || "";
 const API_KEY: string = process.env.VUE_APP_API_KEY || "";
 
-const props = {
-  lang: LANG,
-  units: UNITS,
+const props = reactive<{
+  lang: TLanguage;
+  units: TUnits;
+  apiUrl: string;
+  apiKey: string;
+}>({
+  lang: "en",
+  units: "metric",
   apiUrl: API_URL,
   apiKey: API_KEY,
-};
+});
 const locationsList = ref<IWeatherLocationTimestamped[]>([]);
 const isSettingsOpened = ref<boolean>(false);
 const isLoading = ref<boolean>(false);
@@ -81,13 +95,16 @@ const errStatus = ref<string>("");
 onBeforeMount(() => {
   getInitData();
 });
-function getInitData() {
-  locationsList.value = getLocalStorageWeatherData();
 
+function getInitData() {
+  const settings: ISettings | null = getLocalStorageSettings();
+  if (settings) ({ lang: props.lang, units: props.units } = settings);
+
+  locationsList.value = getLocalStorageWeatherData();
   if (locationsList.value.length === 0) {
     getGeoWeather();
   } else {
-    refreshLocalData();
+    refreshOutdatedLocalData();
   }
 }
 async function getGeoWeather() {
@@ -120,7 +137,7 @@ async function getGeoWeather() {
   addLocation(location);
   isLoading.value = false;
 }
-async function refreshLocalData() {
+async function refreshOutdatedLocalData() {
   const outdatedElements = getOutdatedWeatherLocationIndexes(
     locationsList.value
   );
@@ -137,6 +154,27 @@ async function refreshLocalData() {
         setLocalStorageWeatherData(locationsList.value);
       }
     )
+  );
+
+  isLoading.value = true;
+
+  try {
+    await Promise.all(promises);
+  } finally {
+    isLoading.value = false;
+  }
+}
+async function refreshLocalData() {
+  const promises = locationsList.value.map((item, index) =>
+    getWeatherFromGeo(item.coord, props).then((result) => {
+      if (!result.location) {
+        errStatus.value = result.message;
+        return null;
+      }
+
+      locationsList.value.splice(index, 1, result.location);
+      setLocalStorageWeatherData(locationsList.value);
+    })
   );
 
   isLoading.value = true;
@@ -166,6 +204,15 @@ function onManageButtonClick() {
   if (!isSettingsOpened.value && !locationsList.value.length) {
     errStatus.value = dict[props.lang].noDataMessage;
   }
+}
+function onChangeLang({ lang, units }: ISettings) {
+  props.lang = lang;
+  refreshLocalData();
+  onChangeSettings({ lang, units });
+}
+function onChangeSettings({ lang, units }: ISettings) {
+  setLocalStorageSettings({ lang, units });
+  props.units = units;
 }
 </script>
 

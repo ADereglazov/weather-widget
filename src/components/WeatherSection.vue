@@ -49,7 +49,7 @@
         </p>
 
         <p class="weather-section__wrapper-details">
-          <span>
+          <span style="white-space: nowrap">
             <span
               :style="{
                 backgroundImage: `url(${require('@/assets/icons/direction.svg')})`,

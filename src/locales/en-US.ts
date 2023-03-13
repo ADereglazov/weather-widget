@@ -23,5 +23,14 @@ const en: IDictionary = {
   somethingWentWrong: "something went wrong",
   tryReload: "try to press reload button for update widget",
   reload: "Reload",
+  selectLanguage: "Select language",
+  selectUnits: "Units of measurement",
+  additionalSettings: "Additional settings",
+  baseSettings: "Base settings",
+  units: {
+    standard: "standard",
+    metric: "metric",
+    imperial: "imperial",
+  },
 };
 export default en;

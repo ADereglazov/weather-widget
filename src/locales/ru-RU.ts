@@ -24,5 +24,14 @@ const ru: IDictionary = {
   somethingWentWrong: "что-то пошло не так",
   tryReload: 'нажмите кнопку "перезагрузить" для обновления виджета',
   reload: "Перезагрузить",
+  selectLanguage: "Выберите язык",
+  selectUnits: "Единицы измерения",
+  additionalSettings: "Дополнительные настройки",
+  baseSettings: "Основные настройки",
+  units: {
+    standard: "стандартные",
+    metric: "метрические",
+    imperial: "имперские",
+  },
 };
 export default ru;
