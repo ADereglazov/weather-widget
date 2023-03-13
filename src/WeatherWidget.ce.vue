@@ -184,13 +184,7 @@ function onManageButtonClick() {
     errStatus.value = dict[props.lang].noDataMessage;
   }
 }
-function onChangeSettings({
-  lang = props.lang,
-  units = props.units,
-}: {
-  lang: TLanguage;
-  units: TUnits;
-}) {
+function onChangeSettings({ lang, units }: { lang: TLanguage; units: TUnits }) {
   setLocalStorageSettings({ lang, units });
   props.lang = lang;
   props.units = units;
