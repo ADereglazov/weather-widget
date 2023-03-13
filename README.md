@@ -1,6 +1,7 @@
 <p align="center">
-    <img src="docs/example1.png" alt="img" width="294" height="343" >
-    <img src="docs/example2.png" alt="img" width="294" height="343" >
+    <img src="docs/example1.png" alt="img" width="298" height="335" >
+    <img src="docs/example2.png" alt="img" width="298" height="335" >
+    <img src="docs/example3.png" alt="img" width="298" height="335" >
 </p>
 <p align="center">
     <a href="https://weather-widget-alpha.vercel.app">Online demo</a>
@@ -9,9 +10,7 @@
 ---
 ### Environment variables in .env file
 
-> **LANG** - language, for example: en, fr, ru  
-> **UNITS** - units: standard, metric, imperial  
-> **UPDATE_PERIOD_IN_HOURS** - local data update period in hours  
+> **UPDATE_PERIOD_IN_HOURS** - local data update period in hours, default - 2 hours  
 > **API_URL** - http://api.openweathermap.org/data/2.5/weather  
 > **API_KEY** - you personal key from [free public API](http://api.openweathermap.org)  
 > If you plan to use this: get your [own API key](https://openweathermap.org/appid#get) from OpenWeatherMap and replace the key in `.env`
