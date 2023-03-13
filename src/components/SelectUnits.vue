@@ -14,7 +14,7 @@
           @change="onChange"
         />
         <label :for="item" class="select-units__label">
-          <span class="select-units__cut-name">{{ item }}</span>
+          <span class="select-units__cut-name">{{ dict.units[item] }}</span>
         </label>
       </template>
     </div>

@@ -41,7 +41,7 @@
   }
 
   &__label ~ &__label {
-    margin-left: 15px;
+    margin-left: 10px;
   }
 
   &__input:checked + &__label::before {

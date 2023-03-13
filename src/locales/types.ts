@@ -1,3 +1,5 @@
+import { TUnits } from "@/types";
+
 export interface IDictionary {
   settings: string;
   closeSettings: string;
@@ -26,4 +28,9 @@ export interface IDictionary {
   additionalSettings: string;
   baseSettings: string;
   tooltipText: string;
+  units: TUnitsAll;
 }
+
+type TUnitsAll = {
+  [key in TUnits]: string;
+};
