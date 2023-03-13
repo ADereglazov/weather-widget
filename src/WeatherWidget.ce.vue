@@ -14,8 +14,8 @@
     :apiUrl="props.apiUrl"
     :apiKey="props.apiKey"
     :dict="dict[props.lang]"
-    @change-language="props.lang = $event"
-    @change-units="props.units = $event"
+    @change-language="onChangeSettings({ lang: $event })"
+    @change-units="onChangeSettings({ units: $event })"
     @delete="onDelete"
     @add-location="addLocation"
     @sorting-locations-list="onSorting"
@@ -56,21 +56,33 @@ import {
   getLocalStorageWeatherData,
   setLocalStorageWeatherData,
 } from "@/services/localStorageWeather";
+import {
+  getLocalStorageSettings,
+  setLocalStorageSettings,
+} from "@/services/localStorageSettings";
 import { getOutdatedWeatherLocationIndexes } from "@/utils";
-import { IWeatherLocationTimestamped, TLanguage, TUnits } from "@/types";
+import {
+  ISettings,
+  IWeatherLocationTimestamped,
+  TLanguage,
+  TUnits,
+} from "@/types";
 import ManageButton from "@/components/ManageButton.vue";
 import WeatherSection from "@/components/WeatherSection.vue";
 import SettingsSection from "@/components/SettingsSection.vue";
 import LoadingSpinner from "@/components/LoadingSpinner.vue";
 
-const LANG: TLanguage = process.env.VUE_APP_LANG || "en";
-const UNITS: TUnits = process.env.VUE_APP_UNITS || "metric";
 const API_URL: string = process.env.VUE_APP_API_URL || "";
 const API_KEY: string = process.env.VUE_APP_API_KEY || "";
 
-const props = reactive({
-  lang: LANG,
-  units: UNITS,
+const props = reactive<{
+  lang: TLanguage;
+  units: TUnits;
+  apiUrl: string;
+  apiKey: string;
+}>({
+  lang: "en",
+  units: "metric",
   apiUrl: API_URL,
   apiKey: API_KEY,
 });
@@ -83,9 +95,12 @@ const errStatus = ref<string>("");
 onBeforeMount(() => {
   getInitData();
 });
-function getInitData() {
-  locationsList.value = getLocalStorageWeatherData();
 
+function getInitData() {
+  const settings: ISettings | null = getLocalStorageSettings();
+  if (settings) ({ lang: props.lang, units: props.units } = settings);
+
+  locationsList.value = getLocalStorageWeatherData();
   if (locationsList.value.length === 0) {
     getGeoWeather();
   } else {
@@ -168,6 +183,11 @@ function onManageButtonClick() {
   if (!isSettingsOpened.value && !locationsList.value.length) {
     errStatus.value = dict[props.lang].noDataMessage;
   }
+}
+function onChangeSettings({ lang = props.lang, units = props.units }) {
+  setLocalStorageSettings({ lang, units });
+  props.lang = lang;
+  props.units = units;
 }
 </script>
 
