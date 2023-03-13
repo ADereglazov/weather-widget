@@ -8,7 +8,40 @@
     font-weight: bold;
   }
 
+  &__options {
+    margin-bottom: 10px;
+  }
+
   &__location-input {
     margin-bottom: 5px;
+  }
+
+  .settings-section__draggable-list {
+    margin-bottom: 5px;
+  }
+
+  &__additional-settings-label {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+
+    background-repeat: no-repeat;
+    background-color: transparent;
+    background-size: 16px 16px;
+
+    font-size: 15px;
+    text-decoration: underline;
+    color: $black;
+    white-space: nowrap;
+    overflow: hidden;
+
+    &:hover {
+      cursor: pointer;
+    }
+
+    &:active {
+      opacity: 0.7;
+    }
   }
 }

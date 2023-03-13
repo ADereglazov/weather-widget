@@ -1,0 +1,60 @@
+.select-units {
+  &__title {
+    margin-top: 0;
+    margin-bottom: 5px;
+
+    font-size: inherit;
+    font-weight: inherit;
+    text-align: center;
+  }
+
+  &__wrapper {
+    display: flex;
+    justify-content: space-around;
+  }
+
+  &__label {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &::before {
+      content: "";
+      display: inline-block;
+      vertical-align: middle;
+      flex-shrink: 0;
+      width: 10px;
+      height: 10px;
+      border: 2px solid $white;
+      border-radius: 50%;
+      background-color: $white;
+      box-shadow: 0 0 0 2px $gray-dark;
+    }
+
+    &:hover {
+      cursor: pointer;
+
+      &::before {
+        box-shadow: 0 0 0 2px $blue;
+      }
+    }
+  }
+
+  &__label ~ &__label {
+    margin-left: 15px;
+  }
+
+  &__input:checked + &__label::before {
+    background-color: $black;
+  }
+
+  &__input:focus + &__label::before {
+    box-shadow: 0 0 0 2px $blue;
+  }
+
+  &__cut-name {
+    padding-top: 5px;
+    font-size: 11px;
+    line-height: 14px;
+  }
+}

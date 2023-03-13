@@ -14,6 +14,8 @@
     :apiUrl="props.apiUrl"
     :apiKey="props.apiKey"
     :dict="dict[props.lang]"
+    @change-language="props.lang = $event"
+    @change-units="props.units = $event"
     @delete="onDelete"
     @add-location="addLocation"
     @sorting-locations-list="onSorting"
@@ -46,7 +48,7 @@
 </template>
 
 <script setup lang="ts">
-import { ref, onBeforeMount } from "vue";
+import { ref, onBeforeMount, reactive } from "vue";
 import { dict } from "@/locales";
 import { getGeoLocalization } from "@/services/getGeoLocalization";
 import { getWeatherFromGeo, IGetWeatherSucceed } from "@/services/fetchWeather";
@@ -66,12 +68,12 @@ const UNITS: TUnits = process.env.VUE_APP_UNITS || "metric";
 const API_URL: string = process.env.VUE_APP_API_URL || "";
 const API_KEY: string = process.env.VUE_APP_API_KEY || "";
 
-const props = {
+const props = reactive({
   lang: LANG,
   units: UNITS,
   apiUrl: API_URL,
   apiKey: API_KEY,
-};
+});
 const locationsList = ref<IWeatherLocationTimestamped[]>([]);
 const isSettingsOpened = ref<boolean>(false);
 const isLoading = ref<boolean>(false);

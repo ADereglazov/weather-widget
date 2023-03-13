@@ -21,4 +21,9 @@ export interface IDictionary {
   somethingWentWrong: string;
   tryReload: string;
   reload: string;
+  selectLanguage: string;
+  selectUnits: string;
+  additionalSettings: string;
+  baseSettings: string;
+  tooltipText: string;
 }
