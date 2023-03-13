@@ -11,7 +11,7 @@ const en: IDictionary = {
   feelsLike: "Feels like",
   cloudCover: "Cloud cover",
   windSpeed: "m/s",
-  windSpeedImperial: "m/h",
+  windSpeedImperial: "miles/h",
   pressure: "hPa",
   humidity: "Humidity",
   visibility: "Visibility",

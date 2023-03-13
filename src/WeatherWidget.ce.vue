@@ -15,7 +15,7 @@
     :apiKey="props.apiKey"
     :dict="dict[props.lang]"
     @change-language="onChangeLang({ lang: $event, units: props.units })"
-    @change-units="onChangeSettings({ lang: props.lang, units: $event })"
+    @change-units="onChangeUnits({ lang: props.lang, units: $event })"
     @delete="onDelete"
     @add-location="addLocation"
     @sorting-locations-list="onSorting"
@@ -207,12 +207,15 @@ function onManageButtonClick() {
 }
 function onChangeLang({ lang, units }: ISettings) {
   props.lang = lang;
-  refreshLocalData();
-  onChangeSettings({ lang, units });
-}
-function onChangeSettings({ lang, units }: ISettings) {
-  setLocalStorageSettings({ lang, units });
   props.units = units;
+  refreshLocalData();
+  setLocalStorageSettings({ lang, units });
+}
+function onChangeUnits({ lang, units }: ISettings) {
+  props.lang = lang;
+  props.units = units;
+  refreshLocalData();
+  setLocalStorageSettings({ lang, units });
 }
 </script>
 

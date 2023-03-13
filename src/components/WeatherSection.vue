@@ -109,7 +109,7 @@ const unitsDict = {
     windSpeed: props.dict.windSpeed,
   },
   imperial: {
-    temperature: "K",
+    temperature: "F",
     windSpeed: props.dict.windSpeedImperial,
   },
 };
