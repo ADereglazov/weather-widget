@@ -25,7 +25,7 @@
       flex-shrink: 0;
       width: 10px;
       height: 10px;
-      border: 2px solid $white;
+      border: 3px solid $white;
       border-radius: 50%;
       background-color: $white;
       box-shadow: 0 0 0 2px $gray-dark;
@@ -35,7 +35,7 @@
       cursor: pointer;
 
       &::before {
-        box-shadow: 0 0 0 2px $blue;
+        box-shadow: 0 0 0 3px $blue;
       }
     }
   }
@@ -49,7 +49,7 @@
   }
 
   &__input:focus + &__label::before {
-    box-shadow: 0 0 0 2px $blue;
+    box-shadow: 0 0 0 3px $blue;
   }
 
   &__cut-name {
