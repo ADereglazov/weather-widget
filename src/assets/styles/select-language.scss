@@ -34,8 +34,10 @@
       display: none;
     }
 
+    &:hover,
     &:focus {
-      outline: 1px solid $blue;
+      outline: 2px solid $blue;
+      cursor: pointer;
     }
   }
 }

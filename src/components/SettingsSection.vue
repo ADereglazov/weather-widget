@@ -33,18 +33,20 @@
       />
     </template>
 
+    <input
+      v-model="additionalSettingsModel"
+      id="settings-toggle"
+      type="checkbox"
+      name="additional-settings"
+      class="settings-section__additional-settings-input visually-hidden"
+    />
     <label
+      for="settings-toggle"
       class="settings-section__additional-settings-label"
       :style="
         additionalSettingsModel ? labelStyles.base : labelStyles.additional
       "
     >
-      <input
-        v-model="additionalSettingsModel"
-        type="checkbox"
-        name="additional-settings"
-        class="settings-section__additional-settings-input visually-hidden"
-      />
       {{
         additionalSettingsModel ? dict.baseSettings : dict.additionalSettings
       }}
@@ -82,12 +84,12 @@ const labelStyles = {
   base: {
     backgroundImage: `url(${require("@/assets/icons/left.svg")})`,
     backgroundPosition: "left",
-    padding: "0 0 0 20px",
+    padding: "2px 4px 2px 20px",
   },
   additional: {
     backgroundImage: `url(${require("@/assets/icons/right.svg")})`,
     backgroundPosition: "right",
-    padding: "0 20px 0 0",
+    padding: "2px 20px 2px 4px",
   },
 };
 
