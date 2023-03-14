@@ -20,7 +20,7 @@
     margin-bottom: 5px;
   }
 
-  &__additional-settings-input:focus + &__additional-settings-label {
+  &__additional-settings-input:focus-visible + &__additional-settings-label {
     outline: 2px solid $black;
   }
 
