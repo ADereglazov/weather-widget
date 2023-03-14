@@ -14,8 +14,8 @@
     :apiUrl="props.apiUrl"
     :apiKey="props.apiKey"
     :dict="dict[props.lang]"
-    @change-language="onChangeLang({ lang: $event, units: props.units })"
-    @change-units="onChangeUnits({ lang: props.lang, units: $event })"
+    @change-language="changeSettings({ lang: $event, units: props.units })"
+    @change-units="changeSettings({ lang: props.lang, units: $event })"
     @delete="onDelete"
     @add-location="addLocation"
     @sorting-locations-list="onSorting"
@@ -205,13 +205,9 @@ function onManageButtonClick() {
     errStatus.value = dict[props.lang].noDataMessage;
   }
 }
-function onChangeLang({ lang, units }: ISettings) {
-  props.lang = lang;
-  props.units = units;
-  refreshLocalData();
-  setLocalStorageSettings({ lang, units });
-}
-function onChangeUnits({ lang, units }: ISettings) {
+function changeSettings({ lang, units }: ISettings) {
+  // At first necessary change props.lang and props.units,
+  // because it uses for network queries in refreshLocalData() function.
   props.lang = lang;
   props.units = units;
   refreshLocalData();
