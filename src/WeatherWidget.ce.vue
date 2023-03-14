@@ -137,12 +137,14 @@ async function getGeoWeather() {
   addLocation(location);
   isLoading.value = false;
 }
-async function refreshOutdatedLocalData() {
+function refreshOutdatedLocalData() {
   const outdatedElements = getOutdatedWeatherLocationIndexes(
     locationsList.value
   );
-
-  const promises = outdatedElements.map((index) =>
+  refreshLocalData(outdatedElements);
+}
+async function refreshLocalData(indexes: number[]) {
+  const promises = indexes.map((index) =>
     getWeatherFromGeo(locationsList.value[index].coord, props).then(
       (result) => {
         if (!result.location) {
@@ -154,27 +156,6 @@ async function refreshOutdatedLocalData() {
         setLocalStorageWeatherData(locationsList.value);
       }
     )
-  );
-
-  isLoading.value = true;
-
-  try {
-    await Promise.all(promises);
-  } finally {
-    isLoading.value = false;
-  }
-}
-async function refreshLocalData() {
-  const promises = locationsList.value.map((item, index) =>
-    getWeatherFromGeo(item.coord, props).then((result) => {
-      if (!result.location) {
-        errStatus.value = result.message;
-        return null;
-      }
-
-      locationsList.value.splice(index, 1, result.location);
-      setLocalStorageWeatherData(locationsList.value);
-    })
   );
 
   isLoading.value = true;
@@ -210,7 +191,8 @@ function changeSettings({ lang, units }: ISettings) {
   // because it uses for network queries in refreshLocalData() function.
   props.lang = lang;
   props.units = units;
-  refreshLocalData();
+  const locationsListIndexes = locationsList.value.map((item, index) => index);
+  refreshLocalData(locationsListIndexes);
   setLocalStorageSettings({ lang, units });
 }
 </script>
