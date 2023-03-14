@@ -8,8 +8,8 @@
       :units="units"
       :dict="dict"
       class="settings-section__options"
-      @change-language="emit('change-language', $event)"
-      @change-units="emit('change-units', $event)"
+      @change-language="emit('change-settings', { lang: $event, units })"
+      @change-units="emit('change-settings', { lang, units: $event })"
     />
 
     <template v-else>
@@ -65,8 +65,7 @@ const emit = defineEmits([
   "add-location",
   "delete",
   "loading",
-  "change-language",
-  "change-units",
+  "change-settings",
 ]);
 
 defineProps<{
