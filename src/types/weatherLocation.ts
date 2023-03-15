@@ -8,25 +8,21 @@ export interface IWeatherLocation {
   id: number;
   /** City name */
   name: string;
-  /** Internal API parameter */
-  base: string;
-  /** Time of data calculation, unix, UTC */
-  dt: number;
-  /** Shift in seconds from UTC */
-  timezone: number;
-  /** Cloudiness, % */
-  clouds: IClouds;
   /** City geolocation, longitude and latitude */
   coord: ICoordinates;
   main: IWeatherLocationMain;
-  /** Visibility, meter. The maximum value of the visibility is 10km */
-  visibility: number;
+  /** Time of data calculation, unix, UTC */
+  dt: number;
   wind: IWind;
+  sys: ISys;
+  /** Rain volume for the last 1 hour, 3 hours, mm (where available) */
   rain: TRain | null;
+  /** Snow volume for the last 1 hour, 3 hours, mm (where available) */
   snow: TSnow | null;
+  /** Cloudiness, % */
+  clouds: IClouds;
   /** more info Weather condition codes */
   weather: IWeatherConditionCodes[];
-  sys: ISys;
 }
 
 interface IClouds {
@@ -39,8 +35,6 @@ interface IWind {
   speed: number;
   /** Wind direction, degrees (meteorological) */
   deg: number;
-  /** Wind gust. Unit Default: meter/sec, Metric: meter/sec, Imperial: miles/hour */
-  gust: number;
 }
 
 interface IWeatherLocationMain {
