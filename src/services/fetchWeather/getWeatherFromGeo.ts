@@ -5,7 +5,7 @@ import {
   IGetWeatherFetchFailed,
   TGetWeatherFetchSucceed,
   IGetWeatherFromGeoParameters,
-  IGetWeatherResult,
+  TGetWeatherResult,
   IGetWeatherSucceed,
 } from "./types";
 import { dict } from "@/locales";
@@ -53,7 +53,7 @@ async function getWeather({
   units = "metric",
   apiUrl,
   apiKey,
-}: IGetWeatherFromGeoParameters): Promise<IGetWeatherResult> {
+}: IGetWeatherFromGeoParameters): Promise<TGetWeatherResult> {
   const requestUrl = new URL(apiUrl);
   requestUrl.searchParams.set("lat", String(coordinates.lat));
   requestUrl.searchParams.set("lon", String(coordinates.lon));

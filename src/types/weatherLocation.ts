@@ -5,6 +5,7 @@ export interface IWeatherLocationTimestamped extends IWeatherLocation {
 }
 
 export interface IWeatherLocation {
+  id: number;
   /** City name */
   name: string;
   /** Internal API parameter */
@@ -21,7 +22,11 @@ export interface IWeatherLocation {
   /** Visibility, meter. The maximum value of the visibility is 10km */
   visibility: number;
   wind: IWind;
-  rain: TRain;
+  rain: TRain | null;
+  snow: TSnow | null;
+  /** more info Weather condition codes */
+  weather: IWeatherConditionCodes[];
+  sys: ISys;
 }
 
 interface IClouds {
@@ -66,7 +71,27 @@ interface IWeatherLocationMain {
   grnd_level: number;
 }
 
+interface IWeatherConditionCodes {
+  /** Weather condition id */
+  id: number;
+  /** Group of weather parameters (Rain, Snow, Extreme etc.) */
+  main: string;
+  /** Weather condition within the group. You can get the output in your language. */
+  description: string;
+  /** Weather icon id */
+  icon: string;
+}
+
+interface ISys {
+  /** Country code (GB, JP etc.) */
+  country: string;
+}
+
 type TRain = {
+  [key in TTimeInterval]: number;
+};
+
+type TSnow = {
   [key in TTimeInterval]: number;
 };
 

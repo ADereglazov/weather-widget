@@ -32,4 +32,4 @@ export interface IGetWeatherFailed {
 }
 
 export type TGetWeatherFetchSucceed = IWeatherLocation;
-export type IGetWeatherResult = IGetWeatherSucceed | IGetWeatherFailed;
+export type TGetWeatherResult = IGetWeatherSucceed | IGetWeatherFailed;
