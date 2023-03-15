@@ -1,13 +1,12 @@
-import { IGetWeatherSucceed } from "@/services/fetchWeather";
-import { TLanguage } from "@/types/languages";
-import { TUnits } from "@/types/units";
+import { dict } from "@/locales";
+import { TLanguage, TUnits } from "@/types";
 import {
   IGetWeatherByCityIdParameters,
+  IGetWeatherSucceed,
   IGetWeatherFetchFailed,
   TGetWeatherResult,
   TGetWeatherFetchSucceed,
 } from "./types";
-import { dict } from "@/locales";
 
 export async function getWeatherByCityId(
   cityId: number,
@@ -53,7 +52,7 @@ async function getWeather({
   apiUrl,
   apiKey,
 }: IGetWeatherByCityIdParameters): Promise<TGetWeatherResult> {
-  const requestUrl = new URL(apiUrl);
+  const requestUrl = new URL(`${apiUrl}/weather/`);
   requestUrl.searchParams.set("id", String(id));
   requestUrl.searchParams.set("lang", lang);
   requestUrl.searchParams.set("units", units);

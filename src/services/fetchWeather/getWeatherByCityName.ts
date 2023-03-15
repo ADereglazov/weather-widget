@@ -1,15 +1,15 @@
 import { dict } from "@/locales";
-import { ICoordinates, TLanguage, TUnits } from "@/types";
+import { TLanguage, TUnits } from "@/types";
 import {
+  IGetWeatherByCityNameParameters,
   IGetWeatherFetchFailed,
-  TGetWeatherFetchSucceed,
-  IGetWeatherFromGeoParameters,
-  TGetWeatherResult,
   IGetWeatherSucceed,
+  TGetWeatherFetchSucceed,
+  TGetWeatherResult,
 } from "./types";
 
-export async function getWeatherFromGeo(
-  coordinates: ICoordinates,
+export async function getWeatherByCityName(
+  city: string,
   props: {
     lang: TLanguage;
     units: TUnits;
@@ -19,7 +19,7 @@ export async function getWeatherFromGeo(
 ): Promise<{ location: IGetWeatherSucceed | null; message: string }> {
   try {
     const result = await getWeather({
-      coordinates,
+      city,
       lang: props.lang,
       units: props.units,
       apiUrl: props.apiUrl,
@@ -27,8 +27,8 @@ export async function getWeatherFromGeo(
     });
 
     if (result.status !== "succeed") {
-      const message = `${dict[props.lang].oops} ${result.message}, ${
-        dict[props.lang].tryReload
+      const message = `${dict[props.lang].oops}, ${result.message}, ${
+        dict[props.lang].tryAgain
       }`;
       console.error(message);
 
@@ -37,28 +37,26 @@ export async function getWeatherFromGeo(
 
     return { location: result, message: "" };
   } catch (e) {
-    const message = `${dict[props.lang].oops} ${
+    const message = `${dict[props.lang].oops}, ${
       dict[props.lang].somethingWentWrong
-    }, ${dict[props.lang].tryReload}`;
+    }, ${dict[props.lang].tryAgain}`;
     console.error(e);
 
     return { location: null, message };
   }
 }
 async function getWeather({
-  coordinates,
+  city = "",
   lang = "en",
   units = "metric",
   apiUrl,
   apiKey,
-}: IGetWeatherFromGeoParameters): Promise<TGetWeatherResult> {
-  const requestUrl = new URL(`${apiUrl}/weather/`);
-  requestUrl.searchParams.set("lat", String(coordinates.lat));
-  requestUrl.searchParams.set("lon", String(coordinates.lon));
+}: IGetWeatherByCityNameParameters): Promise<TGetWeatherResult> {
+  const requestUrl = new URL(`${apiUrl}/find/`);
+  requestUrl.searchParams.set("q", city);
   requestUrl.searchParams.set("lang", lang);
   requestUrl.searchParams.set("units", units);
   requestUrl.searchParams.set("appid", apiKey);
-
   const response = await fetch(requestUrl.toString());
 
   if (!response.ok) {

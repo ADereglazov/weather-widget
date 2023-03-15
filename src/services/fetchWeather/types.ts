@@ -10,6 +10,10 @@ export interface IGetWeatherFromGeoParameters
   extends IGetWeatherCommonParameters {
   coordinates: ICoordinates;
 }
+export interface IGetWeatherByCityNameParameters
+  extends IGetWeatherCommonParameters {
+  city: string;
+}
 export interface IGetWeatherByCityIdParameters
   extends IGetWeatherCommonParameters {
   id: number;

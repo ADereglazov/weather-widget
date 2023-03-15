@@ -1,6 +1,7 @@
 import { ICoordinates } from "./coordinates";
 
 export interface IWeatherLocationTimestamped extends IWeatherLocation {
+  /** Time of data update (app internal parameter), unix, UTC */
   lastUpdated: number;
 }
 
