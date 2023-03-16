@@ -144,9 +144,6 @@ async function onSubmit() {
       await getWeatherByCityName(newLocationString.value, props));
 
     if (locationsList?.count) {
-      foundList.value = locationsList.list.map((item) => {
-        return { ...item, lastUpdated: locationsList?.lastUpdated };
-      });
       selectedSuggestionListItem.value = foundList.value[0];
       currentFocus.value = 0;
     }
