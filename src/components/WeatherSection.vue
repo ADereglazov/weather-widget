@@ -86,9 +86,8 @@
 <script setup lang="ts">
 import { defineProps } from "vue";
 import { getWindDirection } from "@/utils";
-import { IWeatherLocationTimestamped } from "@/types/weatherLocation";
+import { IWeatherLocationTimestamped, TUnits } from "@/types";
 import { IDictionary } from "@/locales/types";
-import { TUnits } from "@/types";
 
 import SwiperCore, { Pagination, A11y } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/vue";
