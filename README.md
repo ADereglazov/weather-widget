@@ -7,11 +7,13 @@
     <a href="https://weather-widget-alpha.vercel.app">Online demo</a>
 </p>
 
+>Type the full name of the location (city) to search for it. Then select the necessary location (city) from the dropdown list.  
+>Sorry, API can search only full name of location (city).
 ---
 ### Environment variables in .env file
 
-> **UPDATE_PERIOD_IN_HOURS** - local data update period in hours, default - 2 hours  
-> **API_URL** - http://api.openweathermap.org/data/2.5/weather  
+> **UPDATE_PERIOD_IN_HOURS** - local saved data update period in hours, default - 2 hours  
+> **API_URL** - http://api.openweathermap.org/data/2.5  
 > **API_KEY** - you personal key from [free public API](http://api.openweathermap.org)  
 > If you plan to use this: get your [own API key](https://openweathermap.org/appid#get) from OpenWeatherMap and replace the key in `.env`
 ---    
