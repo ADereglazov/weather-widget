@@ -1,9 +1,9 @@
 <template>
   <ManageButton
-    class="app-manage-button"
     :disabled="isLoading || isLoadingInSettings"
     :is-settings-opened="isSettingsOpened"
     :dict="dict[props.lang]"
+    class="app-manage-button"
     @button-click="onManageButtonClick"
   />
   <SettingsSection
@@ -14,6 +14,8 @@
     :apiUrl="props.apiUrl"
     :apiKey="props.apiKey"
     :dict="dict[props.lang]"
+    :class="{ 'app-settings-section--loading': isLoading }"
+    class="app-settings-section"
     @change-settings="changeSettings"
     @delete="onDelete"
     @add-location="addLocation"
@@ -25,8 +27,8 @@
     :locations-list="locationsList"
     :dict="dict[props.lang]"
     :units="props.units"
-    class="app-weather-section"
     :class="{ 'app-weather-section--loading': isLoading }"
+    class="app-weather-section"
   />
   <LoadingSpinner v-show="isLoading" class="app-spinner" />
   <div
@@ -35,12 +37,12 @@
   >
     {{ errStatus }}
     <button
-      class="app-reload-button"
       type="button"
       :aria-label="dict[props.lang].reload"
       :style="{
         backgroundImage: `url(${require('@/assets/icons/reload.svg')})`,
       }"
+      class="app-reload-button"
       @click="getInitData"
     />
   </div>
@@ -204,7 +206,8 @@ function changeSettings({ lang, units }: ISettings) {
   z-index: 2;
 }
 
-.app-weather-section--loading {
+.app-weather-section--loading,
+.app-settings-section--loading {
   opacity: 0.3;
 }
 

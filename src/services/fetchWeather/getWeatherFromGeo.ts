@@ -1,14 +1,12 @@
-import { ICoordinates } from "@/types/coordinates";
-import { TLanguage } from "@/types/languages";
-import { TUnits } from "@/types/units";
+import { dict } from "@/locales";
+import { ICoordinates, TLanguage, TUnits } from "@/types";
 import {
   IGetWeatherFetchFailed,
   TGetWeatherFetchSucceed,
   IGetWeatherFromGeoParameters,
-  IGetWeatherResult,
+  TGetWeatherResult,
   IGetWeatherSucceed,
 } from "./types";
-import { dict } from "@/locales";
 
 export async function getWeatherFromGeo(
   coordinates: ICoordinates,
@@ -53,8 +51,8 @@ async function getWeather({
   units = "metric",
   apiUrl,
   apiKey,
-}: IGetWeatherFromGeoParameters): Promise<IGetWeatherResult> {
-  const requestUrl = new URL(apiUrl);
+}: IGetWeatherFromGeoParameters): Promise<TGetWeatherResult> {
+  const requestUrl = new URL(`${apiUrl}/weather/`);
   requestUrl.searchParams.set("lat", String(coordinates.lat));
   requestUrl.searchParams.set("lon", String(coordinates.lon));
   requestUrl.searchParams.set("lang", lang);

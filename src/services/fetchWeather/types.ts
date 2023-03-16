@@ -1,14 +1,19 @@
-import { ICoordinates } from "@/types/coordinates";
-import { TLanguage } from "@/types/languages";
-import { TUnits } from "@/types/units";
 import {
+  ICoordinates,
+  TLanguage,
+  TUnits,
   IWeatherLocation,
+  IWeatherLocationsList,
   IWeatherLocationTimestamped,
-} from "@/types/weatherLocation";
+} from "@/types";
 
 export interface IGetWeatherFromGeoParameters
   extends IGetWeatherCommonParameters {
   coordinates: ICoordinates;
+}
+export interface IGetWeatherByCityNameParameters
+  extends IGetWeatherCommonParameters {
+  city: string;
 }
 export interface IGetWeatherByCityIdParameters
   extends IGetWeatherCommonParameters {
@@ -30,6 +35,14 @@ export interface IGetWeatherFailed {
   status: "failed";
   message: string;
 }
+export interface IGetWeatherFetchByNameSucceed extends IWeatherLocationsList {
+  status: "succeed";
+}
 
 export type TGetWeatherFetchSucceed = IWeatherLocation;
-export type IGetWeatherResult = IGetWeatherSucceed | IGetWeatherFailed;
+export type TGetWeatherResult = IGetWeatherSucceed | IGetWeatherFailed;
+
+export type TGetWeatherFetchByNameSucceed = IWeatherLocationsList;
+export type TGetWeatherByNameResult =
+  | IGetWeatherFetchByNameSucceed
+  | IGetWeatherFailed;

@@ -1,27 +1,40 @@
 import { ICoordinates } from "./coordinates";
 
+export interface IWeatherLocationsList {
+  /** Internal parameter: find cities method */
+  message: string;
+  /** Internal parameter */
+  cod: number;
+  /** Count of found cities */
+  count: number;
+  /** Weather locations list */
+  list: IWeatherLocation[];
+}
+
 export interface IWeatherLocationTimestamped extends IWeatherLocation {
+  /** Time of data update (app internal parameter), unix, UTC */
   lastUpdated: number;
 }
 
 export interface IWeatherLocation {
+  id: number;
   /** City name */
   name: string;
-  /** Internal API parameter */
-  base: string;
-  /** Time of data calculation, unix, UTC */
-  dt: number;
-  /** Shift in seconds from UTC */
-  timezone: number;
-  /** Cloudiness, % */
-  clouds: IClouds;
   /** City geolocation, longitude and latitude */
   coord: ICoordinates;
   main: IWeatherLocationMain;
-  /** Visibility, meter. The maximum value of the visibility is 10km */
-  visibility: number;
+  /** Time of data calculation, unix, UTC */
+  dt: number;
   wind: IWind;
-  rain: TRain;
+  sys: ISys;
+  /** Rain volume for the last 1 hour, 3 hours, mm (where available) */
+  rain: TRain | null;
+  /** Snow volume for the last 1 hour, 3 hours, mm (where available) */
+  snow: TSnow | null;
+  /** Cloudiness, % */
+  clouds: IClouds;
+  /** more info Weather condition codes */
+  weather: IWeatherConditionCodes[];
 }
 
 interface IClouds {
@@ -34,8 +47,6 @@ interface IWind {
   speed: number;
   /** Wind direction, degrees (meteorological) */
   deg: number;
-  /** Wind gust. Unit Default: meter/sec, Metric: meter/sec, Imperial: miles/hour */
-  gust: number;
 }
 
 interface IWeatherLocationMain {
@@ -66,7 +77,27 @@ interface IWeatherLocationMain {
   grnd_level: number;
 }
 
+interface IWeatherConditionCodes {
+  /** Weather condition id */
+  id: number;
+  /** Group of weather parameters (Rain, Snow, Extreme etc.) */
+  main: string;
+  /** Weather condition within the group. You can get the output in your language. */
+  description: string;
+  /** Weather icon id */
+  icon: string;
+}
+
+interface ISys {
+  /** Country code (GB, JP etc.) */
+  country: string;
+}
+
 type TRain = {
+  [key in TTimeInterval]: number;
+};
+
+type TSnow = {
   [key in TTimeInterval]: number;
 };
 
