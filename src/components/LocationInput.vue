@@ -141,7 +141,7 @@ async function onSubmit() {
   } else {
     let locationsList: IGetWeatherFetchByNameSucceed | null;
     ({ location: locationsList, message: errStatus.value } =
-      await getWeatherByCityName(newLocationString.value, props));
+      await getWeatherByCityName(newLocationString.value.trim(), props));
 
     if (locationsList?.count) {
       selectedSuggestionListItem.value = foundList.value[0];
