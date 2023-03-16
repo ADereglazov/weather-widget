@@ -1,13 +1,5 @@
 export function getWindDirection(value = 0) {
   const windDirections = [
-    "N",
-    "NNE",
-    "NE",
-    "ENE",
-    "E",
-    "ESE",
-    "SE",
-    "SSE",
     "S",
     "SSW",
     "SW",
@@ -16,6 +8,14 @@ export function getWindDirection(value = 0) {
     "WNW",
     "NW",
     "NNW",
+    "N",
+    "NNE",
+    "NE",
+    "ENE",
+    "E",
+    "ESE",
+    "SE",
+    "SSE",
   ];
   return windDirections[+(value / 22.5).toFixed(0)];
 }
