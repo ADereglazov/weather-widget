@@ -2,10 +2,10 @@ import { dict } from "@/locales";
 import { TLanguage, TUnits } from "@/types";
 import {
   IGetWeatherByCityNameParameters,
+  IGetWeatherFetchByNameSucceed,
   IGetWeatherFetchFailed,
   TGetWeatherFetchByNameSucceed,
   TGetWeatherByNameResult,
-  IGetWeatherFetchByNameSucceed,
 } from "./types";
 
 export async function getWeatherByCityName(

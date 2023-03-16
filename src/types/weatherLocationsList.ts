@@ -1,5 +1,4 @@
-import { ICoordinates } from "@/types/coordinates";
-import { IWeatherLocation } from "@/types/weatherLocation";
+import { ICoordinates, IWeatherLocation } from "@/types";
 
 export interface ICitiListItem {
   id: number;
@@ -7,6 +6,11 @@ export interface ICitiListItem {
   state: string;
   country: string;
   coord: ICoordinates;
+}
+export interface IWeatherLocationsListTimestamped
+  extends IWeatherLocationsList {
+  /** Time of data update (app internal parameter), unix, UTC */
+  lastUpdated: number;
 }
 export interface IWeatherLocationsList {
   /** Internal parameter: find cities method */
@@ -17,9 +21,4 @@ export interface IWeatherLocationsList {
   count: number;
   /** Weather locations list */
   list: IWeatherLocation[];
-}
-export interface IWeatherLocationsListTimestamped
-  extends IWeatherLocationsList {
-  /** Time of data update (app internal parameter), unix, UTC */
-  lastUpdated: number;
 }
