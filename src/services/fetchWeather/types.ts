@@ -5,7 +5,6 @@ import {
   IWeatherLocation,
   IWeatherLocationsList,
   IWeatherLocationTimestamped,
-  IWeatherLocationsListTimestamped,
 } from "@/types";
 
 export interface IGetWeatherFromGeoParameters
@@ -36,8 +35,7 @@ export interface IGetWeatherFailed {
   status: "failed";
   message: string;
 }
-export interface IGetWeatherFetchByNameSucceed
-  extends IWeatherLocationsListTimestamped {
+export interface IGetWeatherFetchByNameSucceed extends IWeatherLocationsList {
   status: "succeed";
 }
 

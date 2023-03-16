@@ -1,5 +1,16 @@
 import { ICoordinates } from "./coordinates";
 
+export interface IWeatherLocationsList {
+  /** Internal parameter: find cities method */
+  message: string;
+  /** Internal parameter */
+  cod: number;
+  /** Count of found cities */
+  count: number;
+  /** Weather locations list */
+  list: IWeatherLocation[];
+}
+
 export interface IWeatherLocationTimestamped extends IWeatherLocation {
   /** Time of data update (app internal parameter), unix, UTC */
   lastUpdated: number;

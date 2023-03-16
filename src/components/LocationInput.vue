@@ -16,7 +16,6 @@
         autocomplete="off"
         name="new-location-input"
         :placeholder="dict.inputPlaceholder"
-        :disabled="isLoading"
         @keydown.up.prevent="onKeyArrow"
         @keydown.down.prevent="onKeyArrow"
         @keydown.esc.prevent="foundList = []"
@@ -70,11 +69,12 @@ import {
 import throttle from "lodash.throttle";
 import {
   getWeatherByCityId,
+  getWeatherByCityName,
   IGetWeatherSucceed,
+  IGetWeatherFetchByNameSucceed,
 } from "@/services/fetchWeather";
-import { TLanguage, TUnits, ICitiListItem } from "@/types";
+import { TLanguage, TUnits, IWeatherLocation } from "@/types";
 import { IDictionary } from "@/locales/types";
-import { findSuggestionCities, getCurrentFocusValue } from "@/utils";
 import SuggestionList from "@/components/SuggestionList.vue";
 import LoadingSpinner from "@/components/LoadingSpinner.vue";
 
@@ -88,12 +88,11 @@ const props = defineProps<{
   dict: IDictionary;
 }>();
 
-const foundList = ref<ICitiListItem[]>([]);
-const throttledOnInput = throttle(updateFoundList, 1000);
+const foundList = ref<IWeatherLocation[]>([]);
+const throttledOnInput = throttle(onSubmit, 1000);
 const inputField = ref<HTMLInputElement | null>(null);
 const currentFocus = ref(0);
-const cityId = ref(0);
-const selectedSuggestionListItem = ref<ICitiListItem | null>(null);
+const selectedSuggestionListItem = ref<IWeatherLocation | null>(null);
 const newLocationString = ref("");
 const errStatus = ref("");
 const isLoading = ref(false);
@@ -103,68 +102,54 @@ onMounted(() => inputField.value?.focus());
 watchEffect(() => emit("loading", isLoading.value));
 
 const isSubmitButtonDisabled = computed<boolean>(
-  () =>
-    newLocationString.value.length === 0 ||
-    isLoading.value ||
-    !foundList.value.length
+  () => newLocationString.value.length === 0 || isLoading.value
 );
 
 function onInput() {
   errStatus.value = "";
-
-  const searchString = newLocationString.value.trim();
-  if (searchString.length < 3) {
-    foundList.value = [];
-    return;
-  }
+  foundList.value = [];
+  selectedSuggestionListItem.value = null;
+  if (newLocationString.value.trim().length < 3) return;
   throttledOnInput();
-}
-function updateFoundList() {
-  foundList.value = findSuggestionCities(newLocationString.value);
-  /* Если во вновь сформированном списке foundList есть элемент,
-   * который был до этого текущим (выбранным с помощью клавиатуры),
-   * то выбрать его, найдя его индекс в новом списке.
-   */
-  currentFocus.value = getCurrentFocusValue(cityId.value, foundList.value);
-
-  if (foundList.value.length) {
-    onSuggestionSelect({
-      item: foundList.value[currentFocus.value],
-      isClickSuggestionItem: false,
-    });
-  } else {
-    cityId.value = 0;
-    selectedSuggestionListItem.value = null;
-  }
 }
 function onSuggestionSelect({
   item,
-  isClickSuggestionItem,
+  isClickSuggestionItem = false,
 }: {
-  item: ICitiListItem;
-  isClickSuggestionItem: boolean;
+  item: IWeatherLocation;
+  isClickSuggestionItem?: boolean;
 }) {
-  cityId.value = item.id;
   selectedSuggestionListItem.value = { ...item };
-  if (isClickSuggestionItem) onSubmit();
+  if (isClickSuggestionItem) addSelectedLocation(item.id);
 }
-async function onSubmit() {
-  isLoading.value = true;
-  foundList.value = [];
-  newLocationString.value = selectedSuggestionListItem.value
-    ? `${selectedSuggestionListItem.value.name}, ${selectedSuggestionListItem.value.country}`
-    : "";
-
-  let newWeatherLocation: IGetWeatherSucceed | null = null;
-  if (cityId.value) {
-    ({ location: newWeatherLocation, message: errStatus.value } =
-      await getWeatherByCityId(cityId.value, props));
-  }
+async function addSelectedLocation(id: number) {
+  let newWeatherLocation: IGetWeatherSucceed | null;
+  ({ location: newWeatherLocation, message: errStatus.value } =
+    await getWeatherByCityId(id, props));
 
   if (newWeatherLocation) {
     emit("add-location", newWeatherLocation);
     newLocationString.value = "";
-    cityId.value = 0;
+  }
+  foundList.value = [];
+}
+async function onSubmit() {
+  isLoading.value = true;
+
+  if (selectedSuggestionListItem.value) {
+    await addSelectedLocation(selectedSuggestionListItem.value.id);
+  } else {
+    let locationsList: IGetWeatherFetchByNameSucceed | null;
+    ({ location: locationsList, message: errStatus.value } =
+      await getWeatherByCityName(newLocationString.value, props));
+
+    if (locationsList?.count) {
+      foundList.value = locationsList.list.map((item) => {
+        return { ...item, lastUpdated: locationsList?.lastUpdated };
+      });
+      selectedSuggestionListItem.value = foundList.value[0];
+      currentFocus.value = 0;
+    }
   }
 
   setTimeout(() => inputField.value?.focus(), 0);
@@ -183,7 +168,6 @@ function onKeyArrow(e: KeyboardEvent) {
 
   onSuggestionSelect({
     item: foundList.value[currentFocus.value],
-    isClickSuggestionItem: false,
   });
 }
 function onClickClear() {

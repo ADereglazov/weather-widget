@@ -9,17 +9,18 @@
           'suggestion-list__item--active': currentFocus === index,
         }"
         class="suggestion-list__item"
-        v-html="modifyMatchText(`${item.name}, ${item.country}`, searchString)"
         @click="onSuggestionSelect(item, true)"
-      />
+      >
+        {{ `${item.name}, ${item.sys.country}` }}
+      </li>
     </ul>
   </div>
 </template>
 
 <script setup lang="ts">
 import { defineProps, defineEmits, onBeforeUpdate, onUpdated } from "vue";
-import { ICitiListItem } from "@/types";
-import { modifyMatchText, scrollSelectionIntoView } from "@/utils";
+import { scrollSelectionIntoView } from "@/utils";
+import { IWeatherLocation } from "@/types";
 
 let suggestionsRefs: HTMLLIElement[] = [];
 const setSuggestionRef = (el: HTMLLIElement) => {
@@ -33,7 +34,7 @@ onBeforeUpdate(() => {
 onUpdated(() => scrollSelectionIntoView(suggestionsRefs[props.currentFocus]));
 
 const props = defineProps<{
-  list: ICitiListItem[];
+  list: IWeatherLocation[];
   searchString: string;
   currentFocus: number;
 }>();
@@ -41,7 +42,7 @@ const props = defineProps<{
 const emit = defineEmits(["suggestion-select"]);
 
 function onSuggestionSelect(
-  item: ICitiListItem,
+  item: IWeatherLocation,
   isClickSuggestionItem = false
 ) {
   emit("suggestion-select", { item, isClickSuggestionItem });
