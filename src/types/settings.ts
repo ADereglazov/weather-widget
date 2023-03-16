@@ -1,5 +1,4 @@
-import { TLanguage } from "@/types/languages";
-import { TUnits } from "@/types/units";
+import { TLanguage, TUnits } from "@/types";
 
 export interface ISettings {
   lang: TLanguage;
