@@ -1,5 +1,9 @@
 <template>
-  <form class="location-input" name="location-form" @submit.prevent="onSubmit">
+  <form
+    class="location-input"
+    name="location-form"
+    @submit.prevent="onSubmit(true)"
+  >
     <label class="location-input__label" for="inputField">
       {{ dict.addLocation }}
     </label>
@@ -133,10 +137,10 @@ async function addSelectedLocation(id: number) {
   }
   foundList.value = [];
 }
-async function onSubmit() {
+async function onSubmit(isSubmitAction = false) {
   isLoading.value = true;
 
-  if (selectedSuggestionListItem.value) {
+  if (isSubmitAction && selectedSuggestionListItem.value) {
     await addSelectedLocation(selectedSuggestionListItem.value.id);
   } else {
     let locationsList: IGetWeatherFetchByNameSucceed | null;
