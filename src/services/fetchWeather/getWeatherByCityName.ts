@@ -77,6 +77,5 @@ async function getWeather({
   return {
     ...responseJson,
     status: "succeed",
-    lastUpdated: Date.now(),
   };
 }
