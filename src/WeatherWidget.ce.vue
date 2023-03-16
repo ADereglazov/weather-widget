@@ -30,6 +30,7 @@
     :class="{ 'app-weather-section--loading': isLoading }"
     class="app-weather-section"
   />
+  <button type="button" @click="onClick">click</button>
   <LoadingSpinner v-show="isLoading" class="app-spinner" />
   <div
     :class="{ 'app-error--hide': isSettingsOpened || !errStatus }"
@@ -52,7 +53,11 @@
 import { ref, onBeforeMount, reactive } from "vue";
 import { dict } from "@/locales";
 import { getGeoLocalization } from "@/services/getGeoLocalization";
-import { getWeatherFromGeo, IGetWeatherSucceed } from "@/services/fetchWeather";
+import {
+  getWeatherByCityName,
+  getWeatherFromGeo,
+  IGetWeatherSucceed,
+} from "@/services/fetchWeather";
 import {
   getLocalStorageWeatherData,
   setLocalStorageWeatherData,
@@ -107,6 +112,10 @@ function getInitData() {
   } else {
     refreshOutdatedLocalData();
   }
+}
+async function onClick() {
+  const res = await getWeatherByCityName("Красный Сулин", props);
+  console.log(res);
 }
 async function getGeoWeather() {
   isLoading.value = true;

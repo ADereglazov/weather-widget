@@ -8,8 +8,7 @@ export interface ICitiListItem {
   country: string;
   coord: ICoordinates;
 }
-
-export interface ICityList {
+export interface IWeatherLocationsList {
   /** Internal parameter: find cities method */
   message: string;
   /** Internal parameter */
@@ -18,4 +17,9 @@ export interface ICityList {
   count: number;
   /** Weather locations list */
   list: IWeatherLocation[];
+}
+export interface IWeatherLocationsListTimestamped
+  extends IWeatherLocationsList {
+  /** Time of data update (app internal parameter), unix, UTC */
+  lastUpdated: number;
 }

@@ -1,4 +1,4 @@
-import { ICitiListItem } from "@/types/cityList";
+import { ICitiListItem } from "@/types/weatherLocationsList";
 
 export function getCurrentFocusValue(cityId: number, list: ICitiListItem[]) {
   const currentCityIndex = list.findIndex((item) => item.id === cityId);

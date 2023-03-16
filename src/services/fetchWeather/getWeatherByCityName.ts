@@ -3,9 +3,9 @@ import { TLanguage, TUnits } from "@/types";
 import {
   IGetWeatherByCityNameParameters,
   IGetWeatherFetchFailed,
-  IGetWeatherSucceed,
-  TGetWeatherFetchSucceed,
-  TGetWeatherResult,
+  TGetWeatherFetchByNameSucceed,
+  TGetWeatherByNameResult,
+  IGetWeatherFetchByNameSucceed,
 } from "./types";
 
 export async function getWeatherByCityName(
@@ -16,7 +16,10 @@ export async function getWeatherByCityName(
     apiUrl: string;
     apiKey: string;
   }
-): Promise<{ location: IGetWeatherSucceed | null; message: string }> {
+): Promise<{
+  location: IGetWeatherFetchByNameSucceed | null;
+  message: string;
+}> {
   try {
     const result = await getWeather({
       city,
@@ -51,9 +54,10 @@ async function getWeather({
   units = "metric",
   apiUrl,
   apiKey,
-}: IGetWeatherByCityNameParameters): Promise<TGetWeatherResult> {
+}: IGetWeatherByCityNameParameters): Promise<TGetWeatherByNameResult> {
   const requestUrl = new URL(`${apiUrl}/find/`);
   requestUrl.searchParams.set("q", city);
+  requestUrl.searchParams.set("type", "like");
   requestUrl.searchParams.set("lang", lang);
   requestUrl.searchParams.set("units", units);
   requestUrl.searchParams.set("appid", apiKey);
@@ -68,7 +72,7 @@ async function getWeather({
     };
   }
 
-  const responseJson: TGetWeatherFetchSucceed = await response.json();
+  const responseJson: TGetWeatherFetchByNameSucceed = await response.json();
 
   return {
     ...responseJson,

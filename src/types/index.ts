@@ -1,6 +1,6 @@
 export * from "./coordinates";
 export * from "./units";
-export * from "./cityList";
+export * from "./weatherLocationsList";
 export * from "./languages";
 export * from "./weatherLocation";
 export * from "./settings";

@@ -1,5 +1,5 @@
 import cityList from "@/assets/city-list.min.json";
-import { ICitiListItem } from "@/types/cityList";
+import { ICitiListItem } from "@/types/weatherLocationsList";
 
 export function findSuggestionCities(input: string) {
   const searchString = input.trim().toLowerCase();
