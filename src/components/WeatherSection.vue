@@ -49,7 +49,7 @@
         </p>
 
         <p class="weather-section__wrapper-details">
-          <span style="white-space: nowrap">
+          <span class="weather-section__details-item">
             <span
               :style="{
                 backgroundImage: `url(${require('@/assets/icons/direction.svg')})`,
@@ -57,19 +57,19 @@
               }"
               class="weather-section__wrapper-description-icon"
             />
-            <span style="margin-left: 10px">
-              {{ location.wind.speed }}{{ unitsDict[units].windSpeed }}
+            <span style="margin-left: 5px">
+              {{ location.wind.speed }}{{ unitsDict[units].windSpeed }}&nbsp;
             </span>
             {{ dict.windDirections[getWindDirection(location.wind.deg)] }}
           </span>
-          <span>
+          <span class="weather-section__details-item">
             <span
               :style="{
                 backgroundImage: `url(${require('@/assets/icons/barometer.svg')})`,
               }"
               class="weather-section__wrapper-description-icon test"
             />
-            <span style="margin-left: 10px">
+            <span style="margin-left: 5px">
               {{ location.main.pressure }}{{ dict.pressure }}
             </span>
           </span>
