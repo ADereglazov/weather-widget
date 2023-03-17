@@ -184,7 +184,7 @@ function onManageButtonClick() {
   isSettingsOpened.value = !isSettingsOpened.value;
 
   if (!isSettingsOpened.value && !locationsList.value.length) {
-    errStatus.value = dict[props.lang].noDataMessage;
+    getInitData();
   }
 }
 function changeSettings({ lang, units }: ISettings) {
