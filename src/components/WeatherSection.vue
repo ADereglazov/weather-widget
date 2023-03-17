@@ -60,7 +60,7 @@
             <span style="margin-left: 10px">
               {{ location.wind.speed }}{{ unitsDict[units].windSpeed }}
             </span>
-            {{ getWindDirection(location.wind.deg) }}
+            {{ dict.windDirections[getWindDirection(location.wind.deg)] }}
           </span>
           <span>
             <span
