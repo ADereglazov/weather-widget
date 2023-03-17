@@ -19,7 +19,6 @@ export interface IDictionary {
   oops: string;
   error: string;
   tryAgain: string;
-  noDataMessage: string;
   somethingWentWrong: string;
   tryReload: string;
   reload: string;

@@ -19,7 +19,6 @@ const en: IDictionary = {
   oops: "Oops...",
   error: "error",
   tryAgain: "try again",
-  noDataMessage: "No data! Press reload button or add city in settings",
   somethingWentWrong: "something went wrong",
   tryReload: "try to press reload button for update widget",
   reload: "Reload",
