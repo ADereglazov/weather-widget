@@ -32,5 +32,23 @@ const en: IDictionary = {
     metric: "metric",
     imperial: "imperial",
   },
+  windDirections: [
+    "S",
+    "SSW",
+    "SW",
+    "WSW",
+    "W",
+    "WNW",
+    "NW",
+    "NNW",
+    "N",
+    "NNE",
+    "NE",
+    "ENE",
+    "E",
+    "ESE",
+    "SE",
+    "SSE",
+  ],
 };
 export default en;

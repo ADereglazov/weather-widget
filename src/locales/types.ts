@@ -28,6 +28,7 @@ export interface IDictionary {
   additionalSettings: string;
   baseSettings: string;
   units: TUnitsAll;
+  windDirections: string[];
 }
 
 type TUnitsAll = {
