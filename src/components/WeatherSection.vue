@@ -57,8 +57,8 @@
               }"
               class="weather-section__wrapper-description-icon"
             />
-            <span style="margin-left: 5px">
-              {{ location.wind.speed }}{{ unitsDict[units].windSpeed }}&nbsp;
+            <span style="margin: 0 5px">
+              {{ location.wind.speed }}{{ unitsDict[units].windSpeed }}
             </span>
             {{ dict.windDirections[getWindDirection(location.wind.deg)] }}
           </span>
