@@ -6,7 +6,6 @@ const en: IDictionary = {
   addLocation: "Add location",
   inputPlaceholder: "Input location",
   clearInput: "Clear location input",
-  addNewLocation: "Add new location",
   deleteItem: "Delete item",
   feelsLike: "Feels like",
   cloudCover: "Cloud cover",

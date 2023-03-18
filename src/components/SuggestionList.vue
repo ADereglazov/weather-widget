@@ -9,9 +9,21 @@
           'suggestion-list__item--active': currentFocus === index,
         }"
         class="suggestion-list__item"
+        @mousedown.prevent
         @click="onSuggestionSelect(item, true)"
       >
-        {{ `${item.name}, ${item.sys.country}` }}
+        <span class="suggestion-list__item-name">{{ item.name }}</span>
+        <span class="suggestion-list__item-country">{{
+          ", " + item.sys.country
+        }}</span>
+        <span
+          :style="{
+            backgroundImage: `url(${require('@/assets/icons/flags/' +
+              item.sys.country.toLowerCase() +
+              '.svg')})`,
+          }"
+          class="suggestion-list__item-flag"
+        ></span>
       </li>
     </ul>
   </div>

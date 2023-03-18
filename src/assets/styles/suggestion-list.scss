@@ -1,10 +1,8 @@
 .suggestion-list {
   position: absolute;
   top: 27px;
-  left: -1px;
+  left: 0;
   z-index: 1;
-
-  padding: 5px 0 5px 5px;
 
   border: 1px solid $gray-dark;
   border-radius: 2px;
@@ -13,7 +11,7 @@
 
   &__list {
     display: block;
-    width: 225px;
+    width: 256px;
     max-height: 196px;
     padding: 0;
     margin: 0;
@@ -23,6 +21,9 @@
   }
 
   &__item {
+    display: flex;
+    align-items: center;
+    flex-wrap: nowrap;
     padding: 4px;
     margin-bottom: 1px;
 
@@ -38,6 +39,30 @@
     b {
       font-weight: bold;
     }
+  }
+
+  &__item-name {
+    display: block;
+    max-width: 75%;
+
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  &__item-country {
+    padding-right: 5px;
+    margin-right: auto;
+  }
+
+  &__item-flag {
+    display: block;
+    width: 20px;
+    height: 15px;
+
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
   }
 }
 
