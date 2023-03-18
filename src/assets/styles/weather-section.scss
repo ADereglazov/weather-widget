@@ -25,14 +25,14 @@
 
   &__title-flag {
     display: block;
-    width: 23px;
-    height: 17px;
+    width: 24px;
+    height: 18px;
     margin-right: 30px;
     margin-left: auto;
 
     background-position: center;
     background-repeat: no-repeat;
-    background-size: contain;
+    background-size: cover;
     outline: 1px solid $black;
   }
 

@@ -25,7 +25,6 @@
     align-items: center;
     flex-wrap: nowrap;
     padding: 4px;
-    margin-bottom: 1px;
 
     cursor: pointer;
 
@@ -39,6 +38,10 @@
     b {
       font-weight: bold;
     }
+  }
+
+  &__item + &__item {
+    margin-top: 1px;
   }
 
   &__item-name {

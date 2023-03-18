@@ -33,6 +33,8 @@ export interface IWeatherLocation {
   snow: TSnow | null;
   /** Cloudiness, % */
   clouds: IClouds;
+  /** Shift in seconds from UTC */
+  timezone: number;
   /** more info Weather condition codes */
   weather: IWeatherConditionCodes[];
 }
