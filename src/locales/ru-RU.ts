@@ -14,6 +14,7 @@ const ru: IDictionary = {
   pressure: "гПа",
   humidity: "Влажность",
   visibility: "Видимость",
+  updated: "Обновлено",
   km: "км",
   oops: "Ой...",
   error: "ошибка",

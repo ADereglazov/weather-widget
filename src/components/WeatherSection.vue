@@ -91,6 +91,9 @@
             {{ dict.visibility }}: {{ location.visibility / 1000 }}{{ dict.km }}
           </span>
         </p>
+        <p class="weather-section__updated-info">
+          {{ dict.updated }}: {{ updatedDateTime(location.lastUpdated) }}
+        </p>
       </SwiperSlide>
     </Swiper>
   </section>
@@ -99,15 +102,17 @@
 <script setup lang="ts">
 import { defineProps } from "vue";
 import { getWindDirection } from "@/utils";
-import { IWeatherLocationTimestamped, TUnits } from "@/types";
+import { IWeatherLocationTimestamped, TLanguage, TUnits } from "@/types";
 import { IDictionary } from "@/locales/types";
-
 import SwiperCore, { Pagination, A11y } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/vue";
+
+SwiperCore.use([Pagination, A11y]);
 
 const props = defineProps<{
   locationsList: IWeatherLocationTimestamped[];
   dict: IDictionary;
+  lang: TLanguage;
   units: TUnits;
 }>();
 
@@ -126,5 +131,7 @@ const unitsDict = {
   },
 };
 
-SwiperCore.use([Pagination, A11y]);
+function updatedDateTime(value: number) {
+  return new Date(value).toLocaleString(props.lang);
+}
 </script>
