@@ -18,6 +18,10 @@
 
   .settings-section__draggable-list {
     margin-bottom: 5px;
+
+    &--opacity {
+      opacity: 0.5;
+    }
   }
 
   &__additional-settings-input:focus-visible + &__additional-settings-label {

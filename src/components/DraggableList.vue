@@ -25,9 +25,18 @@
           }"
           class="draggable-list__item-icon-move handle"
         />
-        <span class="draggable-list__item-text">{{
-          element.name + ", " + element.sys.country
+        <span class="draggable-list__item-name">{{ element.name }}</span>
+        <span class="draggable-list__item-country">{{
+          ", " + element.sys.country
         }}</span>
+        <span
+          :style="{
+            backgroundImage: `url(${require('@/assets/icons/flags/' +
+              element.sys.country.toLowerCase() +
+              '.svg')})`,
+          }"
+          class="draggable-list__item-flag"
+        ></span>
 
         <button
           class="draggable-list__item-delete-button"

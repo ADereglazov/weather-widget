@@ -21,12 +21,16 @@
         :apiKey="apiKey"
         :dict="dict"
         @loading="onLoading"
+        @suggestion-opened="isOpacity = $event"
         @add-location="onAddLocation"
       />
 
       <DraggableList
         :locations-list="locationsList"
         :dict="dict"
+        :class="{
+          'settings-section__draggable-list--opacity': isOpacity,
+        }"
         class="settings-section__draggable-list"
         @sorting-locations-list="onSorting"
         @delete="onDelete"
@@ -80,6 +84,7 @@ defineProps<{
 }>();
 
 const additionalSettingsModel = ref(false);
+const isOpacity = ref(false);
 const labelStyles = {
   base: {
     backgroundImage: `url(${require("@/assets/icons/left.svg")})`,

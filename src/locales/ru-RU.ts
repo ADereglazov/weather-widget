@@ -6,7 +6,6 @@ const ru: IDictionary = {
   addLocation: "Добавить местоположение",
   inputPlaceholder: "Введите местоположение",
   clearInput: "Очистить введенное местоположение",
-  addNewLocation: "Добавить новое местоположение",
   deleteItem: "Удалить элемент",
   feelsLike: "Ощущается как",
   cloudCover: "Облачность",

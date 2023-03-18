@@ -10,9 +10,22 @@
         v-for="location in locationsList"
         :key="location.id + location.lastUpdated"
       >
-        <h2 class="weather-section__title">
-          {{ location.name + ", " + location.sys.country }}
-        </h2>
+        <div class="weather-section__wrapper-title">
+          <h2 class="weather-section__title weather-section__title--name">
+            {{ location.name }}
+          </h2>
+          <h2 class="weather-section__title weather-section__title--country">
+            {{ ", " + location.sys.country }}
+          </h2>
+          <span
+            :style="{
+              backgroundImage: `url(${require('@/assets/icons/flags/' +
+                location.sys.country.toLowerCase() +
+                '.svg')})`,
+            }"
+            class="weather-section__title-flag"
+          ></span>
+        </div>
 
         <div class="weather-section__wrapper-main">
           <div class="weather-section__wrapper-img">

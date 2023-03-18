@@ -6,7 +6,6 @@ export interface IDictionary {
   addLocation: string;
   inputPlaceholder: string;
   clearInput: string;
-  addNewLocation: string;
   deleteItem: string;
   feelsLike: string;
   cloudCover: string;

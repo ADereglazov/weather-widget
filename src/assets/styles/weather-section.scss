@@ -3,16 +3,37 @@
     min-height: 292px;
   }
 
+  &__wrapper-title {
+    display: flex;
+    align-items: center;
+  }
+
   &__title {
-    max-width: 235px;
     margin: 0;
 
     font-size: 15px;
     font-weight: bold;
 
-    overflow: hidden;
-    white-space: nowrap;
-    text-overflow: ellipsis;
+    &--name {
+      max-width: 165px;
+
+      overflow: hidden;
+      white-space: nowrap;
+      text-overflow: ellipsis;
+    }
+  }
+
+  &__title-flag {
+    display: block;
+    width: 23px;
+    height: 17px;
+    margin-right: 30px;
+    margin-left: auto;
+
+    background-position: center;
+    background-repeat: no-repeat;
+    background-size: contain;
+    outline: 1px solid $black;
   }
 
   &__wrapper-main {

@@ -1,9 +1,5 @@
 <template>
-  <form
-    class="location-input"
-    name="location-form"
-    @submit.prevent="onSubmit(true)"
-  >
+  <div class="location-input">
     <label class="location-input__label" for="inputField">
       {{ dict.addLocation }}
     </label>
@@ -20,13 +16,16 @@
         autocomplete="off"
         name="new-location-input"
         :placeholder="dict.inputPlaceholder"
+        @blur="isInputFocused = false"
+        @focus="isInputFocused = true"
         @keydown.up.prevent="onKeyArrow"
         @keydown.down.prevent="onKeyArrow"
         @keydown.esc.prevent="foundList = []"
+        @keydown.enter="onEnter"
         @input="onInput"
       />
       <SuggestionList
-        v-show="foundList.length"
+        v-show="foundList.length && isInputFocused"
         :list="foundList"
         :search-string="newLocationString"
         :current-focus="currentFocus"
@@ -45,31 +44,14 @@
         @keydown.enter.prevent="onClickClear"
         @click="onClickClear"
       />
-      <button
-        class="location-input__button-submit"
-        type="submit"
-        name="enter"
-        :aria-label="dict.addNewLocation"
-        :disabled="isSubmitButtonDisabled"
-        :style="{
-          backgroundImage: `url(${require('@/assets/icons/enter.svg')})`,
-        }"
-      />
       <LoadingSpinner v-show="isLoading" class="location-input__spinner" />
     </div>
     <span class="location-input__status">{{ errStatus }}</span>
-  </form>
+  </div>
 </template>
 
 <script setup lang="ts">
-import {
-  ref,
-  watchEffect,
-  computed,
-  defineEmits,
-  defineProps,
-  onMounted,
-} from "vue";
+import { ref, watchEffect, defineEmits, defineProps, onMounted } from "vue";
 import throttle from "lodash.throttle";
 import {
   getWeatherByCityId,
@@ -82,7 +64,7 @@ import { IDictionary } from "@/locales/types";
 import SuggestionList from "@/components/SuggestionList.vue";
 import LoadingSpinner from "@/components/LoadingSpinner.vue";
 
-const emit = defineEmits(["add-location", "loading"]);
+const emit = defineEmits(["add-location", "loading", "suggestion-opened"]);
 
 const props = defineProps<{
   lang: TLanguage;
@@ -93,7 +75,8 @@ const props = defineProps<{
 }>();
 
 const foundList = ref<IWeatherLocation[]>([]);
-const throttledOnInput = throttle(onSubmit, 1000);
+const throttledOnInput = throttle(getInputtedLocation, 1000);
+const isInputFocused = ref(false);
 const inputField = ref<HTMLInputElement | null>(null);
 const currentFocus = ref(0);
 const selectedSuggestionListItem = ref<IWeatherLocation | null>(null);
@@ -103,11 +86,10 @@ const isLoading = ref(false);
 
 onMounted(() => inputField.value?.focus());
 
-watchEffect(() => emit("loading", isLoading.value));
-
-const isSubmitButtonDisabled = computed<boolean>(
-  () => newLocationString.value.length === 0 || isLoading.value
-);
+watchEffect(() => {
+  emit("loading", isLoading.value);
+  emit("suggestion-opened", foundList.value.length > 0 && isInputFocused.value);
+});
 
 function onInput() {
   errStatus.value = "";
@@ -127,6 +109,8 @@ function onSuggestionSelect({
   if (isClickSuggestionItem) addSelectedLocation(item.id);
 }
 async function addSelectedLocation(id: number) {
+  isLoading.value = true;
+
   let newWeatherLocation: IGetWeatherSucceed | null;
   ({ location: newWeatherLocation, message: errStatus.value } =
     await getWeatherByCityId(id, props));
@@ -136,25 +120,31 @@ async function addSelectedLocation(id: number) {
     newLocationString.value = "";
   }
   foundList.value = [];
+
+  isLoading.value = false;
 }
-async function onSubmit(isSubmitAction = false) {
-  isLoading.value = true;
-
-  if (isSubmitAction && selectedSuggestionListItem.value) {
-    await addSelectedLocation(selectedSuggestionListItem.value.id);
-  } else {
-    let locationsList: IGetWeatherFetchByNameSucceed | null;
-    ({ location: locationsList, message: errStatus.value } =
-      await getWeatherByCityName(newLocationString.value.trim(), props));
-
-    if (locationsList?.count) {
-      foundList.value = [...locationsList.list];
-      selectedSuggestionListItem.value = foundList.value[0];
-      currentFocus.value = 0;
-    }
+function onEnter() {
+  if (!newLocationString.value) {
+    return;
   }
 
-  setTimeout(() => inputField.value?.focus(), 0);
+  if (selectedSuggestionListItem.value) {
+    addSelectedLocation(selectedSuggestionListItem.value.id);
+  }
+}
+async function getInputtedLocation() {
+  isLoading.value = true;
+
+  let locationsList: IGetWeatherFetchByNameSucceed | null;
+  ({ location: locationsList, message: errStatus.value } =
+    await getWeatherByCityName(newLocationString.value.trim(), props));
+
+  if (locationsList?.count) {
+    foundList.value = [...locationsList.list];
+    selectedSuggestionListItem.value = foundList.value[0];
+    currentFocus.value = 0;
+  }
+
   isLoading.value = false;
 }
 function onKeyArrow(e: KeyboardEvent) {
