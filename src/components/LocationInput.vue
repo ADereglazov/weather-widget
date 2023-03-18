@@ -20,7 +20,6 @@
         @focus="isInputFocused = true"
         @keydown.up.prevent="onKeyArrow"
         @keydown.down.prevent="onKeyArrow"
-        @keydown.esc.prevent="foundList = []"
         @keydown.enter="onEnter"
         @input="onInput"
       />
@@ -35,13 +34,11 @@
         v-show="newLocationString.length > 0 && !isLoading"
         type="button"
         name="clear"
-        :disabled="newLocationString.length === 0"
         :style="{
           backgroundImage: `url(${require('@/assets/icons/close.svg')})`,
         }"
         :aria-label="dict.clearInput"
         class="location-input__button-clear"
-        @keydown.enter.prevent="onClickClear"
         @click="onClickClear"
       />
       <LoadingSpinner v-show="isLoading" class="location-input__spinner" />
