@@ -14,6 +14,7 @@ export interface IDictionary {
   pressure: string;
   humidity: string;
   visibility: string;
+  updated: string;
   km: string;
   oops: string;
   error: string;

@@ -26,6 +26,7 @@
     v-else
     :locations-list="locationsList"
     :dict="dict[props.lang]"
+    :lang="props.lang"
     :units="props.units"
     :class="{ 'app-weather-section--loading': isLoading }"
     class="app-weather-section"

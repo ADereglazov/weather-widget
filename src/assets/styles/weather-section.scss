@@ -40,7 +40,6 @@
     display: flex;
     align-items: center;
     justify-content: space-around;
-    margin-bottom: 15px;
   }
 
   &__wrapper-img {
@@ -81,7 +80,7 @@
 
   &__wrapper-description {
     margin-top: 0;
-    margin-bottom: 15px;
+    margin-bottom: 10px;
   }
 
   &__wrapper-description-icon {
@@ -98,9 +97,9 @@
 
   &__wrapper-details {
     display: grid;
-    gap: 10px;
+    gap: 5px;
     grid-template-columns: 1fr 1fr;
-    margin: 0;
+    margin: 0 0 10px 0;
   }
 
   &__details-item {
@@ -108,5 +107,13 @@
     align-items: flex-start;
     padding-left: 2px;
     white-space: nowrap;
+  }
+
+  &__updated-info {
+    margin: 0;
+
+    font-size: 11px;
+    font-style: italic;
+    line-height: 14px;
   }
 }

@@ -14,6 +14,7 @@ const en: IDictionary = {
   pressure: "hPa",
   humidity: "Humidity",
   visibility: "Visibility",
+  updated: "Updated",
   km: "km",
   oops: "Oops...",
   error: "error",
