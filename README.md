@@ -1,7 +1,7 @@
 <p align="center">
-    <img src="docs/example1.png" alt="img" width="298" height="335" >
-    <img src="docs/example2.png" alt="img" width="298" height="335" >
-    <img src="docs/example3.png" alt="img" width="298" height="335" >
+    <img src="docs/example1.png" alt="img" width="298" height="333" >
+    <img src="docs/example2.png" alt="img" width="298" height="333" >
+    <img src="docs/example3.png" alt="img" width="298" height="333" >
 </p>
 <p align="center">
     <a href="https://weather-widget-alpha.vercel.app">Online demo</a>
