@@ -165,7 +165,6 @@ function onKeyArrow(e: KeyboardEvent) {
 function onClickClear() {
   newLocationString.value = "";
   errStatus.value = "";
-  foundList.value = [];
   inputField.value?.focus();
 }
 </script>
