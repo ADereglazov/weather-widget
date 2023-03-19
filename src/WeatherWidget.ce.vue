@@ -89,10 +89,10 @@ const props = reactive<{
   apiKey: API_KEY,
 });
 const locationsList = ref<IWeatherLocationTimestamped[]>([]);
-const isSettingsOpened = ref<boolean>(false);
-const isLoading = ref<boolean>(false);
-const isLoadingInSettings = ref<boolean>(false);
-const errStatus = ref<string>("");
+const isSettingsOpened = ref(false);
+const isLoading = ref(false);
+const isLoadingInSettings = ref(false);
+const errStatus = ref("");
 
 onBeforeMount(() => {
   getInitData();
@@ -174,7 +174,7 @@ function addLocation(location: IWeatherLocationTimestamped) {
   errStatus.value = "";
 }
 function onSorting(value: IWeatherLocationTimestamped[]) {
-  locationsList.value = value;
+  locationsList.value = [...value];
   setLocalStorageWeatherData(locationsList.value);
 }
 function onDelete(index: number) {
@@ -189,13 +189,13 @@ function onManageButtonClick() {
   }
 }
 function changeSettings({ lang, units }: ISettings) {
+  setLocalStorageSettings({ lang, units });
   // At first necessary change props.lang and props.units,
   // because it uses for network queries in refreshLocalData() function.
   props.lang = lang;
   props.units = units;
   const locationsListIndexes = locationsList.value.map((item, index) => index);
   refreshLocalData(locationsListIndexes);
-  setLocalStorageSettings({ lang, units });
 }
 </script>
 
