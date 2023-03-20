@@ -1,4 +1,4 @@
-import { TUnits } from "@/types";
+import { TUnits, TDirection } from "@/types";
 
 export interface IDictionary {
   settings: string;
@@ -27,9 +27,13 @@ export interface IDictionary {
   additionalSettings: string;
   baseSettings: string;
   units: TUnitsAll;
-  windDirections: string[];
+  windDirections: TDirectionsAll;
 }
 
 type TUnitsAll = {
   [key in TUnits]: string;
+};
+
+type TDirectionsAll = {
+  [key in TDirection]: string;
 };

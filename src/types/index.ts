@@ -3,3 +3,4 @@ export * from "./units";
 export * from "./languages";
 export * from "./weatherLocation";
 export * from "./settings";
+export * from "./directions";
