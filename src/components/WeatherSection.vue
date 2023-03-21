@@ -83,7 +83,8 @@
               class="weather-section__wrapper-description-icon test"
             />
             <span style="margin-left: 5px">
-              {{ location.main.pressure }}{{ dict.pressure }}
+              {{ (location.main.pressure * multiplier).toFixed(0)
+              }}{{ dict.pressureUnits[pressureUnit] }}
             </span>
           </span>
           <span>{{ dict.humidity }}: {{ location.main.humidity }}%</span>
@@ -100,9 +101,14 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps } from "vue";
+import { defineProps, computed } from "vue";
 import { getWindDirection } from "@/utils";
-import { IWeatherLocationTimestamped, TLanguage, TUnits } from "@/types";
+import {
+  IWeatherLocationTimestamped,
+  TLanguage,
+  TUnits,
+  TPressureUnit,
+} from "@/types";
 import { IDictionary } from "@/locales/types";
 import SwiperCore, { Pagination, A11y } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/vue";
@@ -111,9 +117,10 @@ SwiperCore.use([Pagination, A11y]);
 
 const props = defineProps<{
   locationsList: IWeatherLocationTimestamped[];
-  dict: IDictionary;
   lang: TLanguage;
   units: TUnits;
+  pressureUnit: TPressureUnit;
+  dict: IDictionary;
 }>();
 
 const unitsDict = {
@@ -130,6 +137,10 @@ const unitsDict = {
     windSpeed: props.dict.windSpeedImperial,
   },
 };
+
+const multiplier = computed<number>(() =>
+  props.pressureUnit === "hPa" ? 1 : 0.75006156
+);
 
 function updatedDateTime(value: number) {
   return new Date(value).toLocaleString(props.lang);

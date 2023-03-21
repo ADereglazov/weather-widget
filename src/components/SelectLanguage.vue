@@ -4,22 +4,20 @@
       {{ dict.selectLanguage }}
     </label>
 
-    <div class="select-language__wrapper">
-      <select
-        v-model="langModel"
-        id="select-language"
-        name="language"
-        :style="{
-          backgroundImage: `url(${require('@/assets/icons/triangle.svg')})`,
-        }"
-        class="select-language__select"
-        @change="onChange"
-      >
-        <option v-for="item in languages" :key="item.name" :value="item.value">
-          {{ item.name }}
-        </option>
-      </select>
-    </div>
+    <select
+      v-model="langModel"
+      id="select-language"
+      name="language"
+      :style="{
+        backgroundImage: `url(${require('@/assets/icons/triangle.svg')})`,
+      }"
+      class="select-language__select"
+      @change="onChange"
+    >
+      <option v-for="item in languages" :key="item.name" :value="item.value">
+        {{ item.name }}
+      </option>
+    </select>
   </div>
 </template>
 

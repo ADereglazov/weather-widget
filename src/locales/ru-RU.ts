@@ -11,7 +11,6 @@ const ru: IDictionary = {
   cloudCover: "Облачность",
   windSpeed: "м/с",
   windSpeedImperial: "миль/ч",
-  pressure: "гПа",
   humidity: "Влажность",
   visibility: "Видимость",
   updated: "Обновлено",
@@ -24,12 +23,17 @@ const ru: IDictionary = {
   reload: "Перезагрузить",
   selectLanguage: "Выберите язык",
   selectUnits: "Единицы измерения",
+  selectPressure: "Единица измерения давления",
   additionalSettings: "Дополнительные настройки",
   baseSettings: "Основные настройки",
   units: {
     standard: "стандартные",
     metric: "метрические",
     imperial: "имперские",
+  },
+  pressureUnits: {
+    hPa: "гПа",
+    mmHg: "мм рт. ст.",
   },
   windDirections: {
     N: "С",

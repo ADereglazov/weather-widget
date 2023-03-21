@@ -11,7 +11,6 @@ const en: IDictionary = {
   cloudCover: "Cloud cover",
   windSpeed: "m/s",
   windSpeedImperial: "miles/h",
-  pressure: "hPa",
   humidity: "Humidity",
   visibility: "Visibility",
   updated: "Updated",
@@ -24,12 +23,17 @@ const en: IDictionary = {
   reload: "Reload",
   selectLanguage: "Select language",
   selectUnits: "Units of measurement",
+  selectPressure: "Unit of pressure",
   additionalSettings: "Additional settings",
   baseSettings: "Base settings",
   units: {
     standard: "standard",
     metric: "metric",
     imperial: "imperial",
+  },
+  pressureUnits: {
+    hPa: "hPa",
+    mmHg: "mmHg",
   },
   windDirections: {
     N: "N",
