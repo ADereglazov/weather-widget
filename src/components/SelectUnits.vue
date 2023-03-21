@@ -8,6 +8,7 @@
           :id="item"
           :checked="item === units"
           :value="item"
+          :disabled="disabled"
           name="units"
           type="radio"
           class="select-units__input visually-hidden"
@@ -31,6 +32,7 @@ const emit = defineEmits(["change-units"]);
 const props = defineProps<{
   units: TUnits;
   dict: IDictionary;
+  disabled: boolean;
 }>();
 
 onBeforeMount(() => (unitsModel.value = props.units));

@@ -15,6 +15,7 @@
     :apiUrl="props.apiUrl"
     :apiKey="props.apiKey"
     :dict="dict[props.lang]"
+    :is-loading="isLoading"
     :class="{ 'app-settings-section--loading': isLoading }"
     class="app-settings-section"
     @change-settings="changeSettings"

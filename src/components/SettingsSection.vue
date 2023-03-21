@@ -8,6 +8,7 @@
       :units="units"
       :pressure-unit="pressureUnit"
       :dict="dict"
+      :is-loading="isLoading"
       class="settings-section__options"
       @change-language="
         emit('change-settings', { lang: $event, units, pressureUnit })
@@ -95,6 +96,7 @@ defineProps<{
   apiUrl: string;
   apiKey: string;
   dict: IDictionary;
+  isLoading: boolean;
 }>();
 
 const additionalSettingsModel = ref(false);
