@@ -26,6 +26,10 @@ const en: IDictionary = {
   selectPressure: "Unit of pressure",
   additionalSettings: "Additional settings",
   baseSettings: "Base settings",
+  languages: {
+    en: "English",
+    ru: "Russian",
+  },
   units: {
     standard: "standard",
     metric: "metric",

@@ -6,14 +6,14 @@
       class="settings-options__block settings-options__language"
       @change-language="emit('change-language', $event)"
     />
-
+    <hr class="settings-options__hr" />
     <SelectUnits
       :units="units"
       :dict="dict"
       class="settings-options__block settings-options__units"
       @change-units="emit('change-units', $event)"
     />
-
+    <hr class="settings-options__hr" />
     <SelectPressure
       :pressure-unit="pressureUnit"
       :dict="dict"

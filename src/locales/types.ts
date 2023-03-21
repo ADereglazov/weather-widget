@@ -1,4 +1,4 @@
-import { TUnits, TDirection, TPressureUnit } from "@/types";
+import { TUnits, TDirection, TPressureUnit, TLanguage } from "@/types";
 
 export interface IDictionary {
   settings: string;
@@ -26,10 +26,15 @@ export interface IDictionary {
   selectPressure: string;
   additionalSettings: string;
   baseSettings: string;
+  languages: TLanguages;
   units: TUnitsAll;
   pressureUnits: TPressureUnits;
   windDirections: TDirections;
 }
+
+type TLanguages = {
+  [key in TLanguage]: string;
+};
 
 type TUnitsAll = {
   [key in TUnits]: string;

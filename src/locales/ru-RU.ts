@@ -26,6 +26,10 @@ const ru: IDictionary = {
   selectPressure: "Единица измерения давления",
   additionalSettings: "Дополнительные настройки",
   baseSettings: "Основные настройки",
+  languages: {
+    en: "Английский",
+    ru: "Русский",
+  },
   units: {
     standard: "стандартные",
     metric: "метрические",
