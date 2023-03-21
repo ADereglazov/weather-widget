@@ -11,6 +11,7 @@
     :locations-list="locationsList"
     :lang="props.lang"
     :units="props.units"
+    :pressure-unit="props.pressureUnit"
     :apiUrl="props.apiUrl"
     :apiKey="props.apiKey"
     :dict="dict[props.lang]"
@@ -28,6 +29,7 @@
     :dict="dict[props.lang]"
     :lang="props.lang"
     :units="props.units"
+    :pressure-unit="props.pressureUnit"
     :class="{ 'app-weather-section--loading': isLoading }"
     class="app-weather-section"
   />
@@ -68,6 +70,7 @@ import {
   IWeatherLocationTimestamped,
   TLanguage,
   TUnits,
+  TPressureUnit,
 } from "@/types";
 import ManageButton from "@/components/ManageButton.vue";
 import WeatherSection from "@/components/WeatherSection.vue";
@@ -80,11 +83,13 @@ const API_KEY: string = process.env.VUE_APP_API_KEY || "";
 const props = reactive<{
   lang: TLanguage;
   units: TUnits;
+  pressureUnit: TPressureUnit;
   apiUrl: string;
   apiKey: string;
 }>({
   lang: "en",
   units: "metric",
+  pressureUnit: "hPa",
   apiUrl: API_URL,
   apiKey: API_KEY,
 });
@@ -100,7 +105,12 @@ onBeforeMount(() => {
 
 function getInitData() {
   const settings: ISettings | null = getLocalStorageSettings();
-  if (settings) ({ lang: props.lang, units: props.units } = settings);
+  if (settings)
+    ({
+      lang: props.lang,
+      units: props.units,
+      pressureUnit: props.pressureUnit,
+    } = settings);
 
   locationsList.value = getLocalStorageWeatherData();
   if (locationsList.value.length === 0) {
@@ -188,12 +198,13 @@ function onManageButtonClick() {
     getInitData();
   }
 }
-function changeSettings({ lang, units }: ISettings) {
-  setLocalStorageSettings({ lang, units });
+function changeSettings({ lang, units, pressureUnit }: ISettings) {
+  setLocalStorageSettings({ lang, units, pressureUnit });
   // At first necessary change props.lang and props.units,
   // because it uses for network queries in refreshLocalData() function.
   props.lang = lang;
   props.units = units;
+  props.pressureUnit = pressureUnit;
   const locationsListIndexes = locationsList.value.map((item, index) => index);
   refreshLocalData(locationsListIndexes);
 }

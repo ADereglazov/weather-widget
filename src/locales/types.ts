@@ -1,4 +1,4 @@
-import { TUnits, TDirection } from "@/types";
+import { TUnits, TDirection, TPressureUnit, TLanguage } from "@/types";
 
 export interface IDictionary {
   settings: string;
@@ -11,7 +11,6 @@ export interface IDictionary {
   cloudCover: string;
   windSpeed: string;
   windSpeedImperial: string;
-  pressure: string;
   humidity: string;
   visibility: string;
   updated: string;
@@ -24,16 +23,27 @@ export interface IDictionary {
   reload: string;
   selectLanguage: string;
   selectUnits: string;
+  selectPressure: string;
   additionalSettings: string;
   baseSettings: string;
+  languages: TLanguages;
   units: TUnitsAll;
-  windDirections: TDirectionsAll;
+  pressureUnits: TPressureUnits;
+  windDirections: TDirections;
 }
+
+type TLanguages = {
+  [key in TLanguage]: string;
+};
 
 type TUnitsAll = {
   [key in TUnits]: string;
 };
 
-type TDirectionsAll = {
+type TPressureUnits = {
+  [key in TPressureUnit]: string;
+};
+
+type TDirections = {
   [key in TDirection]: string;
 };

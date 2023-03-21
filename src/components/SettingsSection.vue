@@ -6,10 +6,18 @@
       v-if="additionalSettingsModel"
       :lang="lang"
       :units="units"
+      :pressure-unit="pressureUnit"
       :dict="dict"
       class="settings-section__options"
-      @change-language="emit('change-settings', { lang: $event, units })"
-      @change-units="emit('change-settings', { lang, units: $event })"
+      @change-language="
+        emit('change-settings', { lang: $event, units, pressureUnit })
+      "
+      @change-units="
+        emit('change-settings', { lang, units: $event, pressureUnit })
+      "
+      @change-pressure-unit="
+        emit('change-settings', { lang, units, pressureUnit: $event })
+      "
     />
 
     <template v-else>
@@ -60,7 +68,12 @@
 
 <script setup lang="ts">
 import { defineEmits, defineProps, ref } from "vue";
-import { IWeatherLocationTimestamped, TLanguage, TUnits } from "@/types";
+import {
+  IWeatherLocationTimestamped,
+  TLanguage,
+  TUnits,
+  TPressureUnit,
+} from "@/types";
 import { IDictionary } from "@/locales/types";
 import LocationInput from "@/components/LocationInput.vue";
 import DraggableList from "@/components/DraggableList.vue";
@@ -78,6 +91,7 @@ defineProps<{
   locationsList: IWeatherLocationTimestamped[];
   lang: TLanguage;
   units: TUnits;
+  pressureUnit: TPressureUnit;
   apiUrl: string;
   apiKey: string;
   dict: IDictionary;

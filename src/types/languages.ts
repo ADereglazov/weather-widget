@@ -1,1 +1,3 @@
-export type TLanguage = "en" | "ru";
+export const LANGUAGES = ["en", "ru"] as const;
+
+export type TLanguage = (typeof LANGUAGES)[number];
