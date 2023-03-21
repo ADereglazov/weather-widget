@@ -8,6 +8,7 @@
           :id="item"
           :checked="item === pressureUnit"
           :value="item"
+          :disabled="disabled"
           name="pressure-unit"
           type="radio"
           class="select-pressure__input visually-hidden"
@@ -33,6 +34,7 @@ const emit = defineEmits(["change-pressure-unit"]);
 const props = defineProps<{
   pressureUnit: TPressureUnit;
   dict: IDictionary;
+  disabled: boolean;
 }>();
 
 onBeforeMount(() => (pressureUnitModel.value = props.pressureUnit));

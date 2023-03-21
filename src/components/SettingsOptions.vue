@@ -3,6 +3,7 @@
     <SelectLanguage
       :lang="lang"
       :dict="dict"
+      :disabled="isLoading"
       class="settings-options__block settings-options__language"
       @change-language="emit('change-language', $event)"
     />
@@ -10,6 +11,7 @@
     <SelectUnits
       :units="units"
       :dict="dict"
+      :disabled="isLoading"
       class="settings-options__block settings-options__units"
       @change-units="emit('change-units', $event)"
     />
@@ -17,6 +19,7 @@
     <SelectPressure
       :pressure-unit="pressureUnit"
       :dict="dict"
+      :disabled="isLoading"
       class="settings-options__block settings-options__pressure"
       @change-pressure-unit="emit('change-pressure-unit', $event)"
     />
@@ -42,5 +45,6 @@ defineProps<{
   units: TUnits;
   pressureUnit: TPressureUnit;
   dict: IDictionary;
+  isLoading: boolean;
 }>();
 </script>

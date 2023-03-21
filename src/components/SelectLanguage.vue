@@ -8,6 +8,7 @@
       v-model="langModel"
       id="select-language"
       name="language"
+      :disabled="disabled"
       :style="{
         backgroundImage: `url(${require('@/assets/icons/triangle.svg')})`,
       }"
@@ -31,6 +32,7 @@ const emit = defineEmits(["change-language"]);
 const props = defineProps<{
   lang: TLanguage;
   dict: IDictionary;
+  disabled: boolean;
 }>();
 
 onBeforeMount(() => (langModel.value = props.lang));
