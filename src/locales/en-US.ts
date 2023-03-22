@@ -28,7 +28,7 @@ const en: IDictionary = {
   baseSettings: "Base settings",
   languages: {
     en: "English",
-    ru: "Russian",
+    ru: "Русский",
   },
   units: {
     standard: "standard",
