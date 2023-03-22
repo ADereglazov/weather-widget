@@ -27,7 +27,7 @@ const ru: IDictionary = {
   additionalSettings: "Дополнительные настройки",
   baseSettings: "Основные настройки",
   languages: {
-    en: "Английский",
+    en: "English",
     ru: "Русский",
   },
   units: {
