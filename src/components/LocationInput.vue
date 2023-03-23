@@ -80,6 +80,7 @@ const selectedSuggestionListItem = ref<IWeatherLocation | null>(null);
 const newLocationString = ref("");
 const errStatus = ref("");
 const isLoading = ref(false);
+let controller: AbortController;
 
 onMounted(() => inputField.value?.focus());
 
@@ -132,9 +133,16 @@ function onEnter() {
 async function getInputtedLocation() {
   isLoading.value = true;
 
+  if (controller) controller.abort();
+  controller = new AbortController();
+
   let locationsList: IGetWeatherFetchByNameSucceed | null;
   ({ location: locationsList, message: errStatus.value } =
-    await getWeatherByCityName(newLocationString.value.trim(), props));
+    await getWeatherByCityName(
+      newLocationString.value.trim(),
+      props,
+      controller.signal
+    ));
 
   if (locationsList?.count) {
     foundList.value = [...locationsList.list];
