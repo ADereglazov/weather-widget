@@ -8,6 +8,7 @@ import {
   TGetWeatherByNameResult,
 } from "./types";
 
+let controller: AbortController;
 export async function getWeatherByCityName(
   city: string,
   props: {
@@ -21,12 +22,16 @@ export async function getWeatherByCityName(
   message: string;
 }> {
   try {
+    if (controller) controller.abort();
+    controller = new AbortController();
+
     const result = await getWeather({
       city,
       lang: props.lang,
       units: props.units,
       apiUrl: props.apiUrl,
       apiKey: props.apiKey,
+      signal: controller.signal,
     });
 
     if (result.status !== "succeed") {
@@ -39,11 +44,16 @@ export async function getWeatherByCityName(
     }
 
     return { location: result, message: "" };
-  } catch (e) {
+  } catch (e: any) {
+    console.error(e);
+
+    if (e.name === "AbortError") {
+      return { location: null, message: "" };
+    }
+
     const message = `${dict[props.lang].oops}, ${
       dict[props.lang].somethingWentWrong
     }, ${dict[props.lang].tryAgain}`;
-    console.error(e);
 
     return { location: null, message };
   }
@@ -54,6 +64,7 @@ async function getWeather({
   units = "metric",
   apiUrl,
   apiKey,
+  signal,
 }: IGetWeatherByCityNameParameters): Promise<TGetWeatherByNameResult> {
   const requestUrl = new URL(`${apiUrl}/find/`);
   requestUrl.searchParams.set("q", city);
@@ -61,7 +72,7 @@ async function getWeather({
   requestUrl.searchParams.set("lang", lang);
   requestUrl.searchParams.set("units", units);
   requestUrl.searchParams.set("appid", apiKey);
-  const response = await fetch(requestUrl.toString());
+  const response = await fetch(requestUrl.toString(), { signal });
 
   if (!response.ok) {
     const responseJson: IGetWeatherFetchFailed = await response.json();

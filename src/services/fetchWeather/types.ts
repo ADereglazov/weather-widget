@@ -14,6 +14,7 @@ export interface IGetWeatherFromGeoParameters
 export interface IGetWeatherByCityNameParameters
   extends IGetWeatherCommonParameters {
   city: string;
+  signal: AbortSignal;
 }
 export interface IGetWeatherByCityIdParameters
   extends IGetWeatherCommonParameters {
