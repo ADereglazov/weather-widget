@@ -8,6 +8,7 @@ import {
   TGetWeatherByNameResult,
 } from "./types";
 
+let controller: AbortController;
 export async function getWeatherByCityName(
   city: string,
   props: {
@@ -15,20 +16,22 @@ export async function getWeatherByCityName(
     units: TUnits;
     apiUrl: string;
     apiKey: string;
-  },
-  signal: AbortSignal
+  }
 ): Promise<{
   location: IGetWeatherFetchByNameSucceed | null;
   message: string;
 }> {
   try {
+    if (controller) controller.abort();
+    controller = new AbortController();
+
     const result = await getWeather({
       city,
       lang: props.lang,
       units: props.units,
       apiUrl: props.apiUrl,
       apiKey: props.apiKey,
-      signal,
+      signal: controller.signal,
     });
 
     if (result.status !== "succeed") {
