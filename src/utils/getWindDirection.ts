@@ -6,7 +6,7 @@ export function getWindDirection(value = 0): TDirection {
   // Gradation of wind direction in degree
   const gradation = 22.5;
   // Calculate element's index for wind directions array
-  let index = +(value / gradation).toFixed(0);
+  let index = +((value % 360) / gradation).toFixed(0);
   index = index > MAX_INDEX_VALUE ? 0 : index;
 
   return DIRECTIONS[index];
