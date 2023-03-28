@@ -30,6 +30,10 @@ export interface IDictionary {
   units: TUnitsAll;
   pressureUnits: TPressureUnits;
   windDirections: TDirections;
+  updatePeriodTitle: string;
+  oneHour: string;
+  twoHours: string;
+  fiveHours: string;
 }
 
 type TLanguages = {

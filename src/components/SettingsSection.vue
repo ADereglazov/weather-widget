@@ -5,20 +5,13 @@
     <SettingsOptions
       v-if="additionalSettingsModel"
       :lang="lang"
+      :updatePeriod="updatePeriod"
       :units="units"
       :pressure-unit="pressureUnit"
       :dict="dict"
       :is-loading="isLoading"
       class="settings-section__options"
-      @change-language="
-        emit('change-settings', { lang: $event, units, pressureUnit })
-      "
-      @change-units="
-        emit('change-settings', { lang, units: $event, pressureUnit })
-      "
-      @change-pressure-unit="
-        emit('change-settings', { lang, units, pressureUnit: $event })
-      "
+      @change-settings="emit('change-settings', $event)"
     />
 
     <template v-else>
@@ -72,6 +65,7 @@ import { defineEmits, defineProps, ref } from "vue";
 import {
   IWeatherLocationTimestamped,
   TLanguage,
+  TUpdatePeriod,
   TUnits,
   TPressureUnit,
 } from "@/types";
@@ -91,6 +85,7 @@ const emit = defineEmits([
 defineProps<{
   locationsList: IWeatherLocationTimestamped[];
   lang: TLanguage;
+  updatePeriod: TUpdatePeriod;
   units: TUnits;
   pressureUnit: TPressureUnit;
   apiUrl: string;

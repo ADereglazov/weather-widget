@@ -12,7 +12,6 @@
 ---
 ### Environment variables in .env file
 
-> **UPDATE_PERIOD_IN_HOURS** - local saved data update period in hours, default - 2 hours  
 > **API_URL** - http://api.openweathermap.org/data/2.5  
 > **API_KEY** - you personal key from [free public API](http://api.openweathermap.org)  
 > If you plan to use this: get your [own API key](https://openweathermap.org/appid#get) from OpenWeatherMap and replace the key in `.env`

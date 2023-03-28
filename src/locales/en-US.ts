@@ -22,7 +22,7 @@ const en: IDictionary = {
   tryReload: "try to press reload button for update widget",
   reload: "Reload",
   selectLanguage: "Select language",
-  selectUnits: "Units of measurement",
+  selectUnits: "System of units of measurement",
   selectPressure: "Unit of pressure",
   additionalSettings: "Additional settings",
   baseSettings: "Base settings",
@@ -57,5 +57,9 @@ const en: IDictionary = {
     NW: "NW",
     NNW: "NNW",
   },
+  updatePeriodTitle: "Update period",
+  oneHour: "hour",
+  twoHours: "hours",
+  fiveHours: "hours",
 };
 export default en;

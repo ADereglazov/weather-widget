@@ -3,6 +3,12 @@
   flex-direction: column;
   align-items: center;
 
+  &__wrapper {
+    display: grid;
+    gap: 40px;
+    grid-template-columns: 1fr 1fr;
+  }
+
   &__block + &__block {
     margin-top: 20px;
   }

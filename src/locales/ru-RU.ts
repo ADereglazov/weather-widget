@@ -22,7 +22,7 @@ const ru: IDictionary = {
   tryReload: 'нажмите кнопку "перезагрузить" для обновления виджета',
   reload: "Перезагрузить",
   selectLanguage: "Выберите язык",
-  selectUnits: "Единицы измерения",
+  selectUnits: "Система единиц измерения",
   selectPressure: "Единица измерения давления",
   additionalSettings: "Дополнительные настройки",
   baseSettings: "Основные настройки",
@@ -57,5 +57,9 @@ const ru: IDictionary = {
     NW: "СЗ",
     NNW: "ССЗ",
   },
+  updatePeriodTitle: "Период обновления",
+  oneHour: "час",
+  twoHours: "часа",
+  fiveHours: "часов",
 };
 export default ru;

@@ -1,11 +1,10 @@
 import { millisecondsToHours } from "date-fns";
 import { IWeatherLocationTimestamped } from "@/types/weatherLocation";
-
-const UPDATE_PERIOD_IN_HOURS: number =
-  process.env.VUE_APP_UPDATE_PERIOD_IN_HOURS || 2;
+import { TUpdatePeriod } from "@/types";
 
 export function getOutdatedWeatherLocationIndexes(
-  list: IWeatherLocationTimestamped[]
+  list: IWeatherLocationTimestamped[],
+  updatePeriod: TUpdatePeriod = 2
 ): number[] {
   const outdatedList: number[] = [];
 
@@ -14,7 +13,7 @@ export function getOutdatedWeatherLocationIndexes(
       Date.now() - list[i].lastUpdated
     );
 
-    if (hoursFromLastUpdate >= UPDATE_PERIOD_IN_HOURS) {
+    if (hoursFromLastUpdate >= updatePeriod) {
       outdatedList.push(i);
     }
   }
