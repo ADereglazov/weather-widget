@@ -219,13 +219,20 @@ function changeSettings({
   pressureUnit = props.pressureUnit,
 }: ISettings) {
   setLocalStorageSettings({ lang, updatePeriod, units, pressureUnit });
-  // At first necessary change props.lang and props.units,
+  const updateOutdated = props.updatePeriod !== updatePeriod;
+
+  // Necessary change props.lang, props.units etc.,
   // because it uses for network queries in refreshLocalData() function.
   props.lang = lang;
   props.updatePeriod = updatePeriod;
   props.units = units;
   props.pressureUnit = pressureUnit;
-  refreshAllLocalData();
+
+  if (updateOutdated) {
+    refreshOutdatedLocalData();
+  } else {
+    refreshAllLocalData();
+  }
 }
 </script>
 
