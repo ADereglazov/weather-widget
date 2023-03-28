@@ -39,24 +39,26 @@
       />
     </template>
 
-    <input
-      v-model="additionalSettingsModel"
-      id="settings-toggle"
-      type="checkbox"
-      name="additional-settings"
-      class="settings-section__additional-settings-input visually-hidden"
-    />
-    <label
-      for="settings-toggle"
-      class="settings-section__additional-settings-label"
-      :style="
-        additionalSettingsModel ? labelStyles.base : labelStyles.additional
-      "
-    >
-      {{
-        additionalSettingsModel ? dict.baseSettings : dict.additionalSettings
-      }}
-    </label>
+    <footer class="settings-section__footer">
+      <input
+        v-model="additionalSettingsModel"
+        id="settings-toggle"
+        type="checkbox"
+        name="additional-settings"
+        class="settings-section__additional-settings-input visually-hidden"
+      />
+      <label
+        for="settings-toggle"
+        class="settings-section__additional-settings-label"
+        :style="
+          additionalSettingsModel ? labelStyles.base : labelStyles.additional
+        "
+      >
+        {{
+          additionalSettingsModel ? dict.baseSettings : dict.additionalSettings
+        }}
+      </label>
+    </footer>
   </section>
 </template>
 
