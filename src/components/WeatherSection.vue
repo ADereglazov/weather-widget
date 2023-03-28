@@ -94,10 +94,10 @@
         </p>
         <div class="weather-section__wrapper-updated-info">
           <ReloadButton
-            :dict="dict[props.lang]"
-            :lang="props.lang"
+            :dict="dict"
+            :class="{ 'weather-section__reload-button--reload': reload }"
             class="weather-section__reload-button"
-            @reload="emit('reload')"
+            @reload="onReload"
           />
           <p class="weather-section__updated-info">
             {{ dict.updated }}: {{ updatedDateTime(location.lastUpdated) }}
@@ -109,7 +109,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineEmits, defineProps, computed } from "vue";
+import { ref, defineEmits, defineProps, computed } from "vue";
 import { getWindDirection } from "@/utils";
 import {
   IWeatherLocationTimestamped,
@@ -134,6 +134,7 @@ const props = defineProps<{
   dict: IDictionary;
 }>();
 
+const reload = ref(false);
 const unitsDict = {
   standard: {
     temperature: "K",
@@ -155,5 +156,10 @@ const multiplier = computed<number>(() =>
 
 function updatedDateTime(value: number) {
   return new Date(value).toLocaleString(props.lang);
+}
+function onReload() {
+  reload.value = true;
+  setTimeout(() => (reload.value = false), 1000);
+  emit("reload");
 }
 </script>

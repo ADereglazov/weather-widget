@@ -1,6 +1,6 @@
 <template>
   <button
-    :aria-label="dict[props.lang].reload"
+    :aria-label="dict.reload"
     :style="{
       backgroundImage: `url(${require('@/assets/icons/reload.svg')})`,
     }"
@@ -12,13 +12,11 @@
 
 <script setup lang="ts">
 import { defineEmits, defineProps } from "vue";
-import { TLanguage } from "@/types";
 import { IDictionary } from "@/locales/types";
 
 const emit = defineEmits(["reload"]);
 
-const props = defineProps<{
-  lang: TLanguage;
+defineProps<{
   dict: IDictionary;
 }>();
 </script>

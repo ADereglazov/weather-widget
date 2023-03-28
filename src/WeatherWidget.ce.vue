@@ -33,7 +33,7 @@
     :pressure-unit="props.pressureUnit"
     :class="{ 'app-weather-section--loading': isLoading }"
     class="app-weather-section"
-    @reload="getInitData"
+    @reload="refreshAllLocalData"
   />
   <LoadingSpinner v-show="isLoading" class="app-spinner" />
   <div
@@ -44,7 +44,6 @@
 
     <ReloadButton
       :dict="dict[props.lang]"
-      :lang="props.lang"
       class="app-reload-button"
       @reload="getInitData"
     />
@@ -151,6 +150,10 @@ async function getGeoWeather() {
   addLocation(location);
   isLoading.value = false;
 }
+function refreshAllLocalData() {
+  const locationsListIndexes = locationsList.value.map((item, index) => index);
+  refreshLocalData(locationsListIndexes);
+}
 function refreshOutdatedLocalData() {
   const outdatedElements = getOutdatedWeatherLocationIndexes(
     locationsList.value
@@ -207,8 +210,7 @@ function changeSettings({ lang, units, pressureUnit }: ISettings) {
   props.lang = lang;
   props.units = units;
   props.pressureUnit = pressureUnit;
-  const locationsListIndexes = locationsList.value.map((item, index) => index);
-  refreshLocalData(locationsListIndexes);
+  refreshAllLocalData();
 }
 </script>
 
