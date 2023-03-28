@@ -11,6 +11,7 @@
     :locations-list="locationsList"
     :dict="dict[props.lang]"
     :lang="props.lang"
+    :updatePeriod="props.updatePeriod"
     :units="props.units"
     :pressure-unit="props.pressureUnit"
     :apiUrl="props.apiUrl"
@@ -68,6 +69,7 @@ import {
   ISettings,
   IWeatherLocationTimestamped,
   TLanguage,
+  TUpdatePeriod,
   TUnits,
   TPressureUnit,
 } from "@/types";
@@ -82,12 +84,14 @@ const API_KEY: string = process.env.VUE_APP_API_KEY || "";
 
 const props = reactive<{
   lang: TLanguage;
+  updatePeriod: TUpdatePeriod;
   units: TUnits;
   pressureUnit: TPressureUnit;
   apiUrl: string;
   apiKey: string;
 }>({
   lang: "en",
+  updatePeriod: 2,
   units: "metric",
   pressureUnit: "hPa",
   apiUrl: API_URL,
@@ -108,6 +112,7 @@ function getInitData() {
   if (settings)
     ({
       lang: props.lang,
+      updatePeriod: props.updatePeriod,
       units: props.units,
       pressureUnit: props.pressureUnit,
     } = settings);
@@ -155,7 +160,8 @@ function refreshAllLocalData() {
 }
 function refreshOutdatedLocalData() {
   const outdatedElements = getOutdatedWeatherLocationIndexes(
-    locationsList.value
+    locationsList.value,
+    props.updatePeriod
   );
   refreshLocalData(outdatedElements);
 }
@@ -206,11 +212,17 @@ function onReload() {
   errStatus.value = "";
   getInitData();
 }
-function changeSettings({ lang, units, pressureUnit }: ISettings) {
-  setLocalStorageSettings({ lang, units, pressureUnit });
+function changeSettings({
+  lang = props.lang,
+  updatePeriod = props.updatePeriod,
+  units = props.units,
+  pressureUnit = props.pressureUnit,
+}: ISettings) {
+  setLocalStorageSettings({ lang, updatePeriod, units, pressureUnit });
   // At first necessary change props.lang and props.units,
   // because it uses for network queries in refreshLocalData() function.
   props.lang = lang;
+  props.updatePeriod = updatePeriod;
   props.units = units;
   props.pressureUnit = pressureUnit;
   refreshAllLocalData();

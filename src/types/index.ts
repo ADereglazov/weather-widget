@@ -5,3 +5,4 @@ export * from "./weatherLocation";
 export * from "./settings";
 export * from "./directions";
 export * from "./pressure";
+export * from "./updatePeriods";
