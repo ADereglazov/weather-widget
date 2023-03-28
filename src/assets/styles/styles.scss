@@ -12,6 +12,12 @@
 @import "select-language&update-period";
 @import "select-units";
 
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
 ul {
   border-radius: 2px;
 
