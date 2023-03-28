@@ -45,7 +45,7 @@
     <ReloadButton
       :dict="dict[props.lang]"
       class="app-reload-button"
-      @reload="getInitData"
+      @reload="onReload"
     />
   </div>
 </template>
@@ -104,7 +104,6 @@ onBeforeMount(() => {
 });
 
 function getInitData() {
-  errStatus.value = "";
   const settings: ISettings | null = getLocalStorageSettings();
   if (settings)
     ({
@@ -202,6 +201,10 @@ function onManageButtonClick() {
   if (!isSettingsOpened.value && !locationsList.value.length) {
     getInitData();
   }
+}
+function onReload() {
+  errStatus.value = "";
+  getInitData();
 }
 function changeSettings({ lang, units, pressureUnit }: ISettings) {
   setLocalStorageSettings({ lang, units, pressureUnit });
