@@ -44,10 +44,10 @@ export async function getWeatherByCityName(
     }
 
     return { location: result, message: "" };
-  } catch (e: any) {
+  } catch (e: unknown) {
     console.error(e);
 
-    if (e.name === "AbortError") {
+    if (e instanceof Error && e.name === "AbortError") {
       return { location: null, message: "" };
     }
 

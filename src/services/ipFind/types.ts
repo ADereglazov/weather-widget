@@ -1,4 +1,4 @@
-import { ICoordinates } from "@/types/coordinates";
+import { ICoordinates } from "@/types";
 
 export interface IIpFindData {
   latitude: number;

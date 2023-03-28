@@ -9,12 +9,12 @@
   <SettingsSection
     v-if="isSettingsOpened"
     :locations-list="locationsList"
+    :dict="dict[props.lang]"
     :lang="props.lang"
     :units="props.units"
     :pressure-unit="props.pressureUnit"
     :apiUrl="props.apiUrl"
     :apiKey="props.apiKey"
-    :dict="dict[props.lang]"
     :is-loading="isLoading"
     :class="{ 'app-settings-section--loading': isLoading }"
     class="app-settings-section"
@@ -33,6 +33,7 @@
     :pressure-unit="props.pressureUnit"
     :class="{ 'app-weather-section--loading': isLoading }"
     class="app-weather-section"
+    @reload="refreshAllLocalData"
   />
   <LoadingSpinner v-show="isLoading" class="app-spinner" />
   <div
@@ -40,14 +41,11 @@
     class="app-error"
   >
     {{ errStatus }}
-    <button
-      type="button"
-      :aria-label="dict[props.lang].reload"
-      :style="{
-        backgroundImage: `url(${require('@/assets/icons/reload.svg')})`,
-      }"
+
+    <ReloadButton
+      :dict="dict[props.lang]"
       class="app-reload-button"
-      @click="getInitData"
+      @reload="getInitData"
     />
   </div>
 </template>
@@ -74,6 +72,7 @@ import {
   TPressureUnit,
 } from "@/types";
 import ManageButton from "@/components/ManageButton.vue";
+import ReloadButton from "@/components/ReloadButton.vue";
 import WeatherSection from "@/components/WeatherSection.vue";
 import SettingsSection from "@/components/SettingsSection.vue";
 import LoadingSpinner from "@/components/LoadingSpinner.vue";
@@ -105,6 +104,7 @@ onBeforeMount(() => {
 });
 
 function getInitData() {
+  errStatus.value = "";
   const settings: ISettings | null = getLocalStorageSettings();
   if (settings)
     ({
@@ -149,6 +149,10 @@ async function getGeoWeather() {
 
   addLocation(location);
   isLoading.value = false;
+}
+function refreshAllLocalData() {
+  const locationsListIndexes = locationsList.value.map((item, index) => index);
+  refreshLocalData(locationsListIndexes);
 }
 function refreshOutdatedLocalData() {
   const outdatedElements = getOutdatedWeatherLocationIndexes(
@@ -206,8 +210,7 @@ function changeSettings({ lang, units, pressureUnit }: ISettings) {
   props.lang = lang;
   props.units = units;
   props.pressureUnit = pressureUnit;
-  const locationsListIndexes = locationsList.value.map((item, index) => index);
-  refreshLocalData(locationsListIndexes);
+  refreshAllLocalData();
 }
 </script>
 
