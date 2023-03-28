@@ -9,12 +9,12 @@
   <SettingsSection
     v-if="isSettingsOpened"
     :locations-list="locationsList"
+    :dict="dict[props.lang]"
     :lang="props.lang"
     :units="props.units"
     :pressure-unit="props.pressureUnit"
     :apiUrl="props.apiUrl"
     :apiKey="props.apiKey"
-    :dict="dict[props.lang]"
     :is-loading="isLoading"
     :class="{ 'app-settings-section--loading': isLoading }"
     class="app-settings-section"

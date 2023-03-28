@@ -159,7 +159,7 @@ function updatedDateTime(value: number) {
 }
 function onReload() {
   reload.value = true;
-  setTimeout(() => (reload.value = false), 1000);
+  setTimeout(() => (reload.value = false), 500);
   emit("reload");
 }
 </script>
