@@ -80,7 +80,7 @@
               :style="{
                 backgroundImage: `url(${require('@/assets/icons/barometer.svg')})`,
               }"
-              class="weather-section__wrapper-description-icon test"
+              class="weather-section__wrapper-description-icon"
             />
             <span style="margin-left: 5px">
               {{ (location.main.pressure * multiplier).toFixed(0)
@@ -92,16 +92,24 @@
             {{ dict.visibility }}: {{ location.visibility / 1000 }}{{ dict.km }}
           </span>
         </p>
-        <p class="weather-section__updated-info">
-          {{ dict.updated }}: {{ updatedDateTime(location.lastUpdated) }}
-        </p>
+        <div class="weather-section__wrapper-updated-info">
+          <ReloadButton
+            :dict="dict[props.lang]"
+            :lang="props.lang"
+            class="weather-section__reload-button"
+            @reload="emit('reload')"
+          />
+          <p class="weather-section__updated-info">
+            {{ dict.updated }}: {{ updatedDateTime(location.lastUpdated) }}
+          </p>
+        </div>
       </SwiperSlide>
     </Swiper>
   </section>
 </template>
 
 <script setup lang="ts">
-import { defineProps, computed } from "vue";
+import { defineEmits, defineProps, computed } from "vue";
 import { getWindDirection } from "@/utils";
 import {
   IWeatherLocationTimestamped,
@@ -110,10 +118,13 @@ import {
   TPressureUnit,
 } from "@/types";
 import { IDictionary } from "@/locales/types";
+import ReloadButton from "@/components/ReloadButton.vue";
 import SwiperCore, { Pagination, A11y } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/vue";
 
 SwiperCore.use([Pagination, A11y]);
+
+const emit = defineEmits(["reload"]);
 
 const props = defineProps<{
   locationsList: IWeatherLocationTimestamped[];

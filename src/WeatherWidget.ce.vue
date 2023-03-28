@@ -33,6 +33,7 @@
     :pressure-unit="props.pressureUnit"
     :class="{ 'app-weather-section--loading': isLoading }"
     class="app-weather-section"
+    @reload="getInitData"
   />
   <LoadingSpinner v-show="isLoading" class="app-spinner" />
   <div
@@ -40,14 +41,12 @@
     class="app-error"
   >
     {{ errStatus }}
-    <button
-      type="button"
-      :aria-label="dict[props.lang].reload"
-      :style="{
-        backgroundImage: `url(${require('@/assets/icons/reload.svg')})`,
-      }"
+
+    <ReloadButton
+      :dict="dict[props.lang]"
+      :lang="props.lang"
       class="app-reload-button"
-      @click="getInitData"
+      @reload="getInitData"
     />
   </div>
 </template>
@@ -74,6 +73,7 @@ import {
   TPressureUnit,
 } from "@/types";
 import ManageButton from "@/components/ManageButton.vue";
+import ReloadButton from "@/components/ReloadButton.vue";
 import WeatherSection from "@/components/WeatherSection.vue";
 import SettingsSection from "@/components/SettingsSection.vue";
 import LoadingSpinner from "@/components/LoadingSpinner.vue";
@@ -105,6 +105,7 @@ onBeforeMount(() => {
 });
 
 function getInitData() {
+  errStatus.value = "";
   const settings: ISettings | null = getLocalStorageSettings();
   if (settings)
     ({

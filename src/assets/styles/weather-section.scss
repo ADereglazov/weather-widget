@@ -109,11 +109,22 @@
     white-space: nowrap;
   }
 
+  &__wrapper-updated-info {
+    display: flex;
+    align-items: center;
+  }
+
   &__updated-info {
     margin: 0;
 
     font-size: 11px;
     font-style: italic;
     line-height: 14px;
+  }
+
+  &__reload-button {
+    width: 14px;
+    height: 14px;
+    margin-right: 10px;
   }
 }
