@@ -43,7 +43,14 @@
       />
       <LoadingSpinner v-show="isLoading" class="location-input__spinner" />
     </div>
-    <span class="location-input__status">{{ errStatus }}</span>
+    <div class="location-input__status-wrapper">
+      <span
+        :class="{ 'location-input__status--animated': errStatus.length > 45 }"
+        class="location-input__status"
+      >
+        {{ errStatus }}
+      </span>
+    </div>
   </div>
 </template>
 

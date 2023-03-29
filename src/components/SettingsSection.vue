@@ -1,6 +1,8 @@
 <template>
   <section class="settings-section">
-    <h2 class="settings-section__title">{{ dict.settings }}</h2>
+    <header class="settings-section__header">
+      <h2 class="settings-section__title">{{ dict.settings }}</h2>
+    </header>
 
     <SettingsOptions
       v-if="additionalSettingsModel"

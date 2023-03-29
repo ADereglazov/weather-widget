@@ -35,6 +35,7 @@ ul {
   }
 
   &::-webkit-scrollbar-track-piece {
+    border-radius: 3px;
     background-color: $gray-light;
   }
 
