@@ -46,6 +46,7 @@
         type="checkbox"
         name="additional-settings"
         class="settings-section__additional-settings-input visually-hidden"
+        @keydown.enter="additionalSettingsModel = !additionalSettingsModel"
       />
       <label
         for="settings-toggle"
