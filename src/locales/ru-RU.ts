@@ -31,9 +31,9 @@ const ru: IDictionary = {
     ru: "Русский",
   },
   units: {
-    standard: "стандартные",
-    metric: "метрические",
-    imperial: "имперские",
+    standard: "стандартная",
+    metric: "метрическая",
+    imperial: "имперская",
   },
   pressureUnits: {
     hPa: "гПа",
