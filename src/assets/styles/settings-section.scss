@@ -1,9 +1,21 @@
 .settings-section {
   min-height: 292px;
 
+  &__header {
+    display: block;
+    width: calc(100% + 20px);
+    padding: 10px;
+    margin-top: -10px;
+    margin-left: -10px;
+    margin-bottom: 5px;
+
+    text-align: left;
+    background-color: $ghostwhite;
+  }
+
   &__title {
-    margin-top: 0;
-    margin-bottom: 10px;
+    margin: 0;
+
     font-size: 15px;
     font-weight: bold;
   }
@@ -16,12 +28,8 @@
     margin-bottom: 5px;
   }
 
-  .settings-section__draggable-list {
-    margin-bottom: 5px;
-
-    &--opacity {
-      opacity: 0.5;
-    }
+  .settings-section__draggable-list--opacity {
+    opacity: 0.5;
   }
 
   &__footer {
@@ -44,7 +52,6 @@
   &__additional-settings-label {
     border-radius: 2px;
     background-repeat: no-repeat;
-    background-color: transparent;
     background-size: 16px 16px;
 
     font-size: 15px;

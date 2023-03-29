@@ -13,7 +13,6 @@
 
   &__label {
     display: inline-block;
-    margin-bottom: 5px;
 
     font-size: 13px;
     font-weight: bold;
@@ -64,13 +63,25 @@
     transform: translateY(-50%);
   }
 
-  &__status {
+  &__status-wrapper {
     display: block;
     width: 100%;
-    min-height: 20px;
+    padding: 0 2px;
+
+    white-space: nowrap;
+    overflow: hidden;
+  }
+
+  &__status {
+    display: inline-block;
 
     font-size: inherit;
     color: $red;
+
+    &--animated {
+      padding-left: 100%;
+      animation: scroll 10s infinite linear;
+    }
   }
 
   &__spinner {
@@ -78,5 +89,14 @@
     top: 50%;
     right: -25px;
     transform: translateY(-50%) scale(30%);
+  }
+}
+
+@keyframes scroll {
+  0% {
+    transform: translate(0, 0);
+  }
+  100% {
+    transform: translate(-100%, 0)
   }
 }
