@@ -6,7 +6,6 @@
   &__label {
     display: block;
     width: min-content;
-    margin-bottom: 5px;
 
     font-weight: bold;
     line-height: 18px;
@@ -26,8 +25,6 @@
     font: inherit;
     letter-spacing: inherit;
     word-spacing: inherit;
-    -moz-appearance: none;
-    -webkit-appearance: none;
     appearance: none;
 
     &::-ms-expand {
