@@ -26,6 +26,8 @@ export interface IWeatherLocation {
   /** Time of data calculation, unix, UTC */
   dt: number;
   wind: IWind;
+  /** Visibility, meter. The maximum value of the visibility is 10km */
+  visibility: number;
   sys: ISys;
   /** Rain volume for the last 1 hour, 3 hours, mm (where available) */
   rain: TRain | null;

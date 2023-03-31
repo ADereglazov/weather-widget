@@ -2,20 +2,15 @@
   <ManageButton
     :disabled="isLoading || isLoadingInSettings"
     :is-settings-opened="isSettingsOpened"
-    :dict="dict[props.lang]"
+    :dict="dict[mainProps.lang]"
     class="app-manage-button"
     @button-click="onManageButtonClick"
   />
   <SettingsSection
     v-if="isSettingsOpened"
     :locations-list="locationsList"
-    :dict="dict[props.lang]"
-    :lang="props.lang"
-    :updatePeriod="props.updatePeriod"
-    :units="props.units"
-    :pressure-unit="props.pressureUnit"
-    :apiUrl="props.apiUrl"
-    :apiKey="props.apiKey"
+    :dict="dict[mainProps.lang]"
+    :mainProps="mainProps"
     :is-loading="isLoading"
     :class="{ 'app-settings-section--loading': isLoading }"
     class="app-settings-section"
@@ -28,10 +23,10 @@
   <WeatherSection
     v-else
     :locations-list="locationsList"
-    :dict="dict[props.lang]"
-    :lang="props.lang"
-    :units="props.units"
-    :pressure-unit="props.pressureUnit"
+    :dict="dict[mainProps.lang]"
+    :lang="mainProps.lang"
+    :units="mainProps.units"
+    :pressure-unit="mainProps.pressureUnit"
     :class="{ 'app-weather-section--loading': isLoading }"
     class="app-weather-section"
     @reload="refreshAllLocalData"
@@ -44,7 +39,7 @@
     {{ errStatus }}
 
     <ReloadButton
-      :dict="dict[props.lang]"
+      :dict="dict[mainProps.lang]"
       class="app-reload-button"
       @reload="onReload"
     />
@@ -65,14 +60,7 @@ import {
   setLocalStorageSettings,
 } from "@/services/localStorageSettings";
 import { getOutdatedWeatherLocationIndexes } from "@/utils";
-import {
-  ISettings,
-  IWeatherLocationTimestamped,
-  TLanguage,
-  TUpdatePeriod,
-  TUnits,
-  TPressureUnit,
-} from "@/types";
+import { ISettings, IProps, IWeatherLocationTimestamped } from "@/types";
 import ManageButton from "@/components/ManageButton.vue";
 import ReloadButton from "@/components/ReloadButton.vue";
 import WeatherSection from "@/components/WeatherSection.vue";
@@ -82,14 +70,7 @@ import LoadingSpinner from "@/components/LoadingSpinner.vue";
 const API_URL: string = process.env.VUE_APP_API_URL || "";
 const API_KEY: string = process.env.VUE_APP_API_KEY || "";
 
-const props = reactive<{
-  lang: TLanguage;
-  updatePeriod: TUpdatePeriod;
-  units: TUnits;
-  pressureUnit: TPressureUnit;
-  apiUrl: string;
-  apiKey: string;
-}>({
+const mainProps = reactive<IProps>({
   lang: "en",
   updatePeriod: 2,
   units: "metric",
@@ -109,13 +90,7 @@ onBeforeMount(() => {
 
 function getInitData() {
   const settings: ISettings | null = getLocalStorageSettings();
-  if (settings)
-    ({
-      lang: props.lang,
-      updatePeriod: props.updatePeriod,
-      units: props.units,
-      pressureUnit: props.pressureUnit,
-    } = settings);
+  if (settings) Object.assign(mainProps, settings);
 
   locationsList.value = getLocalStorageWeatherData();
   if (locationsList.value.length === 0) {
@@ -130,11 +105,11 @@ async function getGeoWeather() {
   const geo = await getGeoLocalization();
   if (!geo) {
     const tryText =
-      dict[props.lang].tryReload.charAt(0).toUpperCase() +
-      dict[props.lang].tryReload.slice(1);
+      dict[mainProps.lang].tryReload.charAt(0).toUpperCase() +
+      dict[mainProps.lang].tryReload.slice(1);
 
-    errStatus.value = `${dict[props.lang].oops}, ${
-      dict[props.lang].error
+    errStatus.value = `${dict[mainProps.lang].oops}, ${
+      dict[mainProps.lang].error
     }! ${tryText}`;
 
     isLoading.value = false;
@@ -144,7 +119,7 @@ async function getGeoWeather() {
   let location: IGetWeatherSucceed | null;
   ({ location, message: errStatus.value } = await getWeatherFromGeo(
     geo,
-    props
+    mainProps
   ));
   if (!location) {
     isLoading.value = false;
@@ -161,13 +136,13 @@ function refreshAllLocalData() {
 function refreshOutdatedLocalData() {
   const outdatedElements = getOutdatedWeatherLocationIndexes(
     locationsList.value,
-    props.updatePeriod
+    mainProps.updatePeriod
   );
   refreshLocalData(outdatedElements);
 }
 async function refreshLocalData(indexes: number[]) {
   const promises = indexes.map((index) =>
-    getWeatherFromGeo(locationsList.value[index].coord, props).then(
+    getWeatherFromGeo(locationsList.value[index].coord, mainProps).then(
       (result) => {
         if (!result.location) {
           errStatus.value = result.message;
@@ -213,20 +188,20 @@ function onReload() {
   getInitData();
 }
 function changeSettings({
-  lang = props.lang,
-  updatePeriod = props.updatePeriod,
-  units = props.units,
-  pressureUnit = props.pressureUnit,
+  lang = mainProps.lang,
+  updatePeriod = mainProps.updatePeriod,
+  units = mainProps.units,
+  pressureUnit = mainProps.pressureUnit,
 }: ISettings) {
   setLocalStorageSettings({ lang, updatePeriod, units, pressureUnit });
-  const updateOutdated = props.updatePeriod !== updatePeriod;
+  const updateOutdated = mainProps.updatePeriod !== updatePeriod;
 
-  // Necessary change props.lang, props.units etc.,
+  // Necessary change mainProps.lang, mainProps.units etc.,
   // because it uses for network queries in refreshLocalData() function.
-  props.lang = lang;
-  props.updatePeriod = updatePeriod;
-  props.units = units;
-  props.pressureUnit = pressureUnit;
+  mainProps.lang = lang;
+  mainProps.updatePeriod = updatePeriod;
+  mainProps.units = units;
+  mainProps.pressureUnit = pressureUnit;
 
   if (updateOutdated) {
     refreshOutdatedLocalData();

@@ -6,10 +6,10 @@
 
     <SettingsOptions
       v-if="additionalSettingsModel"
-      :lang="lang"
-      :updatePeriod="updatePeriod"
-      :units="units"
-      :pressure-unit="pressureUnit"
+      :lang="mainProps.lang"
+      :updatePeriod="mainProps.updatePeriod"
+      :units="mainProps.units"
+      :pressure-unit="mainProps.pressureUnit"
       :dict="dict"
       :is-loading="isLoading"
       class="settings-section__options"
@@ -19,10 +19,10 @@
     <template v-else>
       <LocationInput
         class="settings-section__location-input"
-        :lang="lang"
-        :units="units"
-        :apiUrl="apiUrl"
-        :apiKey="apiKey"
+        :lang="mainProps.lang"
+        :units="mainProps.units"
+        :apiUrl="mainProps.apiUrl"
+        :apiKey="mainProps.apiKey"
         :dict="dict"
         @loading="onLoading"
         @suggestion-opened="isOpacity = $event"
@@ -67,13 +67,7 @@
 
 <script setup lang="ts">
 import { defineEmits, defineProps, ref } from "vue";
-import {
-  IWeatherLocationTimestamped,
-  TLanguage,
-  TUpdatePeriod,
-  TUnits,
-  TPressureUnit,
-} from "@/types";
+import { IWeatherLocationTimestamped, IProps } from "@/types";
 import { IDictionary } from "@/locales/types";
 import LocationInput from "@/components/LocationInput.vue";
 import DraggableList from "@/components/DraggableList.vue";
@@ -89,12 +83,7 @@ const emit = defineEmits([
 
 defineProps<{
   locationsList: IWeatherLocationTimestamped[];
-  lang: TLanguage;
-  updatePeriod: TUpdatePeriod;
-  units: TUnits;
-  pressureUnit: TPressureUnit;
-  apiUrl: string;
-  apiKey: string;
+  mainProps: IProps;
   dict: IDictionary;
   isLoading: boolean;
 }>();
