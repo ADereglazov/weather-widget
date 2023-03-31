@@ -6,3 +6,4 @@ export * from "./settings";
 export * from "./directions";
 export * from "./pressure";
 export * from "./updatePeriods";
+export * from "./props";

@@ -4,7 +4,6 @@
     <div class="select-pressure__wrapper">
       <template v-for="item in PRESSURE_UNITS" :key="item">
         <input
-          v-model="pressureUnitModel"
           :id="item"
           :checked="item === pressureUnit"
           :value="item"
@@ -12,7 +11,7 @@
           name="pressure-unit"
           type="radio"
           class="select-pressure__input visually-hidden"
-          @change="onChange"
+          @change="onChange(item)"
         />
         <label :for="item" class="select-pressure__label">
           <span class="select-pressure__cut-name">
@@ -25,23 +24,19 @@
 </template>
 
 <script setup lang="ts">
-import { defineEmits, defineProps, onBeforeMount, ref } from "vue";
+import { defineEmits, defineProps } from "vue";
 import { PRESSURE_UNITS, TPressureUnit } from "@/types";
 import { IDictionary } from "@/locales/types";
 
 const emit = defineEmits(["change-pressure-unit"]);
 
-const props = defineProps<{
+defineProps<{
   pressureUnit: TPressureUnit;
   dict: IDictionary;
   disabled: boolean;
 }>();
 
-onBeforeMount(() => (pressureUnitModel.value = props.pressureUnit));
-
-const pressureUnitModel = ref<TPressureUnit>("hPa");
-
-function onChange() {
-  emit("change-pressure-unit", pressureUnitModel.value);
+function onChange(value: TPressureUnit) {
+  emit("change-pressure-unit", value);
 }
 </script>

@@ -4,7 +4,6 @@
     <div class="select-units__wrapper">
       <template v-for="item in UNITS" :key="item">
         <input
-          v-model="unitsModel"
           :id="item"
           :checked="item === units"
           :value="item"
@@ -12,7 +11,7 @@
           name="units"
           type="radio"
           class="select-units__input visually-hidden"
-          @change="onChange"
+          @change="onChange(item)"
         />
         <label :for="item" class="select-units__label">
           <span class="select-units__cut-name">{{ dict.units[item] }}</span>
@@ -23,23 +22,19 @@
 </template>
 
 <script setup lang="ts">
-import { defineEmits, defineProps, onBeforeMount, ref } from "vue";
+import { defineEmits, defineProps } from "vue";
 import { UNITS, TUnits } from "@/types";
 import { IDictionary } from "@/locales/types";
 
 const emit = defineEmits(["change-units"]);
 
-const props = defineProps<{
+defineProps<{
   units: TUnits;
   dict: IDictionary;
   disabled: boolean;
 }>();
 
-onBeforeMount(() => (unitsModel.value = props.units));
-
-const unitsModel = ref<TUnits>("metric");
-
-function onChange() {
-  emit("change-units", unitsModel.value);
+function onChange(value: TUnits) {
+  emit("change-units", value);
 }
 </script>
