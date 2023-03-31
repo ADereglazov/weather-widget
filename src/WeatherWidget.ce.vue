@@ -59,7 +59,10 @@ import {
   getLocalStorageSettings,
   setLocalStorageSettings,
 } from "@/services/localStorageSettings";
-import { getOutdatedWeatherLocationIndexes } from "@/utils";
+import {
+  getOutdatedWeatherLocationIndexes,
+  capitalizeFirstLetter,
+} from "@/utils";
 import { ISettings, IProps, IWeatherLocationTimestamped } from "@/types";
 import ManageButton from "@/components/ManageButton.vue";
 import ReloadButton from "@/components/ReloadButton.vue";
@@ -104,13 +107,9 @@ async function getGeoWeather() {
 
   const geo = await getGeoLocalization();
   if (!geo) {
-    const tryText =
-      dict[mainProps.lang].tryReload.charAt(0).toUpperCase() +
-      dict[mainProps.lang].tryReload.slice(1);
-
     errStatus.value = `${dict[mainProps.lang].oops}, ${
       dict[mainProps.lang].error
-    }! ${tryText}`;
+    }! ${capitalizeFirstLetter(dict[mainProps.lang].tryReload)}`;
 
     isLoading.value = false;
     return;

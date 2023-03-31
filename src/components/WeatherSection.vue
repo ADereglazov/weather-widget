@@ -55,10 +55,8 @@
           <span v-if="location.main.feels_like > 0">+</span>
           <span>{{ location.main.feels_like }}</span>
           {{ unitsDict[units].temperature }},
-          {{
-            location.weather[0].description.charAt(0).toUpperCase() +
-            location.weather[0].description.slice(1)
-          }}, {{ dict.cloudCover }}: {{ location.clouds.all }}%
+          {{ capitalizeFirstLetter(location.weather[0].description) }},
+          {{ dict.cloudCover }}: {{ location.clouds.all }}%
         </p>
 
         <p class="weather-section__wrapper-details">
@@ -110,7 +108,7 @@
 
 <script setup lang="ts">
 import { ref, defineEmits, defineProps, computed } from "vue";
-import { getWindDirection } from "@/utils";
+import { getWindDirection, capitalizeFirstLetter } from "@/utils";
 import {
   IWeatherLocationTimestamped,
   TLanguage,
