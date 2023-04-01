@@ -15,6 +15,7 @@ export interface IDictionary {
   visibility: string;
   updated: string;
   km: string;
+  meter: string;
   oops: string;
   error: string;
   tryAgain: string;
