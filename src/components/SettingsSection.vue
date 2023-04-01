@@ -44,6 +44,7 @@
     <SettingsSectionFooter
       :model="additionalSettingsOpened"
       :dict="dict"
+      class="settings-section__footer"
       @toggle-settings="additionalSettingsOpened = $event"
     />
   </section>
