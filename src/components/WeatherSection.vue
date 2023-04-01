@@ -81,7 +81,7 @@
               class="weather-section__wrapper-description-icon"
             />
             <span style="margin-left: 5px">
-              {{ (location.main.pressure * multiplier).toFixed(0)
+              {{ pressure(location.main.pressure)
               }}{{ dict.pressureUnits[pressureUnit] }}
             </span>
           </span>
@@ -91,24 +91,16 @@
           </span>
         </p>
 
-        <div class="weather-section__wrapper-updated-info">
-          <ReloadButton
-            :dict="dict"
-            :class="{ 'weather-section__reload-button--reload': reload }"
-            class="weather-section__reload-button"
-            @reload="onReload"
-          />
-          <p class="weather-section__updated-info">
-            {{ dict.updated }}: {{ updatedDateTime(location.lastUpdated) }}
-          </p>
-        </div>
+        <p class="weather-section__updated-info">
+          {{ dict.updated }}: {{ updatedDateTime(location.lastUpdated) }}
+        </p>
       </SwiperSlide>
     </Swiper>
   </section>
 </template>
 
 <script setup lang="ts">
-import { ref, defineEmits, defineProps, computed } from "vue";
+import { defineProps, computed } from "vue";
 import { getWindDirection, capitalizeFirstLetter } from "@/utils";
 import {
   IWeatherLocationTimestamped,
@@ -117,13 +109,10 @@ import {
   TPressureUnit,
 } from "@/types";
 import { IDictionary } from "@/locales/types";
-import ReloadButton from "@/components/ReloadButton.vue";
 import SwiperCore, { Pagination, A11y } from "swiper";
 import { Swiper, SwiperSlide } from "swiper/vue";
 
 SwiperCore.use([Pagination, A11y]);
-
-const emit = defineEmits(["reload"]);
 
 const props = defineProps<{
   locationsList: IWeatherLocationTimestamped[];
@@ -133,7 +122,6 @@ const props = defineProps<{
   dict: IDictionary;
 }>();
 
-const reload = ref(false);
 const unitsDict = {
   standard: {
     temperature: "K",
@@ -153,15 +141,13 @@ const multiplier = computed<number>(() =>
   props.pressureUnit === "hPa" ? 1 : 0.75006156
 );
 
+function pressure(value: number): string {
+  return (value * multiplier.value).toFixed(0);
+}
 function visibility(value: number): string {
   return value < 1000 ? value + props.dict.meter : value / 1000 + props.dict.km;
 }
 function updatedDateTime(value: number): string {
   return new Date(value).toLocaleString(props.lang);
-}
-function onReload() {
-  reload.value = true;
-  setTimeout(() => (reload.value = false), 500);
-  emit("reload");
 }
 </script>

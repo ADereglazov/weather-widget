@@ -1,5 +1,6 @@
 <template>
   <button
+    :disabled="disabled"
     :aria-label="dict.reload"
     :style="{
       backgroundImage: `url(${require('@/assets/icons/reload.svg')})`,
@@ -17,6 +18,7 @@ import { IDictionary } from "@/locales/types";
 const emit = defineEmits(["reload"]);
 
 defineProps<{
+  disabled?: boolean;
   dict: IDictionary;
 }>();
 </script>
