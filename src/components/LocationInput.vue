@@ -45,7 +45,10 @@
     </div>
     <div class="location-input__status-wrapper">
       <span
-        :class="{ 'location-input__status--animated': errStatus.length > 45 }"
+        :class="{
+          'location-input__status--animated':
+            errStatus.length > MAX_STATIC_ERR_TEXT_LENGTH,
+        }"
         class="location-input__status"
       >
         {{ errStatus }}
@@ -78,6 +81,8 @@ const props = defineProps<{
   dict: IDictionary;
 }>();
 
+const MAX_STATIC_ERR_TEXT_LENGTH = 45;
+const MIN_LENGTH_FOR_START_SEARCH = 3;
 const foundList = ref<IWeatherLocation[]>([]);
 const throttledOnInput = throttle(getInputtedLocation, 1000);
 const isInputFocused = ref(false);
@@ -99,7 +104,9 @@ function onInput() {
   errStatus.value = "";
   foundList.value = [];
   selectedSuggestionListItem.value = null;
-  if (newLocationString.value.trim().length < 3) return;
+  if (newLocationString.value.trim().length < MIN_LENGTH_FOR_START_SEARCH) {
+    return;
+  }
   throttledOnInput();
 }
 function onSuggestionSelect({
