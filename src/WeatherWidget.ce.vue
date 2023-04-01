@@ -3,6 +3,7 @@
     :disabled="isLoading || isLoadingInSettings"
     :is-settings-opened="isSettingsOpened"
     :dict="dict[mainProps.lang]"
+    :class="{ 'app-manage-button--main': !isSettingsOpened }"
     class="app-manage-button"
     @button-click="onManageButtonClick"
   />
@@ -216,6 +217,10 @@ function changeSettings({
   top: 10px;
   right: 10px;
   z-index: 2;
+
+  &--main {
+    background-color: $white;
+  }
 }
 
 .app-weather-section--loading,
