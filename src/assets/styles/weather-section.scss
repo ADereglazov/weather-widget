@@ -109,36 +109,12 @@
     white-space: nowrap;
   }
 
-  &__wrapper-updated-info {
-    display: flex;
-    align-items: center;
-    padding: 0 2px;
-  }
-
   &__updated-info {
+    padding-left: 20px;
     margin: 0;
 
     font-size: 11px;
     font-style: italic;
     line-height: 14px;
-  }
-
-  &__reload-button {
-    width: 14px;
-    height: 14px;
-    margin-right: 10px;
-
-    &--reload {
-      animation: reload-button-rotate 500ms linear;
-    }
-  }
-}
-
-@keyframes reload-button-rotate {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
   }
 }

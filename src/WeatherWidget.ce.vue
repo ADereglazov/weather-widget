@@ -7,6 +7,14 @@
     class="app-manage-button"
     @button-click="onManageButtonClick"
   />
+  <ReloadButton
+    v-show="!isSettingsOpened"
+    :disabled="isLoading"
+    :dict="dict[mainProps.lang]"
+    :class="{ 'app-reload-button-main--reload': reload }"
+    class="app-reload-button-main"
+    @reload="updateAllWeatherData"
+  />
   <SettingsSection
     v-if="isSettingsOpened"
     :locations-list="locationsList"
@@ -30,7 +38,6 @@
     :pressure-unit="mainProps.pressureUnit"
     :class="{ 'app-weather-section--loading': isLoading }"
     class="app-weather-section"
-    @reload="refreshAllLocalData"
   />
   <LoadingSpinner v-show="isLoading" class="app-spinner" />
   <div
@@ -87,6 +94,7 @@ const isSettingsOpened = ref(false);
 const isLoading = ref(false);
 const isLoadingInSettings = ref(false);
 const errStatus = ref("");
+const reload = ref(false);
 
 onBeforeMount(() => {
   getInitData();
@@ -121,6 +129,7 @@ async function getGeoWeather() {
     geo,
     mainProps
   ));
+
   if (!location) {
     isLoading.value = false;
     return;
@@ -148,16 +157,14 @@ async function refreshLocalData(indexes: number[]) {
           errStatus.value = result.message;
           return null;
         }
-
         locationsList.value.splice(index, 1, result.location);
         setLocalStorageWeatherData(locationsList.value);
       }
     )
   );
 
-  isLoading.value = true;
-
   try {
+    isLoading.value = true;
     await Promise.all(promises);
   } finally {
     isLoading.value = false;
@@ -186,6 +193,12 @@ function onManageButtonClick() {
 function onReload() {
   errStatus.value = "";
   getInitData();
+}
+function updateAllWeatherData() {
+  reload.value = true;
+  setTimeout(() => (reload.value = false), 500);
+
+  refreshAllLocalData();
 }
 function changeSettings({
   lang = mainProps.lang,
@@ -223,6 +236,22 @@ function changeSettings({
   }
 }
 
+.app-reload-button-main {
+  position: absolute;
+  bottom: 35px;
+  left: 10px;
+  z-index: 2;
+
+  width: 14px;
+  height: 14px;
+
+  background-color: $white;
+
+  &--reload {
+    animation: reload-button-rotate 500ms linear;
+  }
+}
+
 .app-weather-section--loading,
 .app-settings-section--loading {
   opacity: 0.3;
@@ -256,5 +285,14 @@ function changeSettings({
 
 .app-reload-button {
   margin: 10px auto 0 auto;
+}
+
+@keyframes reload-button-rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
 }
 </style>
