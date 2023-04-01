@@ -211,10 +211,12 @@ function changeSettings({
 
   // Necessary change mainProps.lang, mainProps.units etc.,
   // because it uses for network queries in refreshLocalData() function.
-  mainProps.lang = lang;
-  mainProps.updatePeriod = updatePeriod;
-  mainProps.units = units;
-  mainProps.pressureUnit = pressureUnit;
+  Object.assign(mainProps, {
+    lang,
+    updatePeriod,
+    units,
+    pressureUnit,
+  });
 
   if (updateOutdated) {
     refreshOutdatedLocalData();
