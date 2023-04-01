@@ -1,22 +1,5 @@
 <template>
   <div class="loading-spinner">
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
-    <div></div>
+    <div v-for="(element, index) in 12" :key="index"></div>
   </div>
 </template>
-
-<script lang="ts">
-export default {
-  name: "LoadingSpinner",
-};
-</script>
