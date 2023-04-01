@@ -31,42 +31,4 @@
   .settings-section__draggable-list--opacity {
     opacity: 0.5;
   }
-
-  &__footer {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-
-    display: block;
-    width: 100%;
-    padding: 7px 10px;
-
-    background-color: $ghostwhite;
-    text-align: center;
-  }
-
-  &__additional-settings-input:focus-visible + &__additional-settings-label {
-    outline: 2px solid $black;
-  }
-
-  &__additional-settings-label {
-    border-radius: 2px;
-    background-repeat: no-repeat;
-    background-size: 16px 16px;
-
-    font-size: 15px;
-    font-style: italic;
-    text-decoration: underline;
-    color: $black;
-    white-space: nowrap;
-    overflow: hidden;
-
-    &:hover {
-      cursor: pointer;
-    }
-
-    &:active {
-      opacity: 0.7;
-    }
-  }
 }

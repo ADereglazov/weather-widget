@@ -5,7 +5,7 @@
     </header>
 
     <SettingsOptions
-      v-if="additionalSettingsModel"
+      v-if="additionalSettingsOpened"
       :lang="mainProps.lang"
       :updatePeriod="mainProps.updatePeriod"
       :units="mainProps.units"
@@ -41,27 +41,11 @@
       />
     </template>
 
-    <footer class="settings-section__footer">
-      <input
-        v-model="additionalSettingsModel"
-        id="settings-toggle"
-        type="checkbox"
-        name="additional-settings"
-        class="settings-section__additional-settings-input visually-hidden"
-        @keydown.enter="additionalSettingsModel = !additionalSettingsModel"
-      />
-      <label
-        for="settings-toggle"
-        class="settings-section__additional-settings-label"
-        :style="
-          additionalSettingsModel ? labelStyles.base : labelStyles.additional
-        "
-      >
-        {{
-          additionalSettingsModel ? dict.baseSettings : dict.additionalSettings
-        }}
-      </label>
-    </footer>
+    <SettingsSectionFooter
+      :model="additionalSettingsOpened"
+      :dict="dict"
+      @toggle-settings="additionalSettingsOpened = $event"
+    />
   </section>
 </template>
 
@@ -72,6 +56,7 @@ import { IDictionary } from "@/locales/types";
 import LocationInput from "@/components/LocationInput.vue";
 import DraggableList from "@/components/DraggableList.vue";
 import SettingsOptions from "@/components/SettingsOptions.vue";
+import SettingsSectionFooter from "@/components/SettingsSectionFooter.vue";
 
 const emit = defineEmits([
   "sorting-locations-list",
@@ -88,20 +73,8 @@ defineProps<{
   isLoading: boolean;
 }>();
 
-const additionalSettingsModel = ref(false);
+const additionalSettingsOpened = ref(false);
 const isOpacity = ref(false);
-const labelStyles = {
-  base: {
-    backgroundImage: `url(${require("@/assets/icons/left.svg")})`,
-    backgroundPosition: "left",
-    padding: "2px 4px 2px 20px",
-  },
-  additional: {
-    backgroundImage: `url(${require("@/assets/icons/right.svg")})`,
-    backgroundPosition: "right",
-    padding: "2px 20px 2px 4px",
-  },
-};
 
 function onAddLocation(location: IWeatherLocationTimestamped) {
   emit("add-location", location);
