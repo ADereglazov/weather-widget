@@ -15,6 +15,7 @@ const ru: IDictionary = {
   visibility: "Видимость",
   updated: "Обновлено",
   km: "км",
+  meter: "м",
   oops: "Ой...",
   error: "ошибка",
   tryAgain: "попробуйте снова",

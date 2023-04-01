@@ -15,6 +15,7 @@ const en: IDictionary = {
   visibility: "Visibility",
   updated: "Updated",
   km: "km",
+  meter: "m",
   oops: "Oops...",
   error: "error",
   tryAgain: "try again",

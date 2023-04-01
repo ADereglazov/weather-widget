@@ -87,9 +87,10 @@
           </span>
           <span>{{ dict.humidity }}: {{ location.main.humidity }}%</span>
           <span>
-            {{ dict.visibility }}: {{ location.visibility / 1000 }}{{ dict.km }}
+            {{ dict.visibility }}: {{ visibility(location.visibility) }}
           </span>
         </p>
+
         <div class="weather-section__wrapper-updated-info">
           <ReloadButton
             :dict="dict"
@@ -152,7 +153,10 @@ const multiplier = computed<number>(() =>
   props.pressureUnit === "hPa" ? 1 : 0.75006156
 );
 
-function updatedDateTime(value: number) {
+function visibility(value: number): string {
+  return value < 1000 ? value + props.dict.meter : value / 1000 + props.dict.km;
+}
+function updatedDateTime(value: number): string {
   return new Date(value).toLocaleString(props.lang);
 }
 function onReload() {
