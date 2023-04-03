@@ -8,6 +8,8 @@ export function getLocalStorageWeatherData(): IWeatherLocationTimestamped[] {
 
   const weatherLocationsRaw = localStorage.getItem("weatherLocations") || "";
 
+  if (!weatherLocationsRaw) return [];
+
   try {
     return JSON.parse(weatherLocationsRaw);
   } catch (e) {
