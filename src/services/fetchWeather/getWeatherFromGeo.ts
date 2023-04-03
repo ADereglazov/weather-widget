@@ -52,7 +52,7 @@ async function getWeather({
   apiUrl,
   apiKey,
 }: IGetWeatherFromGeoParameters): Promise<TGetWeatherResult> {
-  const requestUrl = new URL(`${apiUrl}/weather/`);
+  const requestUrl = new URL(`${apiUrl}/weather`);
   requestUrl.searchParams.set("lat", String(coordinates.lat));
   requestUrl.searchParams.set("lon", String(coordinates.lon));
   requestUrl.searchParams.set("lang", lang);

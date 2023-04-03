@@ -1,5 +1,5 @@
-import { ICoordinates } from "@/types/coordinates";
-import { TGeoFindResult } from "@/services/geoFind/types";
+import { ICoordinates } from "@/types";
+import { TGeoFindResult } from "./types";
 
 export function geoFind(): Promise<TGeoFindResult> {
   return new Promise((resolve, reject) => {

@@ -71,7 +71,14 @@ import {
   getOutdatedWeatherLocationIndexes,
   capitalizeFirstLetter,
 } from "@/utils";
-import { ISettings, IProps, IWeatherLocationTimestamped } from "@/types";
+import {
+  ISettings,
+  IProps,
+  IWeatherLocationTimestamped,
+  ICoordinates,
+  COUNTRIES,
+  TGeoCountry,
+} from "@/types";
 import ManageButton from "@/components/ManageButton.vue";
 import ReloadButton from "@/components/ReloadButton.vue";
 import WeatherSection from "@/components/WeatherSection.vue";
@@ -85,7 +92,7 @@ const mainProps = reactive<IProps>({
   lang: "en",
   updatePeriod: 2,
   units: "metric",
-  pressureUnit: "hPa",
+  pressureUnit: "mmHg",
   apiUrl: API_URL,
   apiKey: API_KEY,
 });
@@ -124,6 +131,8 @@ async function getGeoWeather() {
     return;
   }
 
+  await setGeoLanguage(geo);
+
   let location: IGetWeatherSucceed | null;
   ({ location, message: errStatus.value } = await getWeatherFromGeo(
     geo,
@@ -137,6 +146,24 @@ async function getGeoWeather() {
 
   addLocation(location);
   isLoading.value = false;
+}
+async function setGeoLanguage(geo: ICoordinates) {
+  const { location } = await getWeatherFromGeo(geo, mainProps);
+
+  if (location && location?.sys?.country) {
+    const country = location.sys.country.toLowerCase();
+
+    if (COUNTRIES.includes(country as TGeoCountry)) {
+      mainProps.lang = country as TGeoCountry;
+
+      setLocalStorageSettings({
+        lang: mainProps.lang,
+        updatePeriod: mainProps.updatePeriod,
+        units: mainProps.units,
+        pressureUnit: mainProps.pressureUnit,
+      });
+    }
+  }
 }
 function refreshAllLocalData() {
   const locationsListIndexes = locationsList.value.map((item, index) => index);

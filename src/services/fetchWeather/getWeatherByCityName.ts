@@ -66,7 +66,7 @@ async function getWeather({
   apiKey,
   signal,
 }: IGetWeatherByCityNameParameters): Promise<TGetWeatherByNameResult> {
-  const requestUrl = new URL(`${apiUrl}/find/`);
+  const requestUrl = new URL(`${apiUrl}/find`);
   requestUrl.searchParams.set("q", city);
   requestUrl.searchParams.set("type", "like");
   requestUrl.searchParams.set("lang", lang);
