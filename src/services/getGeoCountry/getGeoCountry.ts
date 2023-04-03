@@ -1,11 +1,6 @@
 import { getWeatherFromGeo } from "@/services/fetchWeather";
-import {
-  COUNTRIES,
-  ICoordinates,
-  TGeoCountry,
-  TLanguage,
-  TUnits,
-} from "@/types";
+import { ICoordinates, TLanguage, TUnits } from "@/types";
+import { COUNTRIES, TGeoCountry } from "./types";
 
 export async function getGeoCountry(
   geo: ICoordinates,

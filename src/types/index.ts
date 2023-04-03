@@ -7,4 +7,3 @@ export * from "./directions";
 export * from "./pressure";
 export * from "./updatePeriods";
 export * from "./props";
-export * from "./countries";

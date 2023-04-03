@@ -58,6 +58,7 @@
 import { ref, onBeforeMount, reactive } from "vue";
 import { dict } from "@/locales";
 import { getGeoLocalization } from "@/services/getGeoLocalization";
+import { getGeoCountry } from "@/services/getGeoCountry";
 import { getWeatherFromGeo, IGetWeatherSucceed } from "@/services/fetchWeather";
 import {
   getLocalStorageWeatherData,
@@ -69,7 +70,6 @@ import {
 } from "@/services/localStorageSettings";
 import {
   getOutdatedWeatherLocationIndexes,
-  getGeoCountry,
   capitalizeFirstLetter,
 } from "@/utils";
 import { ISettings, IProps, IWeatherLocationTimestamped } from "@/types";
