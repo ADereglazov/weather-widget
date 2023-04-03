@@ -1,0 +1,12 @@
+.error-alert {
+  padding: 20px 10px;
+
+  font-weight: bold;
+  background-color: $white;
+  color: $red;
+  box-shadow: 2px 2px 10px 0 $black;
+
+  &__reload-button {
+    margin: 10px auto 0 auto;
+  }
+}

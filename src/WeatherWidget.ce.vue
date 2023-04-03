@@ -40,18 +40,13 @@
     class="app-weather-section"
   />
   <LoadingSpinner v-show="isLoading" class="app-spinner" />
-  <div
+  <ErrorAlert
+    :err-status="errStatus"
+    :dict="dict[mainProps.lang]"
     :class="{ 'app-error--hide': isSettingsOpened || !errStatus }"
     class="app-error"
-  >
-    {{ errStatus }}
-
-    <ReloadButton
-      :dict="dict[mainProps.lang]"
-      class="app-reload-button"
-      @reload="onReload"
-    />
-  </div>
+    @reload="onReload"
+  />
 </template>
 
 <script setup lang="ts">
@@ -78,6 +73,7 @@ import ReloadButton from "@/components/ReloadButton.vue";
 import WeatherSection from "@/components/WeatherSection.vue";
 import SettingsSection from "@/components/SettingsSection.vue";
 import LoadingSpinner from "@/components/LoadingSpinner.vue";
+import ErrorAlert from "@/components/ErrorAlert.vue";
 
 const API_URL: string = process.env.VUE_APP_API_URL || "";
 const API_KEY: string = process.env.VUE_APP_API_KEY || "";
@@ -282,13 +278,6 @@ function changeSettings({
 
   width: 100%;
   max-width: 220px;
-  padding: 20px 10px;
-  margin: 0;
-
-  font-weight: bold;
-  background-color: $white;
-  color: $red;
-  box-shadow: 2px 2px 10px 0 $black;
 }
 
 .app-error.app-error--hide {
