@@ -142,12 +142,10 @@ async function getGeoWeather() {
     mainProps
   ));
 
-  if (!location) {
-    isLoading.value = false;
-    return;
+  if (location) {
+    addLocation(location);
   }
 
-  addLocation(location);
   isLoading.value = false;
 }
 function refreshAllLocalData() {
