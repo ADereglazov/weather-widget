@@ -69,16 +69,10 @@ import {
 } from "@/services/localStorageSettings";
 import {
   getOutdatedWeatherLocationIndexes,
+  getGeoCountry,
   capitalizeFirstLetter,
 } from "@/utils";
-import {
-  ISettings,
-  IProps,
-  IWeatherLocationTimestamped,
-  ICoordinates,
-  COUNTRIES,
-  TGeoCountry,
-} from "@/types";
+import { ISettings, IProps, IWeatherLocationTimestamped } from "@/types";
 import ManageButton from "@/components/ManageButton.vue";
 import ReloadButton from "@/components/ReloadButton.vue";
 import WeatherSection from "@/components/WeatherSection.vue";
@@ -131,7 +125,16 @@ async function getGeoWeather() {
     return;
   }
 
-  await setGeoLanguage(geo);
+  const lang = await getGeoCountry(geo, mainProps);
+  if (lang) {
+    mainProps.lang = lang;
+    setLocalStorageSettings({
+      lang: mainProps.lang,
+      updatePeriod: mainProps.updatePeriod,
+      units: mainProps.units,
+      pressureUnit: mainProps.pressureUnit,
+    });
+  }
 
   let location: IGetWeatherSucceed | null;
   ({ location, message: errStatus.value } = await getWeatherFromGeo(
@@ -146,24 +149,6 @@ async function getGeoWeather() {
 
   addLocation(location);
   isLoading.value = false;
-}
-async function setGeoLanguage(geo: ICoordinates) {
-  const { location } = await getWeatherFromGeo(geo, mainProps);
-
-  if (location && location?.sys?.country) {
-    const country = location.sys.country.toLowerCase();
-
-    if (COUNTRIES.includes(country as TGeoCountry)) {
-      mainProps.lang = country as TGeoCountry;
-
-      setLocalStorageSettings({
-        lang: mainProps.lang,
-        updatePeriod: mainProps.updatePeriod,
-        units: mainProps.units,
-        pressureUnit: mainProps.pressureUnit,
-      });
-    }
-  }
 }
 function refreshAllLocalData() {
   const locationsListIndexes = locationsList.value.map((item, index) => index);
