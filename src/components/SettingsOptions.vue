@@ -1,50 +1,78 @@
 <template>
   <div class="settings-options">
     <div class="settings-options__block settings-options__wrapper">
-      <SelectLanguage
-        :lang="lang"
-        :dict="dict"
+      <SelectElement
+        id="language"
+        :title="dict.selectLanguage"
+        :selected="lang"
         :disabled="isLoading"
         class="settings-options__block settings-options__language"
-        @change-language="emit('change-settings', { lang: $event })"
-      />
-      <SelectUpdatePeriod
-        :updatePeriod="updatePeriod"
-        :dict="dict"
+        @change-select="emit('change-settings', { lang: $event })"
+      >
+        <option v-for="item in LANGUAGES" :key="item" :value="item">
+          {{ dict.languages[item] }}
+        </option>
+      </SelectElement>
+
+      <SelectElement
+        id="updatePeriod"
+        :title="dict.updatePeriodTitle"
+        :selected="updatePeriod"
         :disabled="isLoading"
         class="settings-options__update-period"
-        @change-update-period="
-          emit('change-settings', { updatePeriod: $event })
-        "
-      />
+        @change-select="emit('change-settings', { updatePeriod: $event })"
+      >
+        <option v-for="item in UPDATE_PERIODS" :key="item" :value="item">
+          {{ item }}
+          {{ pluralize(item, dict.oneHour, dict.twoHours, dict.fiveHours) }}
+        </option>
+      </SelectElement>
     </div>
+
     <hr class="settings-options__hr" />
-    <SelectUnits
-      :units="units"
-      :dict="dict"
+
+    <RadioElement
+      :title="dict.selectUnits"
+      :list="UNITS"
+      :selected="units"
+      :label="dict.units"
       :disabled="isLoading"
+      name="units"
       class="settings-options__block settings-options__units"
-      @change-units="emit('change-settings', { units: $event })"
+      @change-radio="emit('change-settings', { units: $event })"
     />
+
     <hr class="settings-options__hr" />
-    <SelectPressure
-      :pressure-unit="pressureUnit"
-      :dict="dict"
+
+    <RadioElement
+      :title="dict.selectPressure"
+      :list="PRESSURE_UNITS"
+      :selected="pressureUnit"
+      :label="dict.pressureUnits"
       :disabled="isLoading"
+      name="pressure-unit"
       class="settings-options__block settings-options__pressure"
-      @change-pressure-unit="emit('change-settings', { pressureUnit: $event })"
+      @change-radio="emit('change-settings', { pressureUnit: $event })"
     />
   </div>
 </template>
 
 <script setup lang="ts">
 import { defineEmits, defineProps } from "vue";
-import { TLanguage, TUnits, TPressureUnit, TUpdatePeriod } from "@/types";
+import { pluralize } from "@/utils";
+import {
+  TLanguage,
+  TUnits,
+  TPressureUnit,
+  TUpdatePeriod,
+  LANGUAGES,
+  UPDATE_PERIODS,
+  UNITS,
+  PRESSURE_UNITS,
+} from "@/types";
 import { IDictionary } from "@/locales/types";
-import SelectLanguage from "@/components/SelectLanguage.vue";
-import SelectUnits from "@/components/SelectUnits.vue";
-import SelectPressure from "@/components/SelectPressure.vue";
-import SelectUpdatePeriod from "@/components/SelectUpdatePeriod.vue";
+import SelectElement from "@/components/SelectElement.vue";
+import RadioElement from "@/components/RadioElement.vue";
 
 const emit = defineEmits(["change-settings"]);
 
