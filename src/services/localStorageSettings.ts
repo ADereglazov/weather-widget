@@ -8,6 +8,8 @@ export function getLocalStorageSettings() {
 
   const settingsRaw = localStorage.getItem("settings") || "";
 
+  if (!settingsRaw) return null;
+
   try {
     return JSON.parse(settingsRaw);
   } catch (e) {

@@ -40,24 +40,20 @@
     class="app-weather-section"
   />
   <LoadingSpinner v-show="isLoading" class="app-spinner" />
-  <div
+  <ErrorAlert
+    :err-status="errStatus"
+    :dict="dict[mainProps.lang]"
     :class="{ 'app-error--hide': isSettingsOpened || !errStatus }"
     class="app-error"
-  >
-    {{ errStatus }}
-
-    <ReloadButton
-      :dict="dict[mainProps.lang]"
-      class="app-reload-button"
-      @reload="onReload"
-    />
-  </div>
+    @reload="onReload"
+  />
 </template>
 
 <script setup lang="ts">
 import { ref, onBeforeMount, reactive } from "vue";
 import { dict } from "@/locales";
 import { getGeoLocalization } from "@/services/getGeoLocalization";
+import { getGeoCountry } from "@/services/getGeoCountry";
 import { getWeatherFromGeo, IGetWeatherSucceed } from "@/services/fetchWeather";
 import {
   getLocalStorageWeatherData,
@@ -77,6 +73,7 @@ import ReloadButton from "@/components/ReloadButton.vue";
 import WeatherSection from "@/components/WeatherSection.vue";
 import SettingsSection from "@/components/SettingsSection.vue";
 import LoadingSpinner from "@/components/LoadingSpinner.vue";
+import ErrorAlert from "@/components/ErrorAlert.vue";
 
 const API_URL: string = process.env.VUE_APP_API_URL || "";
 const API_KEY: string = process.env.VUE_APP_API_KEY || "";
@@ -85,7 +82,7 @@ const mainProps = reactive<IProps>({
   lang: "en",
   updatePeriod: 2,
   units: "metric",
-  pressureUnit: "hPa",
+  pressureUnit: "mmHg",
   apiUrl: API_URL,
   apiKey: API_KEY,
 });
@@ -113,7 +110,7 @@ function getInitData() {
 }
 async function getGeoWeather() {
   isLoading.value = true;
-
+  // Attempt to get a user's geolocation using a WEB API or IP address
   const geo = await getGeoLocalization();
   if (!geo) {
     errStatus.value = `${dict[mainProps.lang].oops}, ${
@@ -123,19 +120,29 @@ async function getGeoWeather() {
     isLoading.value = false;
     return;
   }
-
+  // Attempt to get a user's country using openweathermap.org API query
+  // If the country is Russia, the Russian interface language is used, otherwise - English
+  const lang = await getGeoCountry(geo, mainProps);
+  if (lang) {
+    mainProps.lang = lang;
+    setLocalStorageSettings({
+      lang: mainProps.lang,
+      updatePeriod: mainProps.updatePeriod,
+      units: mainProps.units,
+      pressureUnit: mainProps.pressureUnit,
+    });
+  }
+  // Attempt to get a weather from latitude and longitude using openweather API query
   let location: IGetWeatherSucceed | null;
   ({ location, message: errStatus.value } = await getWeatherFromGeo(
     geo,
     mainProps
   ));
 
-  if (!location) {
-    isLoading.value = false;
-    return;
+  if (location) {
+    addLocation(location);
   }
 
-  addLocation(location);
   isLoading.value = false;
 }
 function refreshAllLocalData() {
@@ -185,7 +192,7 @@ function onDelete(index: number) {
 }
 function onManageButtonClick() {
   isSettingsOpened.value = !isSettingsOpened.value;
-
+  // If you delete all the cities and close the settings, you need to start initializing the data
   if (!isSettingsOpened.value && !locationsList.value.length) {
     getInitData();
   }
@@ -195,6 +202,7 @@ function onReload() {
   getInitData();
 }
 function updateAllWeatherData() {
+  // "reload" need for reload button animation
   reload.value = true;
   setTimeout(() => (reload.value = false), 500);
 
@@ -207,10 +215,10 @@ function changeSettings({
   pressureUnit = mainProps.pressureUnit,
 }: ISettings) {
   setLocalStorageSettings({ lang, updatePeriod, units, pressureUnit });
+  //If you change the update period in the settings, you need to update the "outdated" elements
   const updateOutdated = mainProps.updatePeriod !== updatePeriod;
 
-  // Necessary change mainProps.lang, mainProps.units etc.,
-  // because it uses for network queries in refreshLocalData() function.
+  // Necessary change mainProps properties, because it uses for network queries in refreshLocalData() function.
   Object.assign(mainProps, {
     lang,
     updatePeriod,
@@ -272,13 +280,6 @@ function changeSettings({
 
   width: 100%;
   max-width: 220px;
-  padding: 20px 10px;
-  margin: 0;
-
-  font-weight: bold;
-  background-color: $white;
-  color: $red;
-  box-shadow: 2px 2px 10px 0 $black;
 }
 
 .app-error.app-error--hide {
