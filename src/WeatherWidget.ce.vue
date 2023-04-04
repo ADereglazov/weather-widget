@@ -110,7 +110,7 @@ function getInitData() {
 }
 async function getGeoWeather() {
   isLoading.value = true;
-
+  // Attempt to get a user's geolocation using a WEB API or IP address
   const geo = await getGeoLocalization();
   if (!geo) {
     errStatus.value = `${dict[mainProps.lang].oops}, ${
@@ -120,7 +120,8 @@ async function getGeoWeather() {
     isLoading.value = false;
     return;
   }
-
+  // Attempt to get a user's country using openweather API query
+  // If the country is Russia, the Russian interface language is used, otherwise - English
   const lang = await getGeoCountry(geo, mainProps);
   if (lang) {
     mainProps.lang = lang;
@@ -131,7 +132,7 @@ async function getGeoWeather() {
       pressureUnit: mainProps.pressureUnit,
     });
   }
-
+  // Attempt to get a weather from latitude and longitude using openweather API query
   let location: IGetWeatherSucceed | null;
   ({ location, message: errStatus.value } = await getWeatherFromGeo(
     geo,
@@ -191,7 +192,7 @@ function onDelete(index: number) {
 }
 function onManageButtonClick() {
   isSettingsOpened.value = !isSettingsOpened.value;
-
+  // If you delete all the cities and close the settings, you need to start initializing the data
   if (!isSettingsOpened.value && !locationsList.value.length) {
     getInitData();
   }
@@ -201,6 +202,7 @@ function onReload() {
   getInitData();
 }
 function updateAllWeatherData() {
+  // "reload" need for reload button animation
   reload.value = true;
   setTimeout(() => (reload.value = false), 500);
 
@@ -213,10 +215,10 @@ function changeSettings({
   pressureUnit = mainProps.pressureUnit,
 }: ISettings) {
   setLocalStorageSettings({ lang, updatePeriod, units, pressureUnit });
+  //If you change the update period in the settings, you need to update the "outdated" elements
   const updateOutdated = mainProps.updatePeriod !== updatePeriod;
 
-  // Necessary change mainProps.lang, mainProps.units etc.,
-  // because it uses for network queries in refreshLocalData() function.
+  // Necessary change mainProps properties, because it uses for network queries in refreshLocalData() function.
   Object.assign(mainProps, {
     lang,
     updatePeriod,
