@@ -41,11 +41,11 @@ type TLanguages = {
   [key in TLanguage]: string;
 };
 
-type TUnitsAll = {
+export type TUnitsAll = {
   [key in TUnits]: string;
 };
 
-type TPressureUnits = {
+export type TPressureUnits = {
   [key in TPressureUnit]: string;
 };
 

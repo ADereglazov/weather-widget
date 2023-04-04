@@ -23,16 +23,18 @@
 import { defineEmits, defineProps, onBeforeMount, ref } from "vue";
 import { TLanguage, TUpdatePeriod } from "@/types";
 
+type TSelected = TLanguage | TUpdatePeriod;
+
 const emit = defineEmits(["change-select"]);
 
 const props = defineProps<{
   id: string;
   title: string;
-  defaultValue: TLanguage | TUpdatePeriod;
+  selected: TSelected;
   disabled: boolean;
 }>();
 
-onBeforeMount(() => (selectModel.value = props.defaultValue));
+onBeforeMount(() => (selectModel.value = props.selected));
 
 const selectModel = ref();
 

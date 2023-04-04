@@ -4,7 +4,7 @@
       <SelectElement
         id="language"
         :title="dict.selectLanguage"
-        :default-value="lang"
+        :selected="lang"
         :disabled="isLoading"
         class="settings-options__block settings-options__language"
         @change-select="emit('change-settings', { lang: $event })"
@@ -17,7 +17,7 @@
       <SelectElement
         id="updatePeriod"
         :title="dict.updatePeriodTitle"
-        :default-value="updatePeriod"
+        :selected="updatePeriod"
         :disabled="isLoading"
         class="settings-options__update-period"
         @change-select="emit('change-settings', { updatePeriod: $event })"
@@ -31,22 +31,28 @@
 
     <hr class="settings-options__hr" />
 
-    <SelectUnits
-      :units="units"
-      :dict="dict"
+    <RadioElement
+      :title="dict.selectUnits"
+      :list="UNITS"
+      :selected="units"
+      :label="dict.units"
       :disabled="isLoading"
+      name="units"
       class="settings-options__block settings-options__units"
-      @change-units="emit('change-settings', { units: $event })"
+      @change-radio="emit('change-settings', { units: $event })"
     />
 
     <hr class="settings-options__hr" />
 
-    <SelectPressure
-      :pressure-unit="pressureUnit"
-      :dict="dict"
+    <RadioElement
+      :title="dict.selectPressure"
+      :list="PRESSURE_UNITS"
+      :selected="pressureUnit"
+      :label="dict.pressureUnits"
       :disabled="isLoading"
+      name="pressure-unit"
       class="settings-options__block settings-options__pressure"
-      @change-pressure-unit="emit('change-settings', { pressureUnit: $event })"
+      @change-radio="emit('change-settings', { pressureUnit: $event })"
     />
   </div>
 </template>
@@ -61,11 +67,12 @@ import {
   TUpdatePeriod,
   LANGUAGES,
   UPDATE_PERIODS,
+  UNITS,
+  PRESSURE_UNITS,
 } from "@/types";
 import { IDictionary } from "@/locales/types";
-import SelectUnits from "@/components/SelectUnits.vue";
-import SelectPressure from "@/components/SelectPressure.vue";
 import SelectElement from "@/components/SelectElement.vue";
+import RadioElement from "@/components/RadioElement.vue";
 
 const emit = defineEmits(["change-settings"]);
 
