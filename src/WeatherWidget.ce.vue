@@ -120,7 +120,7 @@ async function getGeoWeather() {
     isLoading.value = false;
     return;
   }
-  // Attempt to get a user's country using openweather API query
+  // Attempt to get a user's country using openweathermap.org API query
   // If the country is Russia, the Russian interface language is used, otherwise - English
   const lang = await getGeoCountry(geo, mainProps);
   if (lang) {
