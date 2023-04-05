@@ -7,6 +7,7 @@
     <select
       v-model="selectModel"
       :id="id"
+      :name="id"
       :disabled="disabled"
       :style="{
         backgroundImage: `url(${require('@/assets/icons/triangle.svg')})`,
@@ -36,7 +37,7 @@ const props = defineProps<{
 
 onBeforeMount(() => (selectModel.value = props.selected));
 
-const selectModel = ref();
+const selectModel = ref<TSelected>();
 
 function onChange() {
   emit("change-select", selectModel.value);
