@@ -15,7 +15,7 @@
       </SelectElement>
 
       <SelectElement
-        id="updatePeriod"
+        id="update-period"
         :title="dict.updatePeriodTitle"
         :selected="updatePeriod"
         :disabled="isLoading"

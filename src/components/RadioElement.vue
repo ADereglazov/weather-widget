@@ -33,14 +33,14 @@ const emit = defineEmits(["change-radio"]);
 
 defineProps<{
   title: string;
-  list: string[];
+  list: TUnits[] | TPressureUnit[];
   selected: TSelected;
   name: string;
   disabled: boolean;
   label: TLabel;
 }>();
 
-function onChange(value: string) {
+function onChange(value: TUnits | TPressureUnit) {
   emit("change-radio", value);
 }
 </script>
