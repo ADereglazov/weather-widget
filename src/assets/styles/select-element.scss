@@ -1,6 +1,7 @@
 .select-element {
   display: flex;
   flex-direction: column;
+  justify-content: flex-end;
 
   &__label {
     display: block;
