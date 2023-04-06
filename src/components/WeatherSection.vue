@@ -37,10 +37,11 @@
             />
             <img
               :src="`https://openweathermap.org/img/wn/${location.weather[0].icon}@2x.png`"
+              :style="imgStyle"
               alt="weather-img"
               class="weather-section__img"
-              onload="this.style.display = 'block'"
-              onerror="this.style.display = 'none'"
+              @load="onLoadImg"
+              @error="onErrorImg"
             />
           </div>
           <div class="weather-section__temperature">
@@ -100,7 +101,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineProps, computed } from "vue";
+import { ref, defineProps, computed } from "vue";
 import { getWindDirection, capitalizeFirstLetter } from "@/utils";
 import {
   IWeatherLocationTimestamped,
@@ -137,10 +138,18 @@ const unitsDict = {
   },
 };
 
+const isImgLoaded = ref(false);
+
 const multiplier = computed<number>(() =>
   props.pressureUnit === "hPa" ? 1 : 0.75006156
 );
 
+const imgStyle = computed(() =>
+  isImgLoaded.value ? { display: "block" } : { display: "none" }
+);
+
+const onLoadImg = () => (isImgLoaded.value = true);
+const onErrorImg = () => (isImgLoaded.value = false);
 function pressure(value: number): string {
   return (value * multiplier.value).toFixed(0);
 }
