@@ -8,10 +8,10 @@
     @button-click="onManageButtonClick"
   />
   <ReloadButton
-    v-show="!isSettingsOpened"
+    v-show="!isSettingsOpened && locationsList.length > 0"
     :disabled="isLoading"
     :dict="dict[mainProps.lang]"
-    :class="{ 'app-reload-button-main--reload': reload }"
+    :class="{ 'app-reload-button-main--reload': isReload }"
     class="app-reload-button-main"
     @reload="updateAllWeatherData"
   />
@@ -91,7 +91,7 @@ const isSettingsOpened = ref(false);
 const isLoading = ref(false);
 const isLoadingInSettings = ref(false);
 const errStatus = ref("");
-const reload = ref(false);
+const isReload = ref(false);
 
 onBeforeMount(() => {
   getInitData();
@@ -139,10 +139,7 @@ async function getGeoWeather() {
     mainProps
   ));
 
-  if (location) {
-    addLocation(location);
-  }
-
+  if (location) addLocation(location);
   isLoading.value = false;
 }
 function refreshAllLocalData() {
@@ -202,9 +199,9 @@ function onReload() {
   getInitData();
 }
 function updateAllWeatherData() {
-  // "reload" need for reload button animation
-  reload.value = true;
-  setTimeout(() => (reload.value = false), 500);
+  // "isReload" need for isReload button animation
+  isReload.value = true;
+  setTimeout(() => (isReload.value = false), 500);
 
   refreshAllLocalData();
 }
