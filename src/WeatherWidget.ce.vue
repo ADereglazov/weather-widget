@@ -41,9 +41,9 @@
   />
   <LoadingSpinner v-show="isLoading" class="app-spinner" />
   <ErrorAlert
+    v-if="errStatus && !isSettingsOpened"
     :err-status="errStatus"
     :dict="dict[mainProps.lang]"
-    :class="{ 'app-error--hide': isSettingsOpened || !errStatus }"
     class="app-error"
     @reload="onReload"
   />
@@ -277,10 +277,6 @@ function changeSettings({
 
   width: 100%;
   max-width: 220px;
-}
-
-.app-error.app-error--hide {
-  display: none;
 }
 
 .app-reload-button {
