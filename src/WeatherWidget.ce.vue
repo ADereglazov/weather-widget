@@ -232,6 +232,8 @@ function changeSettings({
 </script>
 
 <style lang="scss">
+@import "~@/assets/styles/styles.scss";
+
 .app-manage-button {
   position: absolute;
   top: 10px;
@@ -255,7 +257,8 @@ function changeSettings({
   background-color: $white;
 
   &--reload {
-    animation: reload-button-rotate 500ms linear;
+    transform: rotate(360deg);
+    transition: transform 500ms linear;
   }
 }
 
@@ -281,14 +284,5 @@ function changeSettings({
 
 .app-reload-button {
   margin: 10px auto 0 auto;
-}
-
-@keyframes reload-button-rotate {
-  0% {
-    transform: rotate(0deg);
-  }
-  100% {
-    transform: rotate(360deg);
-  }
 }
 </style>

@@ -30,14 +30,15 @@
         <div class="weather-section__wrapper-main">
           <div class="weather-section__wrapper-img">
             <div
+              v-show="!isImgLoaded"
               :style="{
                 backgroundImage: `url(${require('@/assets/icons/placeholder.svg')})`,
               }"
               class="weather-section__placeholder"
             />
             <img
+              v-show="isImgLoaded"
               :src="`https://openweathermap.org/img/wn/${location.weather[0].icon}@2x.png`"
-              :style="imgStyle"
               alt="weather-img"
               class="weather-section__img"
               @load="onLoadImg"
@@ -142,10 +143,6 @@ const isImgLoaded = ref(false);
 
 const multiplier = computed<number>(() =>
   props.pressureUnit === "hPa" ? 1 : 0.75006156
-);
-
-const imgStyle = computed(() =>
-  isImgLoaded.value ? { display: "block" } : { display: "none" }
 );
 
 const onLoadImg = () => (isImgLoaded.value = true);
