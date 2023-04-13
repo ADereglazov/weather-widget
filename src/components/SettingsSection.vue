@@ -5,7 +5,7 @@
     </header>
 
     <SettingsOptions
-      v-if="additionalSettingsOpened"
+      v-if="isAdditionalSettingsOpened"
       :lang="mainProps.lang"
       :updatePeriod="mainProps.updatePeriod"
       :units="mainProps.units"
@@ -42,10 +42,10 @@
     </template>
 
     <SettingsSectionFooter
-      :model="additionalSettingsOpened"
+      :model="isAdditionalSettingsOpened"
       :dict="dict"
       class="settings-section__footer"
-      @toggle-settings="additionalSettingsOpened = $event"
+      @toggle-settings="isAdditionalSettingsOpened = $event"
     />
   </section>
 </template>
@@ -74,7 +74,7 @@ defineProps<{
   isLoading: boolean;
 }>();
 
-const additionalSettingsOpened = ref(false);
+const isAdditionalSettingsOpened = ref(false);
 const isOpacity = ref(false);
 
 function onAddLocation(location: IWeatherLocationTimestamped) {

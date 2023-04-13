@@ -280,6 +280,8 @@ function changeSettings({
 
   width: 100%;
   max-width: 220px;
+
+  text-align: center;
 }
 
 .app-reload-button {

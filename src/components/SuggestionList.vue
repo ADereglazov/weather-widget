@@ -10,7 +10,7 @@
         }"
         class="suggestion-list__item"
         @mousedown.prevent
-        @click="onSuggestionSelect(item, true)"
+        @click="onClickItem(item.id)"
       >
         <span class="suggestion-list__item-name">{{ item.name }}</span>
         <span class="suggestion-list__item-country">{{
@@ -53,10 +53,7 @@ const props = defineProps<{
 
 const emit = defineEmits(["suggestion-select"]);
 
-function onSuggestionSelect(
-  item: IWeatherLocation,
-  isClickSuggestionItem = false
-) {
-  emit("suggestion-select", { item, isClickSuggestionItem });
+function onClickItem(locationId: number) {
+  emit("suggestion-select", locationId);
 }
 </script>
