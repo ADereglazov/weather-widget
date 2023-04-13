@@ -28,7 +28,7 @@
         :list="foundList"
         :search-string="newLocationString"
         :current-focus="currentFocus"
-        @suggestion-select="onSuggestionSelect"
+        @suggestion-select="addSelectedLocation"
       />
       <button
         v-show="newLocationString.length > 0 && !isLoading"
@@ -109,16 +109,6 @@ function onInput() {
   }
   throttledOnInput();
 }
-function onSuggestionSelect({
-  item,
-  isClickSuggestionItem = false,
-}: {
-  item: IWeatherLocation;
-  isClickSuggestionItem?: boolean;
-}) {
-  selectedSuggestionListItem.value = { ...item };
-  if (isClickSuggestionItem) addSelectedLocation(item.id);
-}
 async function addSelectedLocation(id: number) {
   isLoading.value = true;
 
@@ -130,8 +120,8 @@ async function addSelectedLocation(id: number) {
     emit("add-location", newWeatherLocation);
     newLocationString.value = "";
   }
-  foundList.value = [];
 
+  foundList.value = [];
   isLoading.value = false;
 }
 function onEnter() {
@@ -169,9 +159,7 @@ function onKeyArrow(e: KeyboardEvent) {
       currentFocus.value === 0 ? maxListIndex : currentFocus.value - 1;
   }
 
-  onSuggestionSelect({
-    item: foundList.value[currentFocus.value],
-  });
+  selectedSuggestionListItem.value = foundList.value[currentFocus.value];
 }
 function onClickClear() {
   newLocationString.value = "";

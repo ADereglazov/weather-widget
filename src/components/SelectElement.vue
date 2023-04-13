@@ -21,7 +21,7 @@
 </template>
 
 <script setup lang="ts">
-import { defineEmits, defineProps, onBeforeMount, ref } from "vue";
+import { defineEmits, defineProps, onBeforeMount } from "vue";
 import { TLanguage, TUpdatePeriod } from "@/types";
 
 type TSelected = TLanguage | TUpdatePeriod;
@@ -35,11 +35,11 @@ const props = defineProps<{
   disabled: boolean;
 }>();
 
-onBeforeMount(() => (selectModel.value = props.selected));
+onBeforeMount(() => (selectModel = props.selected));
 
-const selectModel = ref<TSelected>();
+let selectModel: TSelected;
 
 function onChange() {
-  emit("change-select", selectModel.value);
+  emit("change-select", selectModel);
 }
 </script>
