@@ -11,7 +11,7 @@
     <label
       for="settings-toggle"
       class="settings-section-footer__additional-settings-label"
-      :style="inputModel ? labelStyles.base : labelStyles.additional"
+      :style="inputModel ? labelStyles.additional : labelStyles.base"
     >
       {{ inputModel ? dict.baseSettings : dict.additionalSettings }}
     </label>
@@ -31,14 +31,14 @@ const props = defineProps<{
 
 const labelStyles = {
   base: {
-    backgroundImage: `url(${require("@/assets/icons/left.svg")})`,
-    backgroundPosition: "left",
-    padding: "2px 4px 2px 20px",
-  },
-  additional: {
     backgroundImage: `url(${require("@/assets/icons/right.svg")})`,
     backgroundPosition: "right",
-    padding: "2px 20px 2px 4px",
+    paddingRight: "20px",
+  },
+  additional: {
+    backgroundImage: `url(${require("@/assets/icons/left.svg")})`,
+    backgroundPosition: "left",
+    paddingLeft: "20px",
   },
 };
 
