@@ -1,16 +1,19 @@
 .settings-section-footer {
-  display: block;
+  display: flex;
+  justify-content: center;
   width: 100%;
   padding: 7px 10px;
 
   background-color: $ghostwhite;
-  text-align: center;
 
   &__additional-settings-input:focus-visible + &__additional-settings-label {
     outline: 2px solid $black;
   }
 
   &__additional-settings-label {
+    display: inline-block;
+    padding: 0 4px;
+
     border-radius: 2px;
     background-repeat: no-repeat;
     background-size: 16px 16px;
@@ -20,6 +23,7 @@
     text-decoration: underline;
     color: $black;
     white-space: nowrap;
+    text-overflow: ellipsis;
     overflow: hidden;
 
     &:hover {

@@ -15,4 +15,5 @@ weather-widget {
   line-height: 20px;
 
   background-color: white;
+  overflow: hidden;
 }
