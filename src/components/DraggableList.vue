@@ -88,7 +88,7 @@ onBeforeUpdate(() => {
 });
 
 const listModel = computed<IWeatherLocationTimestamped[]>({
-  get: () => [...props.locationsList],
+  get: () => props.locationsList,
   set: (value) => emit("sorting-locations-list", value),
 });
 const locationsListLength = computed<number>(() => props.locationsList.length);
@@ -99,9 +99,9 @@ function moveItem(isMoveDown: boolean, index: number) {
     return;
   }
 
-  const locationListCopy: IWeatherLocationTimestamped[] = JSON.parse(
-    JSON.stringify(props.locationsList)
-  );
+  const locationListCopy: IWeatherLocationTimestamped[] = [
+    ...props.locationsList,
+  ];
   const draggedItem = locationListCopy[index];
 
   locationListCopy.splice(index, 1);
