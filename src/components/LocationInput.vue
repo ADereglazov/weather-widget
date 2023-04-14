@@ -81,15 +81,15 @@ const props = defineProps<{
   dict: IDictionary;
 }>();
 
-const MAX_STATIC_ERR_TEXT_LENGTH = 45;
+const MAX_STATIC_ERR_TEXT_LENGTH = 40;
 const MIN_LENGTH_FOR_START_SEARCH = 3;
-const foundList = ref<IWeatherLocation[]>([]);
+
 const throttledOnInput = throttle(getInputtedLocation, 1000);
-const isInputFocused = ref(false);
 const inputField = ref<HTMLInputElement | null>(null);
+const isInputFocused = ref(false);
 const currentFocus = ref(0);
-const selectedSuggestionListItem = ref<IWeatherLocation | null>(null);
 const newLocationString = ref("");
+const foundList = ref<IWeatherLocation[]>([]);
 const errStatus = ref("");
 const isLoading = ref(false);
 
@@ -103,7 +103,6 @@ watchEffect(() => {
 function onInput() {
   errStatus.value = "";
   foundList.value = [];
-  selectedSuggestionListItem.value = null;
   if (newLocationString.value.trim().length < MIN_LENGTH_FOR_START_SEARCH) {
     return;
   }
@@ -129,8 +128,8 @@ function onEnter() {
     return;
   }
 
-  if (selectedSuggestionListItem.value) {
-    addSelectedLocation(selectedSuggestionListItem.value.id);
+  if (foundList.value.length) {
+    addSelectedLocation(foundList.value[currentFocus.value].id);
   }
 }
 async function getInputtedLocation() {
@@ -142,7 +141,6 @@ async function getInputtedLocation() {
 
   if (locationsList?.count) {
     foundList.value = [...locationsList.list];
-    selectedSuggestionListItem.value = foundList.value[0];
     currentFocus.value = 0;
   }
 
@@ -158,8 +156,6 @@ function onKeyArrow(e: KeyboardEvent) {
     currentFocus.value =
       currentFocus.value === 0 ? maxListIndex : currentFocus.value - 1;
   }
-
-  selectedSuggestionListItem.value = foundList.value[currentFocus.value];
 }
 function onClickClear() {
   newLocationString.value = "";
