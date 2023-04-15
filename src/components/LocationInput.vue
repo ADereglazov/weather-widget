@@ -147,7 +147,12 @@ async function getInputtedLocation() {
   isLoading.value = false;
 }
 function onKeyArrow(e: KeyboardEvent) {
-  const maxListIndex = foundList.value.length - 1;
+  const foundListLength = foundList.value.length;
+  if (!foundListLength) {
+    return;
+  }
+
+  const maxListIndex = foundListLength - 1;
 
   if (e.key === "ArrowDown") {
     currentFocus.value =
