@@ -152,14 +152,14 @@ function onKeyArrow(e: KeyboardEvent) {
     return;
   }
 
-  const maxListIndex = foundListLength - 1;
+  const maxFoundListIndex = foundListLength - 1;
 
   if (e.key === "ArrowDown") {
     currentFocus.value =
-      currentFocus.value === maxListIndex ? 0 : currentFocus.value + 1;
+      currentFocus.value === maxFoundListIndex ? 0 : currentFocus.value + 1;
   } else if (e.key === "ArrowUp") {
     currentFocus.value =
-      currentFocus.value === 0 ? maxListIndex : currentFocus.value - 1;
+      currentFocus.value === 0 ? maxFoundListIndex : currentFocus.value - 1;
   }
 }
 function onClickClear() {
