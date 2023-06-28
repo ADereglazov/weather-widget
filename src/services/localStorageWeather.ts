@@ -1,5 +1,5 @@
-import { testLocalStorage } from "@/utils/testLocalStorage";
-import { IWeatherLocationTimestamped } from "@/types/weatherLocation";
+import { testLocalStorage } from "@/utils";
+import { IWeatherLocationTimestamped } from "@/types";
 
 export function getLocalStorageWeatherData(): IWeatherLocationTimestamped[] {
   if (!testLocalStorage()) {
