@@ -1,4 +1,4 @@
-import { testLocalStorage } from "@/utils/testLocalStorage";
+import { testLocalStorage } from "@/utils";
 import { ISettings } from "@/types";
 
 export function getLocalStorageSettings() {
