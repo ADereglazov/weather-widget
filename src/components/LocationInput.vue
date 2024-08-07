@@ -59,13 +59,13 @@
 
 <script setup lang="ts">
 import { ref, watchEffect, defineEmits, defineProps, onMounted } from "vue";
-import throttle from "lodash.throttle";
 import {
   getWeatherByCityId,
   getWeatherByCityName,
   IGetWeatherSucceed,
   IGetWeatherFetchByNameSucceed,
 } from "@/services/fetchWeather";
+import { debounce } from "@/utils";
 import { TLanguage, TUnits, IWeatherLocation } from "@/types";
 import { IDictionary } from "@/locales/types";
 import SuggestionList from "@/components/SuggestionList.vue";
@@ -84,7 +84,7 @@ const props = defineProps<{
 const MAX_STATIC_ERR_TEXT_LENGTH = 40;
 const MIN_LENGTH_FOR_START_SEARCH = 3;
 
-const throttledOnInput = throttle(getInputtedLocation, 1000);
+const debounceOnInput = debounce(getInputtedLocation, 1000);
 const inputField = ref<HTMLInputElement | null>(null);
 const isInputFocused = ref(false);
 const currentFocus = ref(0);
@@ -106,7 +106,7 @@ function onInput() {
   if (newLocationString.value.trim().length < MIN_LENGTH_FOR_START_SEARCH) {
     return;
   }
-  throttledOnInput();
+  debounceOnInput();
 }
 async function addSelectedLocation(id: number) {
   isLoading.value = true;
